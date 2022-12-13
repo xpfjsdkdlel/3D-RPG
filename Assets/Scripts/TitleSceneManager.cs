@@ -16,14 +16,14 @@ public class TitleSceneManager : MonoBehaviour
         }
         fade.FadeIn();
     }
-    void NextScene()
+    void LoadCharacterSelectScene()
     {
-        SceneManager.LoadSceneAsync("MainScene");
+        SceneManager.LoadScene("CharacterSelectScene");
     }
 
-    public void LoadMainScene()
+    public void LoadMainScene(string SceneName)
     {// 게임시작 버튼을 눌렀을 때 신을 전환
         fade.FadeOut();
-        Invoke("NextScene", 2f);
+        Invoke("Load" + SceneName, 2f);
     }
 }
