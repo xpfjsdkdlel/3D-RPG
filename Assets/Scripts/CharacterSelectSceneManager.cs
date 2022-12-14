@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class CharacterSelectSceneManager : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class CharacterSelectSceneManager : MonoBehaviour
     [SerializeField]
     private GameObject inputField;
     [SerializeField]
-    private GameObject classImg;
+    private GameObject classImg; // 직업 이미지
     private SelectedCharacter sc;
 
     private void Start()
@@ -30,6 +32,7 @@ public class CharacterSelectSceneManager : MonoBehaviour
         // 게임매니저에 정보 넘기기
         // sc.number
         // sc.name
+        SceneManager.LoadSceneAsync("TestScene");
     }
 
     void LoadExit()
