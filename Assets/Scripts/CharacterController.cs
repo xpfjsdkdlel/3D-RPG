@@ -8,6 +8,8 @@ public enum CharacterState
     Idle,
     move,
     attack,
+    stun,
+    down,
 }
 
 public class CharacterController : MonoBehaviour
@@ -29,6 +31,7 @@ public class CharacterController : MonoBehaviour
     private float attackTime = 0f; // 공격 후 흐른 시간
     private bool attackState = false; // false면 공격이 가능한 상태
     private GameObject target; // 공격 할 타겟
+    private bool combo = false; // 두번째 공격 애니메이션 출력 여부
 
     private Animator animator;
     private NavMeshAgent navMesh;
@@ -74,16 +77,14 @@ public class CharacterController : MonoBehaviour
                         state = CharacterState.attack;
                     }
                     else
-                    {
-                        // 이동 처리
                         state = CharacterState.move;
-                    }
                 }
             }
         }
         else
         {
-            
+            // 임시 코드(추후 수정)
+            state = CharacterState.Idle;
         }
     }
 
@@ -102,32 +103,46 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    void MoveStop()
+    {// 정지 상태
+        navMesh.ResetPath();
+        navMesh.velocity = Vector3.zero;
+        animator.SetBool("isWalk", false);
+    }
+
     void Attack()
-    {
-        if (Vector3.Distance(transform.position, target.transform.position) < range)
+    {// 공격 상태
+        if (target != null)
         {
-            if (battle && target != null)
+            if (Vector3.Distance(transform.position, target.transform.position) <= range)
             {
-                if (!attackState)
+                MoveStop();
+                if (battle && !attackState)
                 {
-                    navMesh.destination = transform.position;
-                    animator.SetBool("isWalk", false);
-                    animator.SetBool("attack", true);
+                    transform.LookAt(target.transform.position); // 적을 바라봄
                     // 공격 함수 호출
                     attackPrevTime = Time.time; // 공격한 시간 갱신
+                    attackState = true;
+                    animator.SetTrigger("attack");
+                    animator.SetBool("combo", combo);
+                    combo = !combo; // 다음 공격의 애니메이션 변경
                 }
             }
             else
-                state = CharacterState.Idle;
-
+                Move(target.transform.position);
         }
         else
         {
-            animator.SetBool("attack", false);
-            navMesh.destination = target.transform.position;
-            // 이동 애니메이션
-            animator.SetBool("isWalk", true);
+            state = CharacterState.Idle;
         }
+    }
+
+    void GetDamage()
+    {// 적에게 대미지를 입히는 함수
+        Enemy enemy = target.GetComponent<Enemy>();
+        enemy.HP -= damage - enemy.armor;
+        if (enemy.HP <= 0)
+            target = null;
     }
 
     void UpdateAttackInfo()
@@ -137,22 +152,18 @@ public class CharacterController : MonoBehaviour
         {
             attackTime = Time.time - attackPrevTime;
             if (attackTime > attackDelay)
-            {
                 attackState = false;
-            }
         }
     }
 
-    void Move()
+    void Move(Vector3 moveDir)
     {
-        navMesh.destination = hit.point;
+        navMesh.SetDestination(moveDir);
         // 이동 애니메이션
         animator.SetBool("isWalk", true);
         // 목적지에 도착했다면 대기상태로 변경
         if (navMesh.velocity.sqrMagnitude >= 0.2f * 0.2f && navMesh.remainingDistance <= 0.1f)
-        {
             state = CharacterState.Idle;
-        }
     }
 
     void Update()
@@ -163,21 +174,22 @@ public class CharacterController : MonoBehaviour
         {
             case CharacterState.Idle:
                 target = null;
-                animator.SetBool("isWalk", false);
-                animator.SetBool("attack", false);
                 moveDir.SetActive(false);
-                navMesh.destination = transform.position;
+                MoveStop();
                 break;
             case CharacterState.move:
                 target = null;
-                animator.SetBool("attack", false);
                 moveDir.SetActive(true);
                 moveDir.transform.position = hit.point + new Vector3(0, 0.1f, 0);
-                Move();
+                Move(hit.point);
                 break;
             case CharacterState.attack:
                 moveDir.SetActive(false);
                 Attack();
+                break;
+            case CharacterState.stun:
+                break;
+            case CharacterState.down:
                 break;
         }
     }
