@@ -52,6 +52,7 @@ public class CharacterController : MonoBehaviour
         state = CharacterState.Idle;
         navMesh = GetComponent<NavMeshAgent>();
         navMesh.speed = speed;
+        enabled = true;
     }
     
     void GetInput()
@@ -140,9 +141,21 @@ public class CharacterController : MonoBehaviour
     void GetDamage()
     {// 적에게 대미지를 입히는 함수
         Enemy enemy = target.GetComponent<Enemy>();
-        enemy.HP -= damage - enemy.armor;
-        if (enemy.HP <= 0)
-            target = null;
+        enemy.Hit(damage);
+    }
+
+    public void Hit(int damage)
+    {// 대미지를 입는 함수
+        HP -= damage - armor;
+        if (HP <= 0)
+        {
+            animator.SetTrigger("die");
+            this.enabled = false;
+        }
+        else
+        {
+            animator.SetTrigger("hit");
+        }
     }
 
     void UpdateAttackInfo()

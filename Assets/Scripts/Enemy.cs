@@ -26,6 +26,8 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]
     private MonsterState state = new MonsterState();
+    private Animator animator;
+    private GameObject target;
 
     public void Init()
     {
@@ -33,6 +35,26 @@ public class Enemy : MonoBehaviour
         MP = maxMP;
         state = MonsterState.Idle;
         this.enabled = true;
+    }
+
+    void GetDamage()
+    {// 적에게 대미지를 입히는 함수
+        CharacterController enemy = target.GetComponent<CharacterController>();
+        enemy.Hit(damage);
+    }
+
+    public void Hit(int damage)
+    {// 대미지를 입는 함수
+        HP -= damage - armor;
+        if (HP <= 0)
+        {
+            animator.SetTrigger("die");
+            this.enabled = false;
+        }
+        else
+        {
+            animator.SetTrigger("hit");
+        }
     }
 
     void Update()
