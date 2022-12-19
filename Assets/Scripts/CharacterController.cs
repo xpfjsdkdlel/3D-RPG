@@ -30,11 +30,13 @@ public class CharacterController : MonoBehaviour
     private float attackPrevTime = 0f; // 마지막으로 공격한 시간
     private float attackTime = 0f; // 공격 후 흐른 시간
     private bool attackState = false; // false면 공격이 가능한 상태
-    private GameObject target; // 공격 할 타겟
+    public GameObject target; // 공격 할 타겟
+    private Enemy enemy; // 타겟의 정보
     private bool combo = false; // 두번째 공격 애니메이션 출력 여부
 
     private Animator animator;
     private NavMeshAgent navMesh;
+
     [SerializeField]
     private GameObject moveDir; // 이동 할 위치 표시
 
@@ -78,7 +80,10 @@ public class CharacterController : MonoBehaviour
                         state = CharacterState.attack;
                     }
                     else
+                    {
+                        target = null;
                         state = CharacterState.move;
+                    }
                 }
             }
         }
@@ -111,7 +116,7 @@ public class CharacterController : MonoBehaviour
         animator.SetBool("isWalk", false);
     }
 
-    void Attack()
+    void AttackState()
     {// 공격 상태
         if (target != null)
         {
@@ -127,10 +132,11 @@ public class CharacterController : MonoBehaviour
                     animator.SetTrigger("attack");
                     animator.SetBool("combo", combo);
                     combo = !combo; // 다음 공격의 애니메이션 변경
+                    Attack();
                 }
             }
             else
-                Move(target.transform.position);
+                MoveState(target.transform.position);
         }
         else
         {
@@ -138,15 +144,21 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    void GetDamage()
+    void Attack()
     {// 적에게 대미지를 입히는 함수
-        Enemy enemy = target.GetComponent<Enemy>();
-        enemy.Hit(damage);
+        if(target != null)
+        {
+            enemy = target.GetComponent<Enemy>();
+            enemy.GetDamage(damage);
+        }
     }
 
-    public void Hit(int damage)
-    {// 대미지를 입는 함수
-        HP -= damage - armor;
+    public void GetDamage(int damage)
+    {// 적에게 대미지를 받는 함수
+        if (damage <= armor)
+            HP -= 1;
+        else
+            HP -= damage - armor;
         if (HP <= 0)
         {
             animator.SetTrigger("die");
@@ -154,7 +166,7 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
-            animator.SetTrigger("hit");
+            enemy.GetComponent<Animator>().SetTrigger("hit");
         }
     }
 
@@ -169,7 +181,7 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    void Move(Vector3 moveDir)
+    void MoveState(Vector3 moveDir)
     {
         navMesh.SetDestination(moveDir);
         // 이동 애니메이션
@@ -194,11 +206,11 @@ public class CharacterController : MonoBehaviour
                 target = null;
                 moveDir.SetActive(true);
                 moveDir.transform.position = hit.point + new Vector3(0, 0.1f, 0);
-                Move(hit.point);
+                MoveState(hit.point);
                 break;
             case CharacterState.attack:
                 moveDir.SetActive(false);
-                Attack();
+                AttackState();
                 break;
             case CharacterState.stun:
                 break;

@@ -13,6 +13,7 @@ public enum MonsterState
 
 public class Enemy : MonoBehaviour
 {
+    public string name; // 이름
     public int HP; // 현재 체력
     public int maxHP; // 최대 체력
     public int MP; // 현재 마나
@@ -28,32 +29,52 @@ public class Enemy : MonoBehaviour
     private MonsterState state = new MonsterState();
     private Animator animator;
     private GameObject target;
+    private CharacterController enemy;
+
+    private Collider collider;
+    private Rigidbody rigidbody;
+
+    private void Start()
+    {
+        Init();
+    }
 
     public void Init()
     {
         HP = maxHP;
         MP = maxMP;
         state = MonsterState.Idle;
-        this.enabled = true;
+        collider = GetComponent<Collider>();
+        collider.enabled = true;
+        rigidbody = GetComponent<Rigidbody>();
+        rigidbody.isKinematic = false;
     }
 
-    void GetDamage()
+    void Attack()
     {// 적에게 대미지를 입히는 함수
-        CharacterController enemy = target.GetComponent<CharacterController>();
-        enemy.Hit(damage);
+        if (target != null)
+        {
+            enemy = target.GetComponent<CharacterController>();
+            enemy.GetDamage(damage);
+        }
     }
 
-    public void Hit(int damage)
-    {// 대미지를 입는 함수
-        HP -= damage - armor;
+    public void GetDamage(int damage)
+    {// 적에게 대미지를 받는 함수
+        if (damage <= armor)
+            HP -= 1;
+        else
+            HP -= damage - armor;
         if (HP <= 0)
         {
             animator.SetTrigger("die");
-            this.enabled = false;
+            enemy.EXP += EXP;
+            collider.enabled = false;
+            rigidbody.isKinematic = true;
         }
         else
         {
-            animator.SetTrigger("hit");
+            enemy.GetComponent<Animator>().SetTrigger("hit");
         }
     }
 
