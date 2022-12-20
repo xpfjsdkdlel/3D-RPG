@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum MonsterState
 {
@@ -24,7 +25,7 @@ public class Enemy : MonoBehaviour
     public float range; // 사정거리
     public float attackDelay; // 공격 딜레이
     public float speed = 2.0f; // 이동속도
-
+    public bool isDead = false; // 생존 여부
     [SerializeField]
     private MonsterState state = new MonsterState();
     private Animator animator;
@@ -33,6 +34,7 @@ public class Enemy : MonoBehaviour
 
     private Collider collider;
     private Rigidbody rigidbody;
+    private NavMeshAgent navMeshAgent;
 
     private void Start()
     {
@@ -44,10 +46,12 @@ public class Enemy : MonoBehaviour
         HP = maxHP;
         MP = maxMP;
         state = MonsterState.Idle;
+        animator = GetComponent<Animator>();
         collider = GetComponent<Collider>();
         collider.enabled = true;
         rigidbody = GetComponent<Rigidbody>();
-        rigidbody.isKinematic = false;
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.enabled = true;
     }
 
     void Attack()
@@ -67,15 +71,22 @@ public class Enemy : MonoBehaviour
             HP -= damage - armor;
         if (HP <= 0)
         {
-            animator.SetTrigger("die");
-            enemy.EXP += EXP;
+            this.enabled = false;
             collider.enabled = false;
-            rigidbody.isKinematic = true;
+            navMeshAgent.enabled = false;
+            isDead = true;
+            animator.SetTrigger("death");
+            // 경험치 주는 코드
         }
         else
         {
-            enemy.GetComponent<Animator>().SetTrigger("hit");
+            animator.SetTrigger("hit");
         }
+    }
+
+    public void DropItem()
+    {
+
     }
 
     void Update()

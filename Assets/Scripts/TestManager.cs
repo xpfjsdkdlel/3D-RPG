@@ -29,21 +29,17 @@ public class TestManager : MonoBehaviour
         Player = GameObject.FindObjectOfType<CharacterController>();
     }
 
-    public void ViewHP(GameObject target)
+    public void ViewHP(Enemy target)
     {
-        Enemy enemy;
-        if(target.TryGetComponent<Enemy>(out enemy))
-        {
-            HPbar.gameObject.SetActive(true);
-            enemyHP.fillAmount = (float)enemy.HP / (float)enemy.maxHP;
-            HPbar.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = enemy.name.ToString();
-        }
+        HPbar.gameObject.SetActive(true);
+        enemyHP.fillAmount = (float)target.HP / (float)target.maxHP;
+        HPbar.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = target.name.ToString();
     }
 
     void Update()
     {    
-        if(Player.target != null)
-            ViewHP(Player.target);
+        if(Player.enemy != null)
+            ViewHP(Player.enemy);
         else
             HPbar.gameObject.SetActive(false);
 
