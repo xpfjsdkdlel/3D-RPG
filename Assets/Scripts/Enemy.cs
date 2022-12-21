@@ -76,6 +76,7 @@ public class Enemy : MonoBehaviour
             navMeshAgent.enabled = false;
             isDead = true;
             animator.SetTrigger("death");
+            Invoke("Delete", 5f);
             // 경험치 주는 코드
         }
         else
@@ -87,6 +88,11 @@ public class Enemy : MonoBehaviour
     public void DropItem()
     {
 
+    }
+
+    public void Delete()
+    {
+        gameObject.SetActive(false);
     }
 
     void Update()

@@ -23,8 +23,8 @@ public class TestManager : MonoBehaviour
             fade.Init();
         }
         fade.FadeIn();
-        HPbar = GameObject.Find("Canvas").transform.GetChild(0).gameObject;
-        enemyHP = HPbar.transform.GetChild(1).GetComponent<Image>();
+        HPbar = GameObject.Find("UI").transform.GetChild(0).gameObject;
+        enemyHP = HPbar.transform.GetChild(0).GetComponent<Image>();
         HPbar.gameObject.SetActive(false);
         Player = GameObject.FindObjectOfType<CharacterController>();
     }

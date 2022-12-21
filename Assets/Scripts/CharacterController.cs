@@ -203,6 +203,8 @@ public class CharacterController : MonoBehaviour
         // 목적지에 도착했다면 대기상태로 변경
         if (navMesh.velocity.sqrMagnitude >= 0.2f * 0.2f && navMesh.remainingDistance <= 0.1f)
             state = CharacterState.Idle;
+        else if (moveDir.x == transform.position.x && moveDir.z == transform.position.z)
+            state = CharacterState.Idle;
     }
 
     void Update()
