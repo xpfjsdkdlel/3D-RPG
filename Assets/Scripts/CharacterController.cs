@@ -14,6 +14,7 @@ public enum CharacterState
 
 public class CharacterController : MonoBehaviour
 {
+    public int level = 1; // 레벨
     public int HP; // 현재 체력
     public int maxHP; // 최대 체력
     public int MP; // 현재 마나
@@ -77,7 +78,7 @@ public class CharacterController : MonoBehaviour
                 {
                     if (hit.transform.gameObject.CompareTag("Enemy"))
                     {
-                        // 공격 처리
+                        // 몬스터라면 공격 처리
                         enemy = hit.transform.gameObject.GetComponent<Enemy>();
                         state = CharacterState.attack;
                     }
