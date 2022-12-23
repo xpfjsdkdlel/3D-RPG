@@ -15,9 +15,14 @@ public class GameSceneManager : MonoBehaviour
     private Image HPBar;
     private Image MPBar;
     private Image EXPBar;
+    private TextMeshProUGUI HPText;
+    private TextMeshProUGUI MPText;
+    private TextMeshProUGUI EXPText;
     private TextMeshProUGUI levelText;
     [SerializeField]
     private GameObject enemyHPBar;
+    [SerializeField]
+    private GameObject playerUI;
     [SerializeField]
     private Image enemyHP;
     private void Start()
@@ -32,20 +37,26 @@ public class GameSceneManager : MonoBehaviour
         fade.FadeIn();
 
         // UI 불러오기
-        gameUI = GameObject.Find("GameUI").transform.GetChild(1).gameObject;
+        gameUI = GameObject.Find("GameUI").gameObject;
         if (gameUI == null)
             gameUI = Instantiate(Resources.Load<GameObject>("Prefabs/UI/GameUI"));
-        
-        HPBar = gameUI.transform.GetChild(0).GetChild(0).GetComponent<Image>();
-        MPBar = gameUI.transform.GetChild(1).GetChild(0).GetComponent<Image>();
-        EXPBar = gameUI.transform.GetChild(2).GetChild(0).GetComponent<Image>();
-        levelText = gameUI.transform.GetChild(3).GetChild(3).GetComponent<TextMeshProUGUI>();
-        enemyHPBar = GameObject.Find("GameUI").transform.GetChild(0).gameObject;
-        enemyHP = enemyHPBar.transform.GetChild(0).GetComponent<Image>();
-        enemyHPBar.gameObject.SetActive(false);
 
         // 캐릭터 불러오기
         player = GameObject.FindObjectOfType<CharacterController>();
+
+        enemyHPBar = gameUI.transform.GetChild(0).gameObject;
+        enemyHP = enemyHPBar.transform.GetChild(0).GetComponent<Image>();
+        enemyHPBar.gameObject.SetActive(false);
+        
+        playerUI = gameUI.transform.GetChild(1).gameObject;
+        HPBar = playerUI.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+        MPBar = playerUI.transform.GetChild(1).GetChild(0).GetComponent<Image>();
+        EXPBar = playerUI.transform.GetChild(2).GetChild(0).GetComponent<Image>();
+        HPText = playerUI.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>();
+        MPText = playerUI.transform.GetChild(1).GetChild(2).GetComponent<TextMeshProUGUI>();
+        EXPText = playerUI.transform.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>();
+        levelText = playerUI.transform.GetChild(3).GetChild(3).GetComponent<TextMeshProUGUI>();
+        
     }
 
     public void ViewHP(Enemy target)
@@ -60,6 +71,10 @@ public class GameSceneManager : MonoBehaviour
         HPBar.fillAmount = (float)player.HP / (float)player.maxHP;
         MPBar.fillAmount = (float)player.MP / (float)player.maxMP;
         EXPBar.fillAmount = (float)player.EXP / (player.level * 10);
+
+        HPText.text = player.HP.ToString() + " / " + player.maxHP;
+        MPText.text = player.MP.ToString() + " / " + player.maxMP;
+        EXPText.text = player.EXP.ToString() + " / " + player.level * 10;
     }
 
     void Update()
@@ -68,6 +83,6 @@ public class GameSceneManager : MonoBehaviour
             ViewHP(player.enemy);
         else
             enemyHPBar.gameObject.SetActive(false);
-        //refresh();
+        refresh();
     }
 }

@@ -236,10 +236,14 @@ MonoBehaviour:
   EXP: 10
   damage: 10
   armor: 3
-  range: 1.5
+  range: 3
   attackDelay: 3
   speed: 5
+  isDead: 0
+  dis: 0
   state: 0
+  target: {fileID: 0}
+  enemy: {fileID: 0}
 --- !u!195 &8324083686138640017
 NavMeshAgent:
   m_ObjectHideFlags: 0

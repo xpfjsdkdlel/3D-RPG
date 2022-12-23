@@ -8,8 +8,7 @@ public enum CharacterState
     Idle,
     move,
     attack,
-    stun,
-    down,
+    death,
 }
 
 public class CharacterController : MonoBehaviour
@@ -133,7 +132,7 @@ public class CharacterController : MonoBehaviour
                 if (battle && !attackState)
                 {
                     transform.LookAt(enemy.transform.position); // 적을 바라봄
-                    Attack();
+                    AttackAnim();
                 }
             }
             else
@@ -144,22 +143,28 @@ public class CharacterController : MonoBehaviour
             state = CharacterState.Idle;
         }
     }
+    void AttackAnim()
+    {// 공격 애니메이션
+        if (!enemy.isDead)
+        {
+            animator.SetTrigger("attack");
+            animator.SetBool("combo", combo);
+            combo = !combo; // 다음 공격의 애니메이션 변경
+            attackPrevTime = Time.time; // 공격한 시간 갱신
+            attackState = true;
+        }
+    }
 
     void Attack()
     {// 적에게 대미지를 입히는 함수
         if (!enemy.isDead)
         {
-            attackPrevTime = Time.time; // 공격한 시간 갱신
-            attackState = true;
-            animator.SetTrigger("attack");
-            animator.SetBool("combo", combo);
-            combo = !combo; // 다음 공격의 애니메이션 변경
             if(projectile == null)
                 enemy.GetDamage(damage);
         }
     }
 
-    public void ProjectileAttack()
+    void ProjectileAttack()
     {
         projectile.SetActive(true);
         projectile.GetComponent<Projectile>().SetTarget(enemy.transform.position);
@@ -173,16 +178,16 @@ public class CharacterController : MonoBehaviour
             HP -= damage - armor;
         if (HP <= 0)
         {
+            animator.SetTrigger("death");
             isDead = true;
-            this.enabled = false;
+            state = CharacterState.death;
+            moveDir.SetActive(false);
+            MoveStop();
             collider.enabled = false;
             navMesh.enabled = false;
-            animator.SetTrigger("death");
         }
         else
-        {
             animator.SetTrigger("hit");
-        }
     }
 
     void UpdateAttackInfo()
@@ -229,9 +234,7 @@ public class CharacterController : MonoBehaviour
                 moveDir.SetActive(false);
                 AttackState();
                 break;
-            case CharacterState.stun:
-                break;
-            case CharacterState.down:
+            case CharacterState.death:
                 break;
         }
     }
