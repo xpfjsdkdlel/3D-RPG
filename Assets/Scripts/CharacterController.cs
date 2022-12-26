@@ -185,6 +185,7 @@ public class CharacterController : MonoBehaviour
             MoveStop();
             collider.enabled = false;
             navMesh.enabled = false;
+            this.enabled = false;
         }
         else
             animator.SetTrigger("hit");

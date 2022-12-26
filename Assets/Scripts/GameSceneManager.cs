@@ -7,6 +7,13 @@ using TMPro;
 
 public class GameSceneManager : MonoBehaviour
 {
+    public static GameSceneManager instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private Fade fade;
     [SerializeField]
     private CharacterController player;
@@ -25,6 +32,9 @@ public class GameSceneManager : MonoBehaviour
     private GameObject playerUI;
     [SerializeField]
     private Image enemyHP;
+
+    public PoolManager pool;
+
     private void Start()
     {
         // 페이드 불러오기

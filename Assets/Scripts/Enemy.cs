@@ -42,12 +42,12 @@ public class Enemy : MonoBehaviour
     private Rigidbody rigidbody;
     private NavMeshAgent navMesh;
 
-    private void Start()
+    void OnEnable()
     {
         Init();
     }
-
-    public void Init()
+    
+    void Init()
     {
         HP = maxHP;
         MP = maxMP;
@@ -58,6 +58,7 @@ public class Enemy : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         navMesh = GetComponent<NavMeshAgent>();
         navMesh.enabled = true;
+        isDead = false;
     }
 
     void AttackAnim()
@@ -83,7 +84,6 @@ public class Enemy : MonoBehaviour
             HP -= damage - armor;
         if (HP <= 0)
         {
-            this.enabled = false;
             collider.enabled = false;
             navMesh.enabled = false;
             isDead = true;
@@ -136,40 +136,43 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        UpdateTarget(); // 플레이어와의 거리 체크
-        UpdateAttackInfo(); // 공격 쿨타임 체크
-        switch (state)
+        if (!isDead)
         {
-            case MonsterState.Idle:
-                navMesh.ResetPath();
-                navMesh.velocity = Vector3.zero;
-                animator.SetBool("isWalk", false);
-                if (dis < 10)
-                    state = MonsterState.chase;
-                break;
-            case MonsterState.chase:
-                if (!attackState)
-                {
-                    if (dis > 15)
-                        state = MonsterState.Idle;
-                    else if (dis <= range)
+            UpdateTarget(); // 플레이어와의 거리 체크
+            UpdateAttackInfo(); // 공격 쿨타임 체크
+            switch (state)
+            {
+                case MonsterState.Idle:
+                    navMesh.ResetPath();
+                    navMesh.velocity = Vector3.zero;
+                    animator.SetBool("isWalk", false);
+                    if (dis < 10)
+                        state = MonsterState.chase;
+                    break;
+                case MonsterState.chase:
+                    if (!attackState)
                     {
-                        navMesh.ResetPath();
-                        navMesh.velocity = Vector3.zero;
-                        animator.SetBool("isWalk", false);
-                        AttackAnim();
+                        if (dis > 15)
+                            state = MonsterState.Idle;
+                        else if (dis <= range)
+                        {
+                            navMesh.ResetPath();
+                            navMesh.velocity = Vector3.zero;
+                            animator.SetBool("isWalk", false);
+                            AttackAnim();
+                        }
+                        else
+                        {
+                            navMesh.SetDestination(enemy.transform.position);
+                            animator.SetBool("isWalk", true);
+                        }
                     }
-                    else
-                    {
-                        navMesh.SetDestination(enemy.transform.position);
-                        animator.SetBool("isWalk", true);
-                    }
-                }
-                break;
-            case MonsterState.stun:
-                navMesh.ResetPath();
-                navMesh.velocity = Vector3.zero;
-                break;
+                    break;
+                case MonsterState.stun:
+                    navMesh.ResetPath();
+                    navMesh.velocity = Vector3.zero;
+                    break;
+            }
         }
     }
 }
