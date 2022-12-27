@@ -1783,6 +1783,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ea9d1cf505ee7e47bff616d4dee3bc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Warrior
+  level: 1
   HP: 0
   maxHP: 50
   MP: 0

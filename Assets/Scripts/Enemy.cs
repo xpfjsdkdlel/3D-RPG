@@ -84,6 +84,7 @@ public class Enemy : MonoBehaviour
             HP -= damage - armor;
         if (HP <= 0)
         {
+            HP = 0;
             collider.enabled = false;
             navMesh.enabled = false;
             isDead = true;
@@ -161,6 +162,8 @@ public class Enemy : MonoBehaviour
                             animator.SetBool("isWalk", false);
                             AttackAnim();
                         }
+                        else if (enemy.isDead)
+                            state = MonsterState.Idle;
                         else
                         {
                             navMesh.SetDestination(enemy.transform.position);

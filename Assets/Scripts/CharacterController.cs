@@ -13,6 +13,7 @@ public enum CharacterState
 
 public class CharacterController : MonoBehaviour
 {
+    public string name; // 이름
     public int level = 1; // 레벨
     public int HP; // 현재 체력
     public int maxHP; // 최대 체력
@@ -30,6 +31,7 @@ public class CharacterController : MonoBehaviour
 
     private bool isControll = true; // 제어가 가능한 상태
     private bool battle = false; // 전투 상태
+    private bool invincible = false; // 무적 상태
     private float attackPrevTime = 0f; // 마지막으로 공격한 시간
     private float attackTime = 0f; // 공격 후 흐른 시간
     private bool attackState = false; // false면 공격이 가능한 상태
@@ -40,13 +42,14 @@ public class CharacterController : MonoBehaviour
     private Collider collider;
     private NavMeshAgent navMesh;
 
+    private RaycastHit hit; // 이동 할 장소
     [SerializeField]
     private GameObject moveDir; // 이동 할 위치 표시
 
     [SerializeField]
     private CharacterState state = new CharacterState();
 
-    private RaycastHit hit; // 이동 할 장소
+    GameSceneManager sceneManager;
 
     void Start()
     {
@@ -57,6 +60,7 @@ public class CharacterController : MonoBehaviour
         state = CharacterState.Idle;
         navMesh = GetComponent<NavMeshAgent>();
         navMesh.speed = speed;
+        sceneManager = GameObject.FindObjectOfType<GameSceneManager>();
     }
     
     void GetInput()
@@ -178,17 +182,16 @@ public class CharacterController : MonoBehaviour
             HP -= damage - armor;
         if (HP <= 0)
         {
+            HP = 0;
             animator.SetTrigger("death");
             isDead = true;
             state = CharacterState.death;
             moveDir.SetActive(false);
             MoveStop();
-            collider.enabled = false;
-            navMesh.enabled = false;
-            this.enabled = false;
         }
         else
             animator.SetTrigger("hit");
+        sceneManager.refresh();
     }
 
     void UpdateAttackInfo()
@@ -224,16 +227,19 @@ public class CharacterController : MonoBehaviour
                 enemy = null;
                 moveDir.SetActive(false);
                 MoveStop();
+                sceneManager.CloseHP();
                 break;
             case CharacterState.move:
                 enemy = null;
                 moveDir.SetActive(true);
                 moveDir.transform.position = hit.point + new Vector3(0, 0.1f, 0);
                 MoveState(hit.point);
+                sceneManager.CloseHP();
                 break;
             case CharacterState.attack:
                 moveDir.SetActive(false);
                 AttackState();
+                sceneManager.ViewHP(enemy);
                 break;
             case CharacterState.death:
                 break;

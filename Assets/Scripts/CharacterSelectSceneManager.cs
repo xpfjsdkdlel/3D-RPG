@@ -13,6 +13,8 @@ public class CharacterSelectSceneManager : MonoBehaviour
     [SerializeField]
     private GameObject inputField;
     [SerializeField]
+    private TextMeshProUGUI nameText;
+    [SerializeField]
     private GameObject classImg; // 직업 이미지
     private SelectedCharacter sc;
 
@@ -30,8 +32,8 @@ public class CharacterSelectSceneManager : MonoBehaviour
     void LoadGameScene()
     {
         // 게임매니저에 정보 넘기기
-        // sc.number
-        // sc.name
+        GameManager.Instance.number = sc.number;
+        GameManager.Instance.name = nameText.text;
         SceneManager.LoadSceneAsync("TestScene");
     }
 
@@ -65,9 +67,7 @@ public class CharacterSelectSceneManager : MonoBehaviour
                     sc = selectCharacter.GetComponent<SelectedCharacter>();
                     classImg.transform.GetChild(sc.number).gameObject.SetActive(true); // 선택한 캐릭터의 직업이미지를 켬
                     if(selectCharacter.TryGetComponent<Animator>(out animator))
-                    {
                         animator.SetBool("isSelected", true); // 선택된 캐릭터를 준비 자세로 변경
-                    }
                 }
             }
         }

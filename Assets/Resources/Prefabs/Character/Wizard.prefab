@@ -1334,6 +1334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ea9d1cf505ee7e47bff616d4dee3bc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Wizard
   level: 1
   HP: 0
   maxHP: 30
@@ -1346,9 +1347,9 @@ MonoBehaviour:
   attackDelay: 2
   speed: 3
   isDead: 0
-  projectile: {fileID: 7100574032568188612, guid: 3d82abd0d8e77d64496deb1083a69edd, type: 3}
+  projectile: {fileID: 5451344914362434469}
   enemy: {fileID: 0}
-  moveDir: {fileID: 0}
+  moveDir: {fileID: 5669815460725765027}
   state: 0
 --- !u!195 &1234317241000667794
 NavMeshAgent:
@@ -2722,6 +2723,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7100574032567731870, guid: 3d82abd0d8e77d64496deb1083a69edd, type: 3}
   m_PrefabInstance: {fileID: 2967132352228261217}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5451344914362434469 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7100574032568188612, guid: 3d82abd0d8e77d64496deb1083a69edd, type: 3}
+  m_PrefabInstance: {fileID: 2967132352228261217}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5669815460725636521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2815,6 +2821,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4725522f97d98e4d93f5c2ae4c1ba2a, type: 3}
+--- !u!1 &5669815460725765027 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 134666, guid: d4725522f97d98e4d93f5c2ae4c1ba2a, type: 3}
+  m_PrefabInstance: {fileID: 5669815460725636521}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5669815460726046631 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 410126, guid: d4725522f97d98e4d93f5c2ae4c1ba2a, type: 3}

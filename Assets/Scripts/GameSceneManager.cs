@@ -7,11 +7,30 @@ using TMPro;
 
 public class GameSceneManager : MonoBehaviour
 {
-    public static GameSceneManager instance;
-
     private void Awake()
     {
-        instance = this;
+        switch (GameManager.Instance.number)
+        {
+            case 0:
+                player = Instantiate(Resources.Load<GameObject>("Prefabs/Character/Archer")).GetComponent<CharacterController>();
+                break;
+            case 1:
+                player = Instantiate(Resources.Load<GameObject>("Prefabs/Character/Warrior")).GetComponent<CharacterController>();
+                break;
+            case 2:
+                player = Instantiate(Resources.Load<GameObject>("Prefabs/Character/Wizard")).GetComponent<CharacterController>();
+                break;
+            default:
+                break;
+        }
+        player.name = GameManager.Instance.name;
+        player.level = GameManager.Instance.level;
+        player.HP = GameManager.Instance.HP;
+        player.maxHP = GameManager.Instance.maxHP;
+        player.MP = GameManager.Instance.MP;
+        player.maxMP = GameManager.Instance.maxMP;
+        player.EXP = GameManager.Instance.EXP;
+        refresh();
     }
 
     private Fade fade;
@@ -19,21 +38,25 @@ public class GameSceneManager : MonoBehaviour
     private CharacterController player;
     [SerializeField]
     private GameObject gameUI;
+    [SerializeField]
     private Image HPBar;
+    [SerializeField]
     private Image MPBar;
+    [SerializeField]
     private Image EXPBar;
+    [SerializeField]
     private TextMeshProUGUI HPText;
+    [SerializeField]
     private TextMeshProUGUI MPText;
+    [SerializeField]
     private TextMeshProUGUI EXPText;
+    [SerializeField]
     private TextMeshProUGUI levelText;
     [SerializeField]
     private GameObject enemyHPBar;
     [SerializeField]
-    private GameObject playerUI;
-    [SerializeField]
     private Image enemyHP;
-
-    public PoolManager pool;
+    private Vector3 startPos; // 시작 위치
 
     private void Start()
     {
@@ -45,28 +68,6 @@ public class GameSceneManager : MonoBehaviour
             fade.Init();
         }
         fade.FadeIn();
-
-        // UI 불러오기
-        gameUI = GameObject.Find("GameUI").gameObject;
-        if (gameUI == null)
-            gameUI = Instantiate(Resources.Load<GameObject>("Prefabs/UI/GameUI"));
-
-        // 캐릭터 불러오기
-        player = GameObject.FindObjectOfType<CharacterController>();
-
-        enemyHPBar = gameUI.transform.GetChild(0).gameObject;
-        enemyHP = enemyHPBar.transform.GetChild(0).GetComponent<Image>();
-        enemyHPBar.gameObject.SetActive(false);
-        
-        playerUI = gameUI.transform.GetChild(1).gameObject;
-        HPBar = playerUI.transform.GetChild(0).GetChild(0).GetComponent<Image>();
-        MPBar = playerUI.transform.GetChild(1).GetChild(0).GetComponent<Image>();
-        EXPBar = playerUI.transform.GetChild(2).GetChild(0).GetComponent<Image>();
-        HPText = playerUI.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>();
-        MPText = playerUI.transform.GetChild(1).GetChild(2).GetComponent<TextMeshProUGUI>();
-        EXPText = playerUI.transform.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>();
-        levelText = playerUI.transform.GetChild(3).GetChild(3).GetComponent<TextMeshProUGUI>();
-        
     }
 
     public void ViewHP(Enemy target)
@@ -76,7 +77,12 @@ public class GameSceneManager : MonoBehaviour
         enemyHPBar.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = target.name;
     }
 
-    void refresh()
+    public void CloseHP()
+    {
+        enemyHPBar.gameObject.SetActive(false);
+    }
+
+    public void refresh()
     {
         HPBar.fillAmount = (float)player.HP / (float)player.maxHP;
         MPBar.fillAmount = (float)player.MP / (float)player.maxMP;
@@ -89,10 +95,6 @@ public class GameSceneManager : MonoBehaviour
 
     void Update()
     {    
-        if(player.enemy != null)
-            ViewHP(player.enemy);
-        else
-            enemyHPBar.gameObject.SetActive(false);
-        refresh();
+
     }
 }

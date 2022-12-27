@@ -26,4 +26,13 @@ public class TitleSceneManager : MonoBehaviour
         fade.FadeOut();
         Invoke("Load" + SceneName, 2f);
     }
+
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 }

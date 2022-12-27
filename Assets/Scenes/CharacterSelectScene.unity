@@ -3633,6 +3633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputField: {fileID: 1145035413}
+  nameText: {fileID: 264469092}
   classImg: {fileID: 93457506}
 --- !u!1001 &1263157961
 PrefabInstance:
