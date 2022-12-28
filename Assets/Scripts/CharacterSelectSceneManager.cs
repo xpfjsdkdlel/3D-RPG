@@ -34,7 +34,7 @@ public class CharacterSelectSceneManager : MonoBehaviour
         // 게임매니저에 정보 넘기기
         GameManager.Instance.number = sc.number;
         GameManager.Instance.name = nameText.text;
-        SceneManager.LoadSceneAsync("TestScene");
+        SceneManager.LoadSceneAsync("GameScene");
     }
 
     void LoadExit()

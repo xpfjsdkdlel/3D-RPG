@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public int MP = 20; // 현재 마나
     public int maxMP = 20; // 최대 마나
     public int EXP = 0; // 경험치
+    public int Gold = 0; // 골드
 
     void Awake()
     {

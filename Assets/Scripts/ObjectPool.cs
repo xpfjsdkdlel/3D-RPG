@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviour
+public class ObjectPoolManager : MonoBehaviour
 {
-    
-    void Start()
+    private static ObjectPoolManager instance;
+    public static ObjectPoolManager Instance
     {
-        
+        get => instance;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        if (instance)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
     }
 }

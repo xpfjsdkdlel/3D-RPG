@@ -7,18 +7,20 @@ using TMPro;
 
 public class GameSceneManager : MonoBehaviour
 {
+    [SerializeField]
+    private Transform startPos; // 시작 위치
     private void Awake()
     {
         switch (GameManager.Instance.number)
         {
             case 0:
-                player = Instantiate(Resources.Load<GameObject>("Prefabs/Character/Archer")).GetComponent<CharacterController>();
+                player = Instantiate(Resources.Load<GameObject>("Prefabs/Character/Archer"), startPos.position,Quaternion.identity).GetComponent<CharacterController>();
                 break;
             case 1:
-                player = Instantiate(Resources.Load<GameObject>("Prefabs/Character/Warrior")).GetComponent<CharacterController>();
+                player = Instantiate(Resources.Load<GameObject>("Prefabs/Character/Warrior"), startPos.position, Quaternion.identity).GetComponent<CharacterController>();
                 break;
             case 2:
-                player = Instantiate(Resources.Load<GameObject>("Prefabs/Character/Wizard")).GetComponent<CharacterController>();
+                player = Instantiate(Resources.Load<GameObject>("Prefabs/Character/Wizard"), startPos.position, Quaternion.identity).GetComponent<CharacterController>();
                 break;
             default:
                 break;
@@ -56,7 +58,8 @@ public class GameSceneManager : MonoBehaviour
     private GameObject enemyHPBar;
     [SerializeField]
     private Image enemyHP;
-    private Vector3 startPos; // 시작 위치
+    [SerializeField]
+    private AudioClip BGM; // 배경 음악
 
     private void Start()
     {
@@ -68,6 +71,7 @@ public class GameSceneManager : MonoBehaviour
             fade.Init();
         }
         fade.FadeIn();
+        AudioManager.Instance.PlayBGM(BGM);
     }
 
     public void ViewHP(Enemy target)
@@ -91,10 +95,6 @@ public class GameSceneManager : MonoBehaviour
         HPText.text = player.HP.ToString() + " / " + player.maxHP;
         MPText.text = player.MP.ToString() + " / " + player.maxMP;
         EXPText.text = player.EXP.ToString() + " / " + player.level * 10;
-    }
-
-    void Update()
-    {    
-
+        levelText.text = GameManager.Instance.level.ToString();
     }
 }
