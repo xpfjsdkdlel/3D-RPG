@@ -11,6 +11,11 @@ public class AudioManager : MonoBehaviour
     }
 
     AudioSource audioSource;
+    [SerializeField]
+    private GameObject sfx;
+    [SerializeField]
+    private int count = 10;
+    private int cursor = 0;
 
     void Awake()
     {
@@ -24,6 +29,10 @@ public class AudioManager : MonoBehaviour
             Destroy(this.gameObject);
         }
         audioSource = GetComponent<AudioSource>();
+        for(int i = 0; i < count; i++)
+        {
+            Instantiate(sfx).transform.parent = transform;
+        }
     }
 
     public void PlayBGM(AudioClip clip)
@@ -37,8 +46,19 @@ public class AudioManager : MonoBehaviour
         audioSource.Stop();
     }
 
-    public void SetVolume(float volume)
+    public void PlaySFX(AudioClip clip)
     {
-        audioSource.volume = volume;
+        transform.GetChild(cursor).GetComponent<AudioSource>().clip = clip;
+        transform.GetChild(cursor).GetComponent<AudioSource>().Play();
+        cursor++;
+        if (cursor >= transform.childCount)
+            cursor = 0;
+    }
+
+    public void SetVolume(float BGMVolume, float SFXVolume)
+    {
+        audioSource.volume = BGMVolume;
+        for (int i = 0; i < transform.childCount; i++)
+            transform.GetChild(i).GetComponent<AudioSource>().volume = SFXVolume;
     }
 }

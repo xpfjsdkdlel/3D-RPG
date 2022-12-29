@@ -9,7 +9,6 @@ public class CharacterSelectSceneManager : MonoBehaviour
 {
     private GameObject selectCharacter = null;
     private Animator animator;
-    private Fade fade;
     [SerializeField]
     private GameObject inputField;
     [SerializeField]
@@ -20,13 +19,7 @@ public class CharacterSelectSceneManager : MonoBehaviour
 
     private void Start()
     {
-        fade = GameObject.FindObjectOfType<Fade>();
-        if (fade == null)
-        {
-            fade = Instantiate(Resources.Load<Fade>("Prefabs/UI/Fade"));
-            fade.Init();
-        }
-        fade.FadeIn();
+        GameManager.Instance.fade.FadeIn();
     }
 
     void LoadGameScene()
@@ -34,7 +27,7 @@ public class CharacterSelectSceneManager : MonoBehaviour
         // 게임매니저에 정보 넘기기
         GameManager.Instance.number = sc.number;
         GameManager.Instance.name = nameText.text;
-        SceneManager.LoadSceneAsync("GameScene");
+        GameManager.Instance.LoadScene("GameScene");
     }
 
     void LoadExit()
@@ -44,7 +37,7 @@ public class CharacterSelectSceneManager : MonoBehaviour
 
     public void LoadScene(string SceneName)
     {
-        fade.FadeOut();
+        GameManager.Instance.fade.FadeOut();
         Invoke("Load" + SceneName, 2f);
     }
 

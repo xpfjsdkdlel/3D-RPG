@@ -32,13 +32,13 @@ public class TitleSceneManager : MonoBehaviour
     }
     void LoadCharacterSelectScene()
     {
-        SceneManager.LoadScene("CharacterSelectScene");
+        GameManager.Instance.LoadScene("CharacterSelectScene");
     }
 
-    public void LoadMainScene(string SceneName)
+    public void GameStart()
     {// 게임시작 버튼을 눌렀을 때 신을 전환
         fade.FadeOut();
-        Invoke("Load" + SceneName, 2f);
+        Invoke("LoadCharacterSelectScene", 2f);
     }
 
     public void Setting(bool open)
@@ -49,8 +49,7 @@ public class TitleSceneManager : MonoBehaviour
 
     public void SetVolume()
     {
-        AudioManager.Instance.SetVolume(sliderBGM.value);
-        //AudioManager.Instance.SetVolume(sliderSFX.value);
+        AudioManager.Instance.SetVolume(sliderBGM.value, sliderSFX.value);
     }
 
     public void ExitGame()

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class GameManager : MonoBehaviour
     {
         get => instance;
     }
+
+    public string nextScene;
 
     public int number = 0; // 클래스
     public string name;
@@ -19,6 +22,8 @@ public class GameManager : MonoBehaviour
     public int maxMP = 20; // 최대 마나
     public int EXP = 0; // 경험치
     public int Gold = 0; // 골드
+
+    public Fade fade;
 
     void Awake()
     {
@@ -31,5 +36,18 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+        fade = GameObject.FindObjectOfType<Fade>();
+        if (fade == null)
+        {
+            fade = Instantiate(Resources.Load<Fade>("Prefabs/UI/Fade"));
+            fade.Init();
+        }
+        fade.FadeIn();
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        nextScene = sceneName;
+        SceneManager.LoadSceneAsync("LoadingScene");
     }
 }

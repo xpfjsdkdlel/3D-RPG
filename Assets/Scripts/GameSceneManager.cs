@@ -35,7 +35,6 @@ public class GameSceneManager : MonoBehaviour
         refresh();
     }
 
-    private Fade fade;
     [SerializeField]
     private CharacterController player;
     [SerializeField]
@@ -64,13 +63,7 @@ public class GameSceneManager : MonoBehaviour
     private void Start()
     {
         // 페이드 불러오기
-        fade = GameObject.FindObjectOfType<Fade>();
-        if (fade == null)
-        {
-            fade = Instantiate(Resources.Load<Fade>("Prefabs/UI/Fade"));
-            fade.Init();
-        }
-        fade.FadeIn();
+        GameManager.Instance.fade.FadeIn();
         AudioManager.Instance.PlayBGM(BGM);
     }
 
