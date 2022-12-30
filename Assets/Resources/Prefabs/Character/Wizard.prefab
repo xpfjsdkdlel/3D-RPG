@@ -1343,7 +1343,7 @@ MonoBehaviour:
   EXP: 0
   damage: 10
   armor: 1
-  range: 4
+  range: 5
   attackDelay: 2
   speed: 3
   isDead: 0

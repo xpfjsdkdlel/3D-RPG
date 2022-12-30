@@ -33,10 +33,15 @@ public class GameSceneManager : MonoBehaviour
         player.maxMP = GameManager.Instance.maxMP;
         player.EXP = GameManager.Instance.EXP;
         refresh();
+        cam = Camera.main;
+        playerName.transform.GetComponent<TextMeshProUGUI>().text = player.name;
     }
+    private Camera cam = null;
 
     [SerializeField]
     private CharacterController player;
+    [SerializeField]
+    private GameObject playerName;
     [SerializeField]
     private GameObject gameUI;
     [SerializeField]
@@ -89,5 +94,10 @@ public class GameSceneManager : MonoBehaviour
         MPText.text = player.MP.ToString() + " / " + player.maxMP;
         EXPText.text = player.EXP.ToString() + " / " + player.level * 10;
         levelText.text = GameManager.Instance.level.ToString();
+    }
+
+    void Update()
+    {
+        playerName.transform.position = cam.WorldToScreenPoint(player.transform.position + new Vector3(0, 2f, 0));
     }
 }

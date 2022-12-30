@@ -43,6 +43,7 @@ public class CharacterController : MonoBehaviour
     private NavMeshAgent navMesh;
 
     private RaycastHit hit; // 이동 할 장소
+    private int layerMask;
     [SerializeField]
     private GameObject moveDir; // 이동 할 위치 표시
 
@@ -61,6 +62,7 @@ public class CharacterController : MonoBehaviour
         navMesh = GetComponent<NavMeshAgent>();
         navMesh.speed = speed;
         sceneManager = GameObject.FindObjectOfType<GameSceneManager>();
+        layerMask = (-1) - (1 << LayerMask.NameToLayer("Spawner"));
     }
     
     void GetInput()
@@ -77,7 +79,7 @@ public class CharacterController : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 // 화면을 우클릭 했을 때
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit,Mathf.Infinity,layerMask))
                 {
                     if (hit.transform.gameObject.CompareTag("Enemy"))
                     {
