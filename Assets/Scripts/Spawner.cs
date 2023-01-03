@@ -35,6 +35,7 @@ public class Spawner : MonoBehaviour
                 select = transform.GetChild(i).gameObject;
                 select.SetActive(true);
                 select.transform.position = transform.position + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2));
+                select.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
                 break;
             }
         }
