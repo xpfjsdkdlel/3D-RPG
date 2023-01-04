@@ -27,7 +27,8 @@ public class TitleSceneManager : MonoBehaviour
             fade.Init();
         }
         fade.FadeIn();
-        SetVolume();
+        SetBGMVolume();
+        SetSFXVolume();
         AudioManager.Instance.PlayBGM(BGM);
     }
     void LoadCharacterSelectScene()
@@ -47,9 +48,14 @@ public class TitleSceneManager : MonoBehaviour
         buttonGroup.SetActive(!open);
     }
 
-    public void SetVolume()
+    public void SetBGMVolume()
     {
-        AudioManager.Instance.SetVolume(sliderBGM.value, sliderSFX.value);
+        AudioManager.Instance.SetBGMVolume(sliderBGM.value);
+    }
+
+    public void SetSFXVolume()
+    {
+        AudioManager.Instance.SetSFXVolume(sliderSFX.value);
     }
 
     public void ExitGame()

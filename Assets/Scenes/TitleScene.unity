@@ -253,7 +253,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 535185567}
         m_TargetAssemblyTypeName: TitleSceneManager, Assembly-CSharp
-        m_MethodName: SetVolume
+        m_MethodName: SetSFXVolume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -712,7 +712,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 535185567}
         m_TargetAssemblyTypeName: TitleSceneManager, Assembly-CSharp
-        m_MethodName: SetVolume
+        m_MethodName: SetBGMVolume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1642,6 +1642,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sfx: {fileID: 8417534460760204272, guid: 2adf4baa27741cb4b994e120e880c61d, type: 3}
   count: 10
+  BGMVolume: 1
+  SFXVolume: 1
 --- !u!4 &833383950
 Transform:
   m_ObjectHideFlags: 0
@@ -2871,6 +2873,7 @@ MonoBehaviour:
   maxMP: 20
   EXP: 0
   Gold: 0
+  fade: {fileID: 0}
 --- !u!4 &1590521345
 Transform:
   m_ObjectHideFlags: 0
