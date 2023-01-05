@@ -6,14 +6,22 @@ public class CameraMove : MonoBehaviour
 {
     public Transform target;
     public Vector3 offset;
-    Vector2 m_Input;
+    private Transform cam;
+
     private void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player").transform;
+        cam = transform.GetChild(0);
     }
     void Update()
     {
         if(target != null)
-            transform.position = target.position + offset;
+        {
+            cam.transform.position = target.position + offset;
+            if (Input.GetMouseButton(0))
+            {
+
+            }
+        }
     }
 }

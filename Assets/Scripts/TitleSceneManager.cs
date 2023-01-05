@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class TitleSceneManager : MonoBehaviour
 {
-    private Fade fade;
     [SerializeField]
     private GameObject buttonGroup;
     [SerializeField]
@@ -20,16 +19,10 @@ public class TitleSceneManager : MonoBehaviour
 
     private void Start()
     {
-        fade = GameObject.FindObjectOfType<Fade>();
-        if (fade == null)
-        {
-            fade = Instantiate(Resources.Load<Fade>("Prefabs/UI/Fade"));
-            fade.Init();
-        }
-        fade.FadeIn();
         SetBGMVolume();
         SetSFXVolume();
         AudioManager.Instance.PlayBGM(BGM);
+        GameManager.Instance.fade.FadeIn();
     }
     void LoadCharacterSelectScene()
     {
@@ -38,7 +31,7 @@ public class TitleSceneManager : MonoBehaviour
 
     public void GameStart()
     {// 게임시작 버튼을 눌렀을 때 신을 전환
-        fade.FadeOut();
+        GameManager.Instance.fade.FadeOut();
         Invoke("LoadCharacterSelectScene", 2f);
     }
 

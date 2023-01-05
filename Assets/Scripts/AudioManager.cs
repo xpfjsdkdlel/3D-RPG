@@ -29,9 +29,10 @@ public class AudioManager : MonoBehaviour
         else
         {
             Destroy(this.gameObject);
+            return;
         }
         audioSource = GetComponent<AudioSource>();
-        for(int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
             Instantiate(sfx).transform.parent = transform;
         }
