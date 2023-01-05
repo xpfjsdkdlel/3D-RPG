@@ -904,7 +904,7 @@ MonoBehaviour:
   setting: {fileID: 1618090102}
   sliderBGM: {fileID: 476310206}
   sliderSFX: {fileID: 122839940}
-  BGM: {fileID: 8300000, guid: 6321d58ddf03fd24fa4da3e68c0cb1fb, type: 3}
+  BGM: {fileID: 8300000, guid: 7b3e5e58ac7e2964882493b8e7200577, type: 3}
 --- !u!1 &628577443
 GameObject:
   m_ObjectHideFlags: 0
@@ -2872,7 +2872,7 @@ MonoBehaviour:
   MP: 20
   maxMP: 20
   EXP: 0
-  Gold: 0
+  gold: 0
   fade: {fileID: 0}
 --- !u!4 &1590521345
 Transform:

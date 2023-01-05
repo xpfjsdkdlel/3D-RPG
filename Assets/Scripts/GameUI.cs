@@ -7,7 +7,6 @@ public class GameUI : MonoBehaviour
 {
     public GameObject inventory;
 
-    public Slot[] slots;
     public Transform slotHolder;
     public GameObject menu;
     [SerializeField]
@@ -19,7 +18,6 @@ public class GameUI : MonoBehaviour
 
     private void Start()
     {
-        slots = slotHolder.GetComponentsInChildren<Slot>();
         sliderBGM.value = AudioManager.Instance.BGMVolume;
         sliderSFX.value = AudioManager.Instance.SFXVolume;
         inventory.SetActive(invenActive);
