@@ -42,9 +42,11 @@ public class Enemy : MonoBehaviour
     private Rigidbody rigidbody;
     private NavMeshAgent navMesh;
 
+    private GameSceneManager sceneManager;
     void OnEnable()
     {
         Init();
+        sceneManager = GameObject.FindObjectOfType<GameSceneManager>();
     }
     
     void Init()
@@ -91,6 +93,7 @@ public class Enemy : MonoBehaviour
             animator.SetTrigger("death");
             Invoke("Delete", 5f);
             // 경험치 주는 코드
+            sceneManager.player.GetEXP(EXP);
         }
         else
             animator.SetTrigger("hit");

@@ -50,7 +50,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField]
     private CharacterState state = new CharacterState();
 
-    GameSceneManager sceneManager;
+    private GameSceneManager sceneManager;
 
     void Start()
     {
@@ -193,7 +193,7 @@ public class CharacterController : MonoBehaviour
         }
         else
             animator.SetTrigger("hit");
-        sceneManager.refresh();
+        sceneManager.Refresh();
     }
 
     void UpdateAttackInfo()
@@ -217,6 +217,18 @@ public class CharacterController : MonoBehaviour
             state = CharacterState.Idle;
         else if (moveDir.x == transform.position.x && moveDir.z == transform.position.z)
             state = CharacterState.Idle;
+    }
+
+    public void GetEXP(int EXP)
+    {
+        if(this.EXP + EXP > level * 10)
+        {// ·¹º§¾÷
+            this.EXP = (this.EXP + EXP) - (level * 10); 
+            ++level;
+        }
+        else
+            this.EXP += EXP;
+        sceneManager.Refresh();
     }
 
     void Update()

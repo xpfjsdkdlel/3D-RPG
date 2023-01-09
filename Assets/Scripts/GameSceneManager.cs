@@ -32,14 +32,13 @@ public class GameSceneManager : MonoBehaviour
         player.MP = GameManager.Instance.MP;
         player.maxMP = GameManager.Instance.maxMP;
         player.EXP = GameManager.Instance.EXP;
-        refresh();
+        Refresh();
         cam = Camera.main;
         playerName.transform.GetComponent<TextMeshProUGUI>().text = player.name;
     }
     private Camera cam = null;
 
-    [SerializeField]
-    private CharacterController player;
+    public CharacterController player;
     [SerializeField]
     private GameObject playerName;
     [SerializeField]
@@ -84,7 +83,7 @@ public class GameSceneManager : MonoBehaviour
         enemyHPBar.gameObject.SetActive(false);
     }
 
-    public void refresh()
+    public void Refresh()
     {
         HPBar.fillAmount = (float)player.HP / (float)player.maxHP;
         MPBar.fillAmount = (float)player.MP / (float)player.maxMP;

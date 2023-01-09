@@ -15,7 +15,6 @@ public class PlayerData
     public int EXP; // 경험치
     public int gold; // 골드
     public Inventory inventory = new Inventory(); // 아이템
-
 }
 
 public class GameManager : MonoBehaviour

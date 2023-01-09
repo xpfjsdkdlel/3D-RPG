@@ -2,50 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class InventoryItemData
+public class Inventory : MonoBehaviour
 {
-    public int uid; // 아이템의 고유 ID
-    public int itemID; // 아이템의 테이블을 참조하기 위한 ID
-    public int amount; // 겹치는 갯수
-}
-
-[System.Serializable]
-public class Inventory
-{
-    private int maxSlotCount = 15;
-    public int MAXSLOTCOUNT { get => maxSlotCount; }
-    private int curSlotCount;
-    public int CURSLOTCOUNT 
-    {
-        get => curSlotCount;
-        set => curSlotCount = value;
-    }
     [SerializeField]
-    private List<InventoryItemData> items = new List<InventoryItemData>();
+    private GameObject slotPrefab;
+    private int maxCount = 15;
+    private int index;
 
-    public void AddItem(InventoryItemData newItem)
+    private List<Slot> slots = new List<Slot>();
+
+    private void Awake()
     {
-        int index = FindItemIndex(newItem);
-    }
-
-    public bool IsFull()
-    {
-        return curSlotCount >= maxSlotCount;
-    }
-
-    private int FindItemIndex(InventoryItemData newItem)
-    {
-        int result = -1;
-
-        for(int i = items.Count - 1; i >= 0; i--)
+        for(int i = 0; i < maxCount; i++)
         {
-            if(items[i].uid == newItem.uid)
-            {
-                result = i;
-                break;
-            }
+            GameObject obj = Instantiate(slotPrefab);
+            obj.transform.parent = transform;
+            slots.Add(obj.GetComponent<Slot>());
         }
-        return result;
+    }
+
+    public void GetItem()
+    {
+
     }
 }
