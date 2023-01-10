@@ -32,6 +32,7 @@ public class GameSceneManager : MonoBehaviour
         player.MP = GameManager.Instance.MP;
         player.maxMP = GameManager.Instance.maxMP;
         player.EXP = GameManager.Instance.EXP;
+        player.gold = GameManager.Instance.gold;
         Refresh();
         cam = Camera.main;
         playerName.transform.GetComponent<TextMeshProUGUI>().text = player.name;
@@ -61,6 +62,10 @@ public class GameSceneManager : MonoBehaviour
     private GameObject enemyHPBar;
     [SerializeField]
     private Image enemyHP;
+    [SerializeField]
+    private GameObject levelUpUI; // 레벨업 시 출력할 UI
+    [SerializeField]
+    private GameObject confrim; // 종료 버튼 클릭 시 출력할 UI
     [SerializeField]
     private AudioClip BGM; // 배경 음악
 
@@ -92,7 +97,53 @@ public class GameSceneManager : MonoBehaviour
         HPText.text = player.HP.ToString() + " / " + player.maxHP;
         MPText.text = player.MP.ToString() + " / " + player.maxMP;
         EXPText.text = player.EXP.ToString() + " / " + player.level * 10;
-        levelText.text = GameManager.Instance.level.ToString();
+        levelText.text = player.level.ToString();
+    }
+
+    public void ShowConfrim()
+    {
+        confrim.SetActive(true);
+    }
+
+    public void CloseConfrim()
+    {
+        confrim.SetActive(false);
+    }
+
+    public void ExitGame()
+    {
+        GameManager.Instance.fade.FadeOut();
+        Invoke("EndGame", 2f);
+    }
+
+    void EndGame()
+    {
+        GameManager.Instance.LoadScene("TitleScene");
+    }
+
+    public void SavePlayerData()
+    {
+        GameManager.Instance.name = player.name;
+        GameManager.Instance.level = player.level;
+        GameManager.Instance.HP = player.HP;
+        GameManager.Instance.maxHP = player.maxHP;
+        GameManager.Instance.MP = player.MP;
+        GameManager.Instance.maxMP = player.maxMP;
+        GameManager.Instance.EXP = player.EXP;
+        GameManager.Instance.gold = player.gold;
+    }
+
+    public void LevelUp()
+    {
+        levelUpUI.SetActive(true);
+        levelUpUI.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = player.level.ToString();
+        levelUpUI.GetComponent<Animation>().Play();
+        Invoke("DisableLevel", 6f);
+    }
+
+    void DisableLevel()
+    {
+        levelUpUI.SetActive(false);
     }
 
     void Update()

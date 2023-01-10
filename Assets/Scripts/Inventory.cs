@@ -19,6 +19,10 @@ public class Inventory : MonoBehaviour
             obj.transform.parent = transform;
             slots.Add(obj.GetComponent<Slot>());
         }
+        for(int i = 0; i < slots.Count; i++)
+        {
+            slots[i].Refresh();
+        }
     }
 
     public void GetItem()

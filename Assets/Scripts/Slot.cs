@@ -38,11 +38,6 @@ public class Slot : MonoBehaviour
         Refresh();
     }
 
-    public void UseItem()
-    {
-
-    }
-
     public void DeleteItem()
     {
         --count;

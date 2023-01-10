@@ -20,6 +20,7 @@ public class CharacterController : MonoBehaviour
     public int MP; // 현재 마나
     public int maxMP; // 최대 마나
     public int EXP; // 경험치
+    public int gold; // 돈
     public int damage; // 공격력
     public int armor; // 방어력
     public float range; // 사정거리
@@ -172,6 +173,7 @@ public class CharacterController : MonoBehaviour
 
     void ProjectileAttack()
     {
+        projectile.transform.parent = null;
         projectile.SetActive(true);
         projectile.GetComponent<Projectile>().SetTarget(enemy.transform.position);
     }
@@ -221,10 +223,11 @@ public class CharacterController : MonoBehaviour
 
     public void GetEXP(int EXP)
     {
-        if(this.EXP + EXP > level * 10)
+        if(this.EXP + EXP >= level * 10)
         {// 레벨업
             this.EXP = (this.EXP + EXP) - (level * 10); 
             ++level;
+            sceneManager.LevelUp();
         }
         else
             this.EXP += EXP;
