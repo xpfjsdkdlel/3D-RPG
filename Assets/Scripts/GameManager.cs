@@ -13,7 +13,7 @@ public class PlayerData
     public int MP; // 현재 마나
     public int maxMP; // 최대 마나
     public int EXP; // 경험치
-    public int gold; // 골드
+    public int gold; // 돈
     public Inventory inventory = new Inventory(); // 아이템
 }
 
@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
     public int EXP = 0; // 경험치
     public int gold = 0; // 돈
 
-
     public Fade fade;
 
     void Awake()
@@ -59,6 +58,29 @@ public class GameManager : MonoBehaviour
             fade.Init();
         }
         fade.FadeIn();
+    }
+
+    public void ResetData()
+    {
+        number = 0;
+        name = "player";
+        level = 1;
+        HP = 50;
+        maxHP = 50;
+        MP = 20;
+        maxMP = 20;
+        EXP = 0;
+        gold = 0;
+    }
+
+    public void SaveData()
+    {
+
+    }
+
+    public void LoadData()
+    {
+
     }
 
     public void LoadScene(string sceneName)

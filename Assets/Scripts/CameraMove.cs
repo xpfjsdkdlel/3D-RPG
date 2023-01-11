@@ -16,29 +16,33 @@ public class CameraMove : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player").transform;
         cam = transform.GetChild(0);
         offset = new Vector3(0, 10, -10);
+        cam.transform.localPosition = offset;
     }
 
     void Update()
     {
-        if(target != null)
+        if (target != null)
         {
             transform.position = target.position;
             zoom = Mathf.Clamp(zoom, 0, 4);
-            cam.transform.localPosition = offset;
-            if (Input.GetMouseButton(0))
-            {// 좌클릭 후 카메라 회전기능
-                curYAngle -= Input.GetAxis("Mouse X") * 3;
-                transform.rotation = Quaternion.Euler(0, curYAngle, 0);
-            }
-            if(Input.GetAxis("Mouse ScrollWheel") < 0)
-            {// 마우스 휠을 아래로 굴리면 줌 아웃
-                zoom--;
-                offset = new Vector3(0, 9 - zoom, -9 + zoom);
-            }
-            else if(Input.GetAxis("Mouse ScrollWheel") > 0)
-            {// 마우스 휠을 위로 굴리면 줌 인
-                zoom++;
-                offset = new Vector3(0, 10 - zoom, -10 + zoom);
+            {
+                if (Input.GetMouseButton(0))
+                {// 좌클릭 후 카메라 회전기능
+                    curYAngle -= Input.GetAxis("Mouse X") * 3;
+                    transform.rotation = Quaternion.Euler(0, curYAngle, 0);
+                }
+                if (Input.GetAxis("Mouse ScrollWheel") < 0)
+                {// 마우스 휠을 아래로 굴리면 줌 아웃
+                    zoom--;
+                    offset = new Vector3(0, 9 - zoom, -9 + zoom);
+                    cam.transform.localPosition = offset;
+                }
+                else if (Input.GetAxis("Mouse ScrollWheel") > 0)
+                {// 마우스 휠을 위로 굴리면 줌 인
+                    zoom++;
+                    offset = new Vector3(0, 10 - zoom, -10 + zoom);
+                    cam.transform.localPosition = offset;
+                }
             }
         }
     }

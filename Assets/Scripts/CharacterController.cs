@@ -53,7 +53,7 @@ public class CharacterController : MonoBehaviour
 
     private GameSceneManager sceneManager;
 
-    void Start()
+    public void Init()
     {
         HP = maxHP;
         MP = maxMP;

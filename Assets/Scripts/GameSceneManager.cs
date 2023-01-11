@@ -9,6 +9,7 @@ public class GameSceneManager : MonoBehaviour
 {
     [SerializeField]
     private Transform startPos; // 시작 위치
+    public CharacterController player; // 플레이어 캐릭터
     private void Awake()
     {
         switch (GameManager.Instance.number)
@@ -33,41 +34,27 @@ public class GameSceneManager : MonoBehaviour
         player.maxMP = GameManager.Instance.maxMP;
         player.EXP = GameManager.Instance.EXP;
         player.gold = GameManager.Instance.gold;
+        player.Init();
         Refresh();
         cam = Camera.main;
         playerName.transform.GetComponent<TextMeshProUGUI>().text = player.name;
     }
     private Camera cam = null;
 
-    public CharacterController player;
-    [SerializeField]
-    private GameObject playerName;
-    [SerializeField]
-    private GameObject gameUI;
-    [SerializeField]
-    private Image HPBar;
-    [SerializeField]
-    private Image MPBar;
-    [SerializeField]
-    private Image EXPBar;
-    [SerializeField]
-    private TextMeshProUGUI HPText;
-    [SerializeField]
-    private TextMeshProUGUI MPText;
-    [SerializeField]
-    private TextMeshProUGUI EXPText;
-    [SerializeField]
-    private TextMeshProUGUI levelText;
-    [SerializeField]
-    private GameObject enemyHPBar;
-    [SerializeField]
-    private Image enemyHP;
-    [SerializeField]
-    private GameObject levelUpUI; // 레벨업 시 출력할 UI
-    [SerializeField]
-    private GameObject confrim; // 종료 버튼 클릭 시 출력할 UI
-    [SerializeField]
-    private AudioClip BGM; // 배경 음악
+    [SerializeField] private GameObject playerName;
+    [SerializeField] private GameObject gameUI;
+    [SerializeField] private GameObject enemyHPBar;
+    [SerializeField] private Image enemyHP;
+    [SerializeField] private Image HPBar;
+    [SerializeField] private Image MPBar;
+    [SerializeField] private Image EXPBar;
+    [SerializeField] private TextMeshProUGUI HPText;
+    [SerializeField] private TextMeshProUGUI MPText;
+    [SerializeField] private TextMeshProUGUI EXPText;
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private GameObject levelUpUI; // 레벨업 시 출력할 UI
+    [SerializeField] private GameObject confrim; // 종료 버튼 클릭 시 출력할 UI
+    [SerializeField] private AudioClip BGM; // 배경 음악
 
     private void Start()
     {
@@ -131,6 +118,7 @@ public class GameSceneManager : MonoBehaviour
         GameManager.Instance.maxMP = player.maxMP;
         GameManager.Instance.EXP = player.EXP;
         GameManager.Instance.gold = player.gold;
+        GameManager.Instance.SaveData();
     }
 
     public void LevelUp()
