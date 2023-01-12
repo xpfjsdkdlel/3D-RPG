@@ -6,6 +6,12 @@ using TMPro;
 
 public class Slot : MonoBehaviour
 {
+    private Item _item;
+    public Item item
+    {
+        get => _item;
+        set => _item = value;
+    }
     private Image itemImg; // 아이템 이미지
     private TextMeshProUGUI countText;
     private int count; // 아이템 개수
@@ -18,29 +24,26 @@ public class Slot : MonoBehaviour
 
     public void Refresh()
     {
-        if(count <= 0)
+        if(_item != null)
         {
-            for(int i = 0; i < transform.childCount; i++)
-                transform.GetChild(i).gameObject.SetActive(false);
+            if (count <= 0)
+            {
+                for (int i = 0; i < transform.childCount; i++)
+                    transform.GetChild(i).gameObject.SetActive(false);
+                _item = null;
+            }
+            else
+            {
+                for (int i = 0; i < transform.childCount; i++)
+                    transform.GetChild(i).gameObject.SetActive(true);
+                countText.text = count.ToString();
+                itemImg.sprite = _item.iconImg;
+            }
         }
         else
         {
             for (int i = 0; i < transform.childCount; i++)
-                transform.GetChild(i).gameObject.SetActive(true);
-            countText.text = count.ToString();
+                transform.GetChild(i).gameObject.SetActive(false);
         }
-    }
-
-    public void AddItem(Item item)
-    {
-        ++count;
-        itemImg = Resources.Load<Image>("Sprite/" + item.iconImg);
-        Refresh();
-    }
-
-    public void DeleteItem()
-    {
-        --count;
-        Refresh();
     }
 }
