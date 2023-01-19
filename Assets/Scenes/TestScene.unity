@@ -209,6 +209,7 @@ MonoBehaviour:
   maxMP: 20
   EXP: 0
   gold: 0
+  inventory: {fileID: 0}
   fade: {fileID: 0}
 --- !u!4 &464848778
 Transform:
@@ -795,6 +796,7 @@ MonoBehaviour:
   levelUpUI: {fileID: 8232812994352062403}
   confrim: {fileID: 8849010169603246063}
   BGM: {fileID: 8300000, guid: 94c48975b08a2fb46886046664a70bd5, type: 3}
+  inventory: {fileID: 2089150263343193812}
 --- !u!4 &1920315039
 Transform:
   m_ObjectHideFlags: 0

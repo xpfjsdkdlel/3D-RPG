@@ -6,7 +6,7 @@ using TMPro;
 
 public class Slot : MonoBehaviour
 {
-    private Item _item;
+    private Item _item = null;
     public Item item
     {
         get => _item;
@@ -24,26 +24,27 @@ public class Slot : MonoBehaviour
 
     public void Refresh()
     {
-        if(_item != null)
+        if(item != null)
         {
+            count = item.count;
             if (count <= 0)
             {
-                for (int i = 0; i < transform.childCount; i++)
-                    transform.GetChild(i).gameObject.SetActive(false);
-                _item = null;
+                itemImg.gameObject.SetActive(false);
+                countText.gameObject.SetActive(false);
+                item = null;
             }
             else
             {
-                for (int i = 0; i < transform.childCount; i++)
-                    transform.GetChild(i).gameObject.SetActive(true);
+                itemImg.gameObject.SetActive(true);
+                countText.gameObject.SetActive(true);
                 countText.text = count.ToString();
-                itemImg.sprite = _item.iconImg;
+                itemImg.sprite = item.iconImg;
             }
         }
         else
         {
-            for (int i = 0; i < transform.childCount; i++)
-                transform.GetChild(i).gameObject.SetActive(false);
+            itemImg.gameObject.SetActive(false);
+            countText.gameObject.SetActive(false);
         }
     }
 }

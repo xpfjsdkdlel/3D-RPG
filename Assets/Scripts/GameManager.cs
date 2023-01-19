@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class PlayerData
 {
@@ -14,7 +15,8 @@ public class PlayerData
     public int maxMP; // 최대 마나
     public int EXP; // 경험치
     public int gold; // 돈
-    public Inventory inventory = new Inventory(); // 아이템
+    public int row; // 인벤토리 행
+    public List<Item> items = new List<Item>(); // 아이템
 }
 
 public class GameManager : MonoBehaviour
@@ -27,6 +29,9 @@ public class GameManager : MonoBehaviour
 
     public string nextScene;
 
+    private PlayerData pData; // 저장된 플레이어 데이터
+    private string dataPath; // 데이터의 저장 경로
+
     public int number = 0; // 클래스
     public string name; // 캐릭터 이름
     public int level = 1; // 레벨
@@ -36,6 +41,8 @@ public class GameManager : MonoBehaviour
     public int maxMP = 20; // 최대 마나
     public int EXP = 0; // 경험치
     public int gold = 0; // 돈
+    public int row = 5; // 인벤토리 행
+    public List<Item> items; // 인벤토리
 
     public Fade fade;
 
@@ -58,6 +65,8 @@ public class GameManager : MonoBehaviour
             fade.Init();
         }
         fade.FadeIn();
+        dataPath = Application.persistentDataPath + "/save";
+        LoadData();
     }
 
     public void ResetData()
@@ -71,16 +80,48 @@ public class GameManager : MonoBehaviour
         maxMP = 20;
         EXP = 0;
         gold = 0;
+        row = 5;
+        items = new List<Item>();
     }
 
     public void SaveData()
     {
+        pData.number = number;
+        pData.name = name;
+        pData.level = level;
+        pData.HP = HP;
+        pData.maxHP = maxHP;
+        pData.MP = MP;
+        pData.maxMP = maxMP;
+        pData.EXP = EXP;
+        pData.gold = gold;
+        pData.row = row;
+        pData.items = items;
 
+        string data = JsonUtility.ToJson(pData);
+        File.WriteAllText(dataPath, data);
     }
 
     public void LoadData()
     {
-
+        if (File.Exists(dataPath))
+        {
+            string data = File.ReadAllText(dataPath);
+            pData = JsonUtility.FromJson<PlayerData>(data);
+            number = pData.number;
+            name = pData.name;
+            level = pData.level;
+            HP = pData.HP;
+            maxHP = pData.maxHP;
+            MP = pData.MP;
+            maxMP = pData.maxMP;
+            EXP = pData.EXP;
+            gold = pData.gold;
+            row = pData.row;
+            items = pData.items;
+        }
+        else
+            ResetData();
     }
 
     public void LoadScene(string sceneName)

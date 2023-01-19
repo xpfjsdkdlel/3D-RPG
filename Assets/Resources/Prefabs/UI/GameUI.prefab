@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 100514925}
   - component: {fileID: 100514926}
   - component: {fileID: 100514927}
-  - component: {fileID: 3930099922114825854}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -153,20 +152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
---- !u!114 &3930099922114825854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100514924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9f7266173bc6fb42ae2c9df08ccae35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotPrefab: {fileID: 2192661515244668164, guid: 52241f420d60de148a0c67a4620b182c, type: 3}
-  slotParent: {fileID: 0}
 --- !u!1 &303490077
 GameObject:
   m_ObjectHideFlags: 0
@@ -806,6 +791,7 @@ GameObject:
   - component: {fileID: 700987829}
   - component: {fileID: 700987831}
   - component: {fileID: 700987830}
+  - component: {fileID: 7403542617363652327}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -874,6 +860,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7403542617363652327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700987828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f7266173bc6fb42ae2c9df08ccae35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotPrefab: {fileID: 2192661515244668164, guid: 52241f420d60de148a0c67a4620b182c, type: 3}
+  slotParent: {fileID: 100514925}
 --- !u!1 &774609014
 GameObject:
   m_ObjectHideFlags: 0
