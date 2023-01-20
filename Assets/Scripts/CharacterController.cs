@@ -75,7 +75,11 @@ public class CharacterController : MonoBehaviour
                 ChangeMode();
             if (Input.GetMouseButtonDown(0))
             {
-                
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, layerMask))
+                {
+                    if (hit.transform.gameObject.CompareTag("Enemy"))
+                        sceneManager.ViewHP(enemy);
+                }
             }
             if (Input.GetMouseButtonDown(1))
             {
