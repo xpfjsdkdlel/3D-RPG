@@ -42,11 +42,15 @@ public class Enemy : MonoBehaviour
     private Rigidbody rigidbody;
     private NavMeshAgent navMesh;
 
+    [SerializeField]
     private GameSceneManager sceneManager;
+    [SerializeField]
+    private ItemSpawner itemSpawner;
     void OnEnable()
     {
         Init();
         sceneManager = GameObject.FindObjectOfType<GameSceneManager>();
+        itemSpawner = GameObject.FindObjectOfType<ItemSpawner>();
     }
     
     void Init()
@@ -91,9 +95,10 @@ public class Enemy : MonoBehaviour
             navMesh.enabled = false;
             isDead = true;
             animator.SetTrigger("death");
-            Invoke("Delete", 5f);
             // 경험치 주는 코드
             sceneManager.player.GetEXP(EXP);
+            itemSpawner.DropItem(transform.position);
+            Invoke("Delete", 5f);
         }
         else
             animator.SetTrigger("hit");
@@ -126,11 +131,6 @@ public class Enemy : MonoBehaviour
             if (attackTime > attackDelay)
                 attackState = false;
         }
-    }
-
-    public void DropItem()
-    {
-
     }
 
     public void Delete()

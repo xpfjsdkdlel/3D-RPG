@@ -2688,6 +2688,7 @@ MonoBehaviour:
   MP: 0
   maxMP: 20
   EXP: 0
+  gold: 0
   damage: 10
   armor: 1
   range: 8
@@ -3560,11 +3561,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 410126, guid: d4725522f97d98e4d93f5c2ae4c1ba2a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 410126, guid: d4725522f97d98e4d93f5c2ae4c1ba2a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.10000002
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 410126, guid: d4725522f97d98e4d93f5c2ae4c1ba2a, type: 3}
       propertyPath: m_LocalScale.z
@@ -3572,15 +3573,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 410126, guid: d4725522f97d98e4d93f5c2ae4c1ba2a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.61186206
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 410126, guid: d4725522f97d98e4d93f5c2ae4c1ba2a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 410126, guid: d4725522f97d98e4d93f5c2ae4c1ba2a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.026343644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 410126, guid: d4725522f97d98e4d93f5c2ae4c1ba2a, type: 3}
       propertyPath: m_LocalRotation.w

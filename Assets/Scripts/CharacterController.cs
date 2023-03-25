@@ -43,7 +43,7 @@ public class CharacterController : MonoBehaviour
     private Collider collider;
     private NavMeshAgent navMesh;
 
-    private RaycastHit hit; // 이동 할 장소
+    private RaycastHit hit; // 우클릭 시 이동 할 장소
     private int layerMask;
     [SerializeField]
     private GameObject moveDir; // 이동 할 위치 표시
@@ -75,11 +75,7 @@ public class CharacterController : MonoBehaviour
                 ChangeMode();
             if (Input.GetMouseButtonDown(0))
             {
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, layerMask))
-                {
-                    if (hit.transform.gameObject.CompareTag("Enemy"))
-                        sceneManager.ViewHP(enemy);
-                }
+                
             }
             if (Input.GetMouseButtonDown(1))
             {

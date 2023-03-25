@@ -16,7 +16,7 @@ public class PlayerData
     public int EXP; // 경험치
     public int gold; // 돈
     public int row; // 인벤토리 행
-    public List<Item> items = new List<Item>(); // 아이템
+    public Item[] items; // 아이템
 }
 
 public class GameManager : MonoBehaviour
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     public int EXP = 0; // 경험치
     public int gold = 0; // 돈
     public int row = 5; // 인벤토리 행
-    public List<Item> items; // 인벤토리
+    public Item[] items; // 인벤토리
 
     public Fade fade;
 
@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
             fade = Instantiate(Resources.Load<Fade>("Prefabs/UI/Fade"));
             fade.Init();
         }
+        items = new Item[row * 3];
         fade.FadeIn();
         dataPath = Application.persistentDataPath + "/save";
         LoadData();
@@ -81,7 +82,7 @@ public class GameManager : MonoBehaviour
         EXP = 0;
         gold = 0;
         row = 5;
-        items = new List<Item>();
+        items = new Item[row * 3];
     }
 
     public void SaveData()

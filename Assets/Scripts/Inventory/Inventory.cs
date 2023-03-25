@@ -8,15 +8,16 @@ public class Inventory : MonoBehaviour
     private GameObject slotPrefab;
     [SerializeField]
     private Transform slotParent;
-    private List<Slot> slots = new List<Slot>(); // ui로 나타낼 슬롯 리스트
+    private Slot[] slots; // ui로 나타낼 슬롯 리스트
 
     private void Awake()
     {
-        for (int i = 0; i < GameManager.Instance.row * 3; i++)
+        slots = new Slot[GameManager.Instance.row * 3];
+        for (int i = 0; i < slots.Length; i++)
         {
             GameObject obj = Instantiate(slotPrefab);
             obj.transform.parent = slotParent;
-            slots.Add(obj.GetComponent<Slot>());
+            slots[i] = obj.GetComponent<Slot>();
         }
     }
 
@@ -27,30 +28,34 @@ public class Inventory : MonoBehaviour
 
     public void RefreshSlot()
     {
-        for (int i = 0; i < GameManager.Instance.items.Count; i++)
+        for (int i = 0; i < GameManager.Instance.items.Length; i++)
         {
             slots[i].item = GameManager.Instance.items[i];
             slots[i].Refresh();
         }
     }
 
-    public void GetItem(Item _item)
+    public bool GetItem(Item _item)
     {
-        for(int i = 0; i < GameManager.Instance.items.Count; i++)
+        for (int i = 0; i < GameManager.Instance.items.Length; i++)
         {
-            if(GameManager.Instance.items[i].uid == _item.uid)
-            {
-                if (GameManager.Instance.items[i].type && GameManager.Instance.items[i].count < 99)
-                    ++GameManager.Instance.items[i].count;
-                else
-                    continue;
-            }
-            else if(GameManager.Instance.items[i] == null)
+            if (GameManager.Instance.items[i] == null)
             {
                 GameManager.Instance.items[i] = _item;
-                GameManager.Instance.items[i].count += _item.count;
+                slots[i].Refresh();
+                return true;
             }
-            slots[i].Refresh();
+            else if (GameManager.Instance.items[i].uid == _item.uid)
+            {
+                if (GameManager.Instance.items[i].type && GameManager.Instance.items[i].count < 99)
+                {
+                    ++GameManager.Instance.items[i].count;
+                    slots[i].Refresh();
+                    return true;
+                }
+            }
+
         }
+        return false;
     }
 }
