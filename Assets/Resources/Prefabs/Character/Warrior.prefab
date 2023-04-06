@@ -1792,7 +1792,9 @@ MonoBehaviour:
   EXP: 0
   gold: 0
   damage: 10
-  armor: 1
+  weapon: 0
+  defense: 1
+  armor: 0
   range: 2
   attackDelay: 2
   speed: 3

@@ -86,6 +86,34 @@ public class GameSceneManager : MonoBehaviour
         EXPText.text = player.EXP.ToString() + " / " + player.level * 10;
         levelText.text = player.level.ToString();
     }
+    public void RefreshStat()
+    {
+        player.armor = 0;
+        player.weapon = 0;
+        player.addRange = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            if (GameManager.Instance.equip[i] != null)
+                player.armor += GameManager.Instance.equip[i].stat;
+        }
+        if (GameManager.Instance.equip[3] != null)
+            player.weapon = GameManager.Instance.equip[3].stat;
+        if (GameManager.Instance.equip[4] != null)
+        {// 보조장비
+            switch (GameManager.Instance.equip[4].classNum)
+            {
+                case 0: // 궁수
+                    player.addRange = GameManager.Instance.equip[4].stat;
+                    break;
+                case 1: // 전사
+                    player.armor += GameManager.Instance.equip[4].stat;
+                    break;
+                case 2: // 마법사
+                    player.weapon += GameManager.Instance.equip[4].stat;
+                    break;
+            }
+        }
+    }
 
     public void ShowConfrim()
     {

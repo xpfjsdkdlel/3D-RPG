@@ -22,7 +22,7 @@ public class ItemSpawner : MonoBehaviour
 
     public void DropItem(Vector3 pos)
     {
-        num = Random.Range(0, 50);
+        num = Random.Range(0, 14);
         Debug.Log(num);
         if(num < 11)
             SpawnItem(num, pos);

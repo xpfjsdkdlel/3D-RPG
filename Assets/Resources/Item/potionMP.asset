@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022171d4117ae6840ae4c6bc249f1011, type: 3}
   m_Name: potionMP
   m_EditorClassIdentifier: 
-  uid: 1011
-  type: 1
+  uid: 402
+  equip: 0
   name: "MP\uD3EC\uC158"
   iconImg: {fileID: 21300000, guid: 8a403ea029db9654f93bd927710cbcf4, type: 2}
   classNum: 3
   price: 30
+  count: 1
+  stat: 30

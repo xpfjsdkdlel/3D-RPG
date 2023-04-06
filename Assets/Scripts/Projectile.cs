@@ -16,7 +16,7 @@ public class Projectile : MonoBehaviour
 
     void Init()
     {
-        damage = GameObject.FindObjectOfType<CharacterController>().damage;
+        damage = GameObject.FindObjectOfType<CharacterController>().damage + GameObject.FindObjectOfType<CharacterController>().weapon;
         transform.position = firePos.transform.position;
     }
 

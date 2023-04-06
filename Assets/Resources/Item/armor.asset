@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022171d4117ae6840ae4c6bc249f1011, type: 3}
   m_Name: armor
   m_EditorClassIdentifier: 
-  uid: 1001
-  type: 0
+  uid: 201
+  equip: 1
   name: "\uAC11\uC637"
   iconImg: {fileID: 21300000, guid: 106c74ad9ef948d4c8f05f6d86aa149f, type: 3}
   classNum: 3
   price: 300
+  count: 1
+  stat: 4

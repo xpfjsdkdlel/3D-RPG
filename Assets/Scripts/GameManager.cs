@@ -17,6 +17,7 @@ public class PlayerData
     public int gold; // 돈
     public int row; // 인벤토리 행
     public Item[] items; // 아이템
+    public Item[] equip; // 장착한 장비
 }
 
 public class GameManager : MonoBehaviour
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
     public int gold = 0; // 돈
     public int row = 5; // 인벤토리 행
     public Item[] items; // 인벤토리
+    public Item[] equip; // 장착한 장비
 
     public Fade fade;
 
@@ -65,6 +67,7 @@ public class GameManager : MonoBehaviour
             fade.Init();
         }
         items = new Item[row * 3];
+        equip = new Item[5];
         fade.FadeIn();
         dataPath = Application.persistentDataPath + "/save";
         LoadData();
@@ -83,6 +86,7 @@ public class GameManager : MonoBehaviour
         gold = 0;
         row = 5;
         items = new Item[row * 3];
+        equip = new Item[5];
     }
 
     public void SaveData()
@@ -98,6 +102,7 @@ public class GameManager : MonoBehaviour
         pData.gold = gold;
         pData.row = row;
         pData.items = items;
+        pData.equip = equip;
 
         string data = JsonUtility.ToJson(pData);
         File.WriteAllText(dataPath, data);

@@ -203,7 +203,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3049072936767602229}
         m_TargetAssemblyTypeName: Slot, Assembly-CSharp
-        m_MethodName: DeleteItem
+        m_MethodName: Use
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -240,6 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546c723c0b680da4b87141a0c7ebe3ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotNumber: 0
 --- !u!1 &5471042706069722560
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,8 +22,11 @@ public class CharacterController : MonoBehaviour
     public int EXP; // 경험치
     public int gold; // 돈
     public int damage; // 공격력
-    public int armor; // 방어력
+    public int weapon; // 무기 공격력
+    public int defense; // 방어력
+    public int armor; // 방어구 방어력
     public float range; // 사정거리
+    public float addRange; // 추가 사정거리
     public float attackDelay; // 공격 딜레이
     public float speed = 1.0f; // 이동속도
     public bool isDead = false; // 생존 여부
@@ -73,6 +76,16 @@ public class CharacterController : MonoBehaviour
             // R키를 눌러 전투 상태와 휴식 상태를 변경
             if (Input.GetKeyDown(KeyCode.R))
                 ChangeMode();
+            //if(battle)
+            //{
+            //    if(Input.GetKeyDown(KeyCode.Q))
+            //    {
+            //        Skill1(damage);
+            //    }
+            //    else if (Input.GetKeyDown(KeyCode.W))
+            //    {
+            //        Skill2(damage);
+            //    }
             if (Input.GetMouseButtonDown(0))
             {
                 
@@ -167,7 +180,7 @@ public class CharacterController : MonoBehaviour
         if (!enemy.isDead)
         {
             if(projectile == null)
-                enemy.GetDamage(damage);
+                enemy.GetDamage(damage + weapon);
         }
     }
 
@@ -180,10 +193,10 @@ public class CharacterController : MonoBehaviour
 
     public void GetDamage(int damage)
     {// 적에게 대미지를 받는 함수
-        if (damage <= armor)
+        if (damage <= defense + armor)
             HP -= 1;
         else
-            HP -= damage - armor;
+            HP -= damage - (defense + armor);
         if (HP <= 0)
         {
             HP = 0;
@@ -195,6 +208,11 @@ public class CharacterController : MonoBehaviour
         }
         else
             animator.SetTrigger("hit");
+        sceneManager.Refresh();
+    }
+
+    public void Refresh()
+    {
         sceneManager.Refresh();
     }
 
@@ -234,6 +252,16 @@ public class CharacterController : MonoBehaviour
         sceneManager.Refresh();
     }
 
+    //public virtual void Skill1(int damage)
+    //{
+    //    animator.SetBool("skill1", true);
+    //}
+
+    //public virtual void Skill2(int damage)
+    //{
+    //    animator.SetBool("skill2", true);
+    //}
+
     void Update()
     {
         GetInput(); // 사용자 입력 받기
@@ -247,7 +275,6 @@ public class CharacterController : MonoBehaviour
                 sceneManager.CloseHP();
                 break;
             case CharacterState.move:
-                enemy = null;
                 moveDir.SetActive(true);
                 moveDir.transform.position = hit.point + new Vector3(0, 0.1f, 0);
                 MoveState(hit.point);

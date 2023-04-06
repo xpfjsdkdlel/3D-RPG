@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022171d4117ae6840ae4c6bc249f1011, type: 3}
   m_Name: staff
   m_EditorClassIdentifier: 
-  uid: 1008
-  type: 0
+  uid: 102
+  equip: 1
   name: "\uC9C0\uD321\uC774"
   iconImg: {fileID: 21300000, guid: e5148b1291f73924e97d07e5ac84fb24, type: 3}
   classNum: 2
   price: 200
+  count: 1
+  stat: 3

@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022171d4117ae6840ae4c6bc249f1011, type: 3}
   m_Name: sword
   m_EditorClassIdentifier: 
-  uid: 1006
-  type: 0
+  uid: 103
+  equip: 1
   name: "\uAC80"
   iconImg: {fileID: 21300000, guid: 6e5055b5ba75a644980526669f44cdd5, type: 3}
   classNum: 1
   price: 200
+  count: 1
+  stat: 3
