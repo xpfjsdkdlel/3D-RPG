@@ -17,6 +17,6 @@ MonoBehaviour:
   name: "\uAC80"
   iconImg: {fileID: 21300000, guid: 6e5055b5ba75a644980526669f44cdd5, type: 3}
   classNum: 1
-  price: 200
+  price: 1000
   count: 1
   stat: 3

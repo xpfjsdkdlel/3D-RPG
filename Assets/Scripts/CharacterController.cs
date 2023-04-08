@@ -88,7 +88,14 @@ public class CharacterController : MonoBehaviour
             //    }
             if (Input.GetMouseButtonDown(0))
             {
-                
+                // 화면을 좌클릭 했을 때
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, layerMask))
+                {
+                    if (hit.transform.gameObject.CompareTag("NPC"))
+                    {
+
+                    }
+                }
             }
             if (Input.GetMouseButtonDown(1))
             {
@@ -173,6 +180,8 @@ public class CharacterController : MonoBehaviour
             attackPrevTime = Time.time; // 공격한 시간 갱신
             attackState = true;
         }
+        else
+            enemy = null;
     }
 
     void Attack()

@@ -2873,6 +2873,9 @@ MonoBehaviour:
   maxMP: 20
   EXP: 0
   gold: 0
+  row: 5
+  items: []
+  equip: []
   fade: {fileID: 0}
 --- !u!4 &1590521345
 Transform:

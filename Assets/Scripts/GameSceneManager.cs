@@ -38,6 +38,10 @@ public class GameSceneManager : MonoBehaviour
         Refresh();
         cam = Camera.main;
         playerName.transform.GetComponent<TextMeshProUGUI>().text = player.name;
+
+        // 페이드 불러오기
+        GameManager.Instance.fade.FadeIn();
+        AudioManager.Instance.PlayBGM(BGM);
     }
     private Camera cam = null;
 
@@ -55,13 +59,6 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField] private GameObject levelUpUI; // 레벨업 시 출력할 UI
     [SerializeField] private GameObject confrim; // 종료 버튼 클릭 시 출력할 UI
     [SerializeField] private AudioClip BGM; // 배경 음악
-
-    private void Start()
-    {
-        // 페이드 불러오기
-        GameManager.Instance.fade.FadeIn();
-        AudioManager.Instance.PlayBGM(BGM);
-    }
 
     public void ViewHP(Enemy target)
     {

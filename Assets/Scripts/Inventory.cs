@@ -192,7 +192,10 @@ public class Inventory : MonoBehaviour
                     break;
                 case 402:
                     if (player.maxMP <= player.MP + _item.stat)
+                    {
                         player.MP = player.maxMP;
+                        --_item.count;
+                    }
                     else
                         player.MP += _item.stat;
                     Debug.Log("마나포션 사용");
@@ -200,6 +203,8 @@ public class Inventory : MonoBehaviour
                 default:
                     break;
             }
+            if (_item.count <= 0)
+                slots[num].item = null;
             player.Refresh();
         }
         gameScene.RefreshStat();

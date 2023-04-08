@@ -7,8 +7,11 @@ public class GameUI : MonoBehaviour
 {
     public GameObject inventory;
     public GameObject equipment;
-    public Transform slotHolder;
     public GameObject menu;
+    [SerializeField]
+    private GameObject dialogue;
+    [SerializeField]
+    private GameObject store;
     [SerializeField]
     private Slider sliderBGM;
     [SerializeField]
@@ -48,23 +51,40 @@ public class GameUI : MonoBehaviour
         equipment.SetActive(false);
     }
 
-    public void CloseTab()
+    public void CloseStore()
+    {
+        store.SetActive(false);
+    }
+
+    public void ActiveDialogue()
+    {
+
+    }
+
+    public void CloseDialogue()
+    {
+
+    }
+
+    private void CloseTab()
     {
         invenActive = false;
         inventory.SetActive(false);
         equipActive = false;
         equipment.SetActive(false);
+        dialogue.SetActive(false);
+        store.SetActive(false);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) && !dialogue.activeSelf && !store.activeSelf)
         {
             invenActive = !invenActive;
             inventory.SetActive(invenActive);
             inventory.GetComponent<Inventory>().RefreshSlot();
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && !dialogue.activeSelf && !store.activeSelf)
         {
             equipActive = !equipActive;
             equipment.SetActive(equipActive);
@@ -72,9 +92,13 @@ public class GameUI : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            CloseTab();
-            menuActive = !menuActive;
-            menu.SetActive(menuActive);
+            if(invenActive || equipActive || dialogue.activeSelf || store.activeSelf)
+                CloseTab();
+            else
+            {
+                menuActive = !menuActive;
+                menu.SetActive(menuActive);
+            }
         }
     }
 }

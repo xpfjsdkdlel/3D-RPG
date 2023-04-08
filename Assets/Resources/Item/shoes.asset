@@ -17,6 +17,6 @@ MonoBehaviour:
   name: "\uC2E0\uBC1C"
   iconImg: {fileID: 21300000, guid: e706107c6a888a14693933dc9f5564d2, type: 3}
   classNum: 3
-  price: 100
+  price: 500
   count: 1
   stat: 1
