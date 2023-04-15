@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameUI : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class GameUI : MonoBehaviour
     public GameObject menu;
     [SerializeField]
     private GameObject dialogue;
+    private TextMeshProUGUI npcName;
+    private TextMeshProUGUI Dtext;
+    private string[] npcText;
+    private NPCrole npcRole;
+    private int n = 0;
     [SerializeField]
     private GameObject store;
     [SerializeField]
@@ -27,6 +33,8 @@ public class GameUI : MonoBehaviour
         inventory.SetActive(invenActive);
         equipment.SetActive(equipActive);
         menu.SetActive(menuActive);
+        npcName = dialogue.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        Dtext = dialogue.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
     }
 
     public void SetBGMVolume()
@@ -56,14 +64,44 @@ public class GameUI : MonoBehaviour
         store.SetActive(false);
     }
 
-    public void ActiveDialogue()
+    public void ActiveDialogue(string name, string[] text, NPCrole role)
     {
+        n = 0;
+        dialogue.SetActive(true);
+        npcName.text = name;
+        Dtext.text = text[0];
+        npcText = text;
+        npcRole = role;
+    }
 
+    public void NextDialogue()
+    {
+        if(n < npcText.Length - 1)
+        {
+            ++n;
+            Dtext.text = npcText[n];
+        }
+        else
+        {
+            switch (npcRole)
+            {
+                case NPCrole.nomal:
+                    CloseDialogue();
+                    break;
+                case NPCrole.store:
+                    store.SetActive(true);
+                    CloseDialogue();
+                    break;
+                case NPCrole.quest:
+                    // Äù½ºÆ® ÁÖ±â
+                    break;
+            }
+        }
     }
 
     public void CloseDialogue()
     {
-
+        dialogue.SetActive(false);
     }
 
     private void CloseTab()

@@ -62,9 +62,12 @@ public class GameSceneManager : MonoBehaviour
 
     public void ViewHP(Enemy target)
     {
-        enemyHPBar.gameObject.SetActive(true);
-        enemyHP.fillAmount = (float)target.HP / (float)target.maxHP;
-        enemyHPBar.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = target.name;
+        if(target != null)
+        {
+            enemyHPBar.gameObject.SetActive(true);
+            enemyHP.fillAmount = (float)target.HP / (float)target.maxHP;
+            enemyHPBar.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = target.name;
+        }
     }
 
     public void CloseHP()

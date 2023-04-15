@@ -43,7 +43,6 @@ public class CharacterController : MonoBehaviour
     private bool combo = false; // 두번째 공격 애니메이션 출력 여부
 
     private Animator animator;
-    private Collider collider;
     private NavMeshAgent navMesh;
 
     private RaycastHit hit; // 우클릭 시 이동 할 장소
@@ -88,12 +87,14 @@ public class CharacterController : MonoBehaviour
             //    }
             if (Input.GetMouseButtonDown(0))
             {
+                RaycastHit click;
                 // 화면을 좌클릭 했을 때
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, layerMask))
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
                 {
-                    if (hit.transform.gameObject.CompareTag("NPC"))
+                    if (click.transform.gameObject.CompareTag("NPC"))
                     {
-
+                        // NPC 대화문
+                        click.transform.GetComponent<NPC>().talk();
                     }
                 }
             }

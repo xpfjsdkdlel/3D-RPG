@@ -43,8 +43,8 @@ public class GameManager : MonoBehaviour
     public int EXP = 0; // 경험치
     public int gold = 0; // 돈
     public int row = 5; // 인벤토리 행
-    public Item[] items; // 인벤토리
-    public Item[] equip; // 장착한 장비
+    public Item[] items = null; // 인벤토리
+    public Item[] equip = null; // 장착한 장비
 
     public Fade fade;
 

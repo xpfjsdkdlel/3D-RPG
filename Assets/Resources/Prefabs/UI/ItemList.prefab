@@ -278,7 +278,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f261bcd39bcd07641a01ef642b13ab44, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2d283cf0c13437c4b9ebd02b8a527149, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -392,6 +392,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 954e54d8122a4ed448e27aded9986084, type: 3}
   btnImg: {fileID: 4508619943442065504}
   btnText: {fileID: 7031031576183860639}
+  number: 0
 --- !u!1 &1446483812709869417
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,4 +860,16 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4508619943442065504}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6886587189494133452}
+        m_TargetAssemblyTypeName: ItemList, Assembly-CSharp
+        m_MethodName: Deal
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

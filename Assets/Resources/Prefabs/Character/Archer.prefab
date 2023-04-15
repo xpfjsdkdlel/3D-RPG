@@ -2635,7 +2635,7 @@ Transform:
   m_GameObject: {fileID: 8141974376008800166}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3292097159757249844}
@@ -2694,6 +2694,7 @@ MonoBehaviour:
   defense: 1
   armor: 0
   range: 8
+  addRange: 0
   attackDelay: 2.5
   speed: 3
   isDead: 0

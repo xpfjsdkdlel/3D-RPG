@@ -14,11 +14,14 @@ public class ItemList : MonoBehaviour
     public Sprite[] btnColor;
     public Image btnImg;
     public TextMeshProUGUI btnText;
+    public int number;
     private Inventory inventory;
+    private Store store;
 
     private void Awake()
     {
         inventory = GameObject.FindObjectOfType<Inventory>();
+        store = GameObject.FindObjectOfType<Store>();
         if (buy)
         {
             btnImg.sprite = btnColor[0];
@@ -47,7 +50,24 @@ public class ItemList : MonoBehaviour
         }
         else
         {
-
+            if (item.equip)
+            {
+                GameManager.Instance.items[number] = null;
+                GameManager.Instance.gold += item.price / 10;
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                GameManager.Instance.items[number].count--;
+                item.count--;
+                GameManager.Instance.gold += item.price / 10;
+                if (item.count <= 0)
+                    gameObject.SetActive(false);
+            }
         }
+        inventory.slots[number].item = null;
+        if (inventory.gameObject.activeSelf)
+            inventory.RefreshSlot();
+        store.RefreshList();
     }
 }

@@ -71,6 +71,7 @@ public class Enemy : MonoBehaviour
     {// 공격 애니메이션
         if (!enemy.isDead)
         {
+            transform.LookAt(enemy.transform.position);
             animator.SetTrigger("attack");
             attackPrevTime = Time.time; // 공격한 시간 갱신
             attackState = true;
