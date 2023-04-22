@@ -10,6 +10,7 @@ public class CameraMove : MonoBehaviour
     private float curYAngle;
     [SerializeField]
     private int zoom = 0;
+    public bool isControll = true;
 
     private void Start()
     {
@@ -21,7 +22,7 @@ public class CameraMove : MonoBehaviour
 
     void Update()
     {
-        if (target != null)
+        if (target != null && isControll)
         {
             transform.position = target.position;
             zoom = Mathf.Clamp(zoom, 0, 4);

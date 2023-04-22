@@ -2875,7 +2875,13 @@ MonoBehaviour:
   gold: 0
   row: 5
   items: []
-  equip: []
+  equip:
+  - {fileID: 0}
+  quest:
+  - {fileID: 11400000, guid: f062eeea110e61f4ab75aca13c58cdc3, type: 2}
+  - {fileID: 11400000, guid: d8adbd8450a461d4890d44d1c955176f, type: 2}
+  - {fileID: 11400000, guid: 9deff6cfda380344cacbc5f3235a6089, type: 2}
+  questNum: 0
   fade: {fileID: 0}
 --- !u!4 &1590521345
 Transform:

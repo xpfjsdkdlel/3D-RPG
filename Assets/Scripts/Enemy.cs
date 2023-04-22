@@ -12,6 +12,7 @@ public enum MonsterState
 
 public class Enemy : MonoBehaviour
 {
+    public int uid; // 몬스터의 id
     public string name; // 이름
     public int HP; // 현재 체력
     public int maxHP; // 최대 체력
@@ -37,6 +38,7 @@ public class Enemy : MonoBehaviour
     private GameObject target;
     [SerializeField]
     private CharacterController enemy;
+    private GameUI gameUI;
 
     private Collider collider;
     private Rigidbody rigidbody;
@@ -46,6 +48,12 @@ public class Enemy : MonoBehaviour
     private GameSceneManager sceneManager;
     [SerializeField]
     private ItemSpawner itemSpawner;
+
+    private void Awake()
+    {
+        gameUI = GameUI.FindObjectOfType<GameUI>();
+    }
+
     void OnEnable()
     {
         Init();
@@ -96,6 +104,11 @@ public class Enemy : MonoBehaviour
             navMesh.enabled = false;
             isDead = true;
             animator.SetTrigger("death");
+            if (gameUI.quest != null && gameUI.quest.targetId == uid && gameUI.quest.progress < gameUI.quest.complete)
+            {
+                gameUI.quest.progress++;
+                gameUI.RefreshQuestUI(gameUI.quest);
+            }
             // 경험치 주는 코드
             sceneManager.player.GetEXP(EXP);
             itemSpawner.DropItem(transform.position);
@@ -118,7 +131,7 @@ public class Enemy : MonoBehaviour
     void UpdateTarget()
     {
         target = GameObject.FindGameObjectWithTag("Player");
-        if(target != null)
+        if (target != null)
             enemy = target.GetComponent<CharacterController>();
         dis = Vector3.Distance(transform.position, enemy.transform.position);
     }

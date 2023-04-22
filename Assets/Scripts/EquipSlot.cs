@@ -17,7 +17,7 @@ public class EquipSlot : MonoBehaviour
     private Inventory inventory;
     private GameSceneManager gameScene;
 
-    private void Start()
+    private void Awake()
     {
         inventory = GameObject.FindObjectOfType<Inventory>();
         itemImg = transform.GetChild(0).GetComponent<Image>();

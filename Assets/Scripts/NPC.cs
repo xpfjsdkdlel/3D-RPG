@@ -4,18 +4,18 @@ using UnityEngine;
 
 public enum NPCrole
 {
-    nomal,
-    store,
+    normal,
     quest,
+    store,
 }
 
 public class NPC : MonoBehaviour
 {
     private GameUI gameUI;
+    public int uid;
     public string name;
-    public string[] text;
-    [SerializeField]
-    private NPCrole role = new NPCrole();
+    public string text;
+    public NPCrole role = new NPCrole();
 
     private void Awake()
     {
@@ -23,6 +23,6 @@ public class NPC : MonoBehaviour
     }
     public void talk()
     {
-        gameUI.ActiveDialogue(name, text, role);
+        gameUI.ActiveDialogue(this);
     }
 }

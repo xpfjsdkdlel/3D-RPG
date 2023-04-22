@@ -228,22 +228,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1b080e7613463745828f1a95573b0df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uid: 103
   name: "\uACF0"
   HP: 0
-  maxHP: 50
+  maxHP: 100
   MP: 0
   maxMP: 10
-  EXP: 10
-  damage: 10
+  EXP: 30
+  damage: 25
   armor: 3
   range: 2.5
-  attackDelay: 3
+  attackDelay: 4
   speed: 5
   isDead: 0
   dis: 0
   state: 0
   target: {fileID: 0}
   enemy: {fileID: 0}
+  sceneManager: {fileID: 0}
+  itemSpawner: {fileID: 0}
 --- !u!195 &8324083686138640017
 NavMeshAgent:
   m_ObjectHideFlags: 0

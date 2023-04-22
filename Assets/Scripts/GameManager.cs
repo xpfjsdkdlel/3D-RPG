@@ -18,6 +18,8 @@ public class PlayerData
     public int row; // 인벤토리 행
     public Item[] items; // 아이템
     public Item[] equip; // 장착한 장비
+    public QuestData[] quest; // 퀘스트
+    public int questNum; // 퀘스트 진행도
 }
 
 public class GameManager : MonoBehaviour
@@ -45,6 +47,8 @@ public class GameManager : MonoBehaviour
     public int row = 5; // 인벤토리 행
     public Item[] items = null; // 인벤토리
     public Item[] equip = null; // 장착한 장비
+    public QuestData[] quest; // 퀘스트
+    public int questNum; // 퀘스트 진행도
 
     public Fade fade;
 
@@ -87,6 +91,12 @@ public class GameManager : MonoBehaviour
         row = 5;
         items = new Item[row * 3];
         equip = new Item[5];
+        for(int i = 0; i < quest.Length; i++)
+        {
+            quest[i].isProgress = false;
+            quest[i].isClear = false;
+        }
+        questNum = 1;
     }
 
     public void SaveData()
@@ -103,6 +113,8 @@ public class GameManager : MonoBehaviour
         pData.row = row;
         pData.items = items;
         pData.equip = equip;
+        pData.quest = quest;
+        pData.questNum = questNum;
 
         string data = JsonUtility.ToJson(pData);
         File.WriteAllText(dataPath, data);
@@ -125,6 +137,9 @@ public class GameManager : MonoBehaviour
             gold = pData.gold;
             row = pData.row;
             items = pData.items;
+            equip = pData.equip;
+            quest = pData.quest;
+            questNum = pData.questNum;
         }
         else
             ResetData();

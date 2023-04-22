@@ -10,6 +10,9 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField]
     private Transform startPos; // 시작 위치
     public CharacterController player; // 플레이어 캐릭터
+    private CameraMove cameraMove; // 메인 카메라
+    private GameUI ui; // 게임 UI
+    public GameObject NPCList; // NPC들
     private void Awake()
     {
         switch (GameManager.Instance.number)
@@ -38,6 +41,9 @@ public class GameSceneManager : MonoBehaviour
         Refresh();
         cam = Camera.main;
         playerName.transform.GetComponent<TextMeshProUGUI>().text = player.name;
+        ui = gameUI.GetComponent<GameUI>();
+        ui.Init();
+        cameraMove = GameObject.FindObjectOfType<CameraMove>();
 
         // 페이드 불러오기
         GameManager.Instance.fade.FadeIn();
@@ -160,6 +166,18 @@ public class GameSceneManager : MonoBehaviour
     void DisableLevel()
     {
         levelUpUI.SetActive(false);
+    }
+
+    public void ControllEnable()
+    {
+        player.isControll = true;
+        cameraMove.isControll = true;
+    }
+
+    public void ControllDisable()
+    {
+        player.isControll = false;
+        cameraMove.isControll = false;
     }
 
     void Update()

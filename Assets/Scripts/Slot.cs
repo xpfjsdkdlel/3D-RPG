@@ -18,7 +18,7 @@ public class Slot : MonoBehaviour
     private int count; // 아이템 개수
     private Inventory inventory;
 
-    private void Start()
+    private void Awake()
     {
         itemImg = transform.GetChild(0).GetComponent<Image>();
         countText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();

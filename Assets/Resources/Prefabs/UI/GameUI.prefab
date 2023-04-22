@@ -18491,6 +18491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8193e00e79bb6954b8c7b0f97eba55ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameSceneManager: {fileID: 0}
   inventory: {fileID: 700987828}
   equipment: {fileID: 7496871781848477032}
   menu: {fileID: 901198512}

@@ -17,9 +17,8 @@ public class Inventory : MonoBehaviour
     private CharacterController player;
     [SerializeField]
     private Equipment equipment;
-    private Store store;
 
-    private void Awake()
+    public void Init()
     {
         slots = new Slot[GameManager.Instance.row * 3];
         for (int i = 0; i < slots.Length; i++)
@@ -30,7 +29,6 @@ public class Inventory : MonoBehaviour
             slots[i].slotNumber = i;
         }
         gameScene = GameObject.FindObjectOfType<GameSceneManager>();
-        store = GameObject.FindObjectOfType<Store>();
     }
 
     public void RefreshSlot()
@@ -211,7 +209,5 @@ public class Inventory : MonoBehaviour
         }
         gameScene.RefreshStat();
         slots[num].Refresh();
-        if (store.gameObject.activeSelf)
-            store.RefreshList();
     }
 }

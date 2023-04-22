@@ -33,7 +33,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField]
     private GameObject projectile; // 투사체
 
-    private bool isControll = true; // 제어가 가능한 상태
+    public bool isControll = true; // 제어가 가능한 상태
     private bool battle = false; // 전투 상태
     private bool invincible = false; // 무적 상태
     private float attackPrevTime = 0f; // 마지막으로 공격한 시간

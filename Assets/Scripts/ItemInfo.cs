@@ -6,28 +6,26 @@ public class ItemInfo : MonoBehaviour
 {
     public Item item;
     private GameUI gameUI;
+    private Inventory inventory;
 
     private void OnEnable()
     {
         gameUI = GameObject.FindObjectOfType<GameUI>();
+        inventory = gameUI.inventory.GetComponent<Inventory>();
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Inventory inventory;
-            if(gameUI.inventory.TryGetComponent<Inventory>(out inventory))
+            if (inventory.GetItem(item))
             {
-                if (inventory.GetItem(item))
-                {
-                    inventory.RefreshSlot();
-                    Debug.Log("æ∆¿Ã≈€ »πµÊ " + item.name);
-                    Destroy(gameObject);
-                }
-                else
-                {
-                    Debug.Log("¿Œ∫•≈‰∏Æ∞° ∞°µÊ √°Ω¿¥œ¥Ÿ.");
-                }
+                inventory.RefreshSlot();
+                Debug.Log("æ∆¿Ã≈€ »πµÊ " + item.name);
+                Destroy(gameObject);
+            }
+            else
+            {
+                Debug.Log("¿Œ∫•≈‰∏Æ∞° ∞°µÊ √°Ω¿¥œ¥Ÿ.");
             }
         }
     }
