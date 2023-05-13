@@ -32,10 +32,11 @@ public class CharacterController : MonoBehaviour
     public bool isDead = false; // 생존 여부
     [SerializeField]
     private GameObject projectile; // 투사체
+    public Skill[] skills = new Skill[3]; // 스킬
 
     public bool isControll = true; // 제어가 가능한 상태
     private bool battle = false; // 전투 상태
-    private bool invincible = false; // 무적 상태
+    public bool invincible = false; // 무적 상태
     private float attackPrevTime = 0f; // 마지막으로 공격한 시간
     private float attackTime = 0f; // 공격 후 흐른 시간
     private bool attackState = false; // false면 공격이 가능한 상태
@@ -75,16 +76,33 @@ public class CharacterController : MonoBehaviour
             // R키를 눌러 전투 상태와 휴식 상태를 변경
             if (Input.GetKeyDown(KeyCode.R))
                 ChangeMode();
-            //if(battle)
-            //{
-            //    if(Input.GetKeyDown(KeyCode.Q))
-            //    {
-            //        Skill1(damage);
-            //    }
-            //    else if (Input.GetKeyDown(KeyCode.W))
-            //    {
-            //        Skill2(damage);
-            //    }
+            if (battle)
+            {// 전투 상태일 때 Q, W, E를 눌러 스킬을 사용
+                if (Input.GetKeyDown(KeyCode.Q) && skills[0].cost <= MP && skills[0].active)
+                {
+                    skills[0].active = false;
+                    MP -= skills[0].cost;
+                    sceneManager.Refresh();
+                    animator.SetTrigger("skill1");
+                    Invoke("ActiveSkill1", skills[0].coolDown);
+                }
+                else if (Input.GetKeyDown(KeyCode.W) && skills[1].cost <= MP && skills[1].active)
+                {
+                    skills[1].active = false;
+                    MP -= skills[1].cost;
+                    sceneManager.Refresh();
+                    animator.SetTrigger("skill2");
+                    Invoke("ActiveSkill2", skills[1].coolDown);
+                }
+                else if (Input.GetKeyDown(KeyCode.E) && skills[2].cost <= MP && skills[2].active)
+                {
+                    skills[2].active = false;
+                    MP -= skills[2].cost;
+                    sceneManager.Refresh();
+                    animator.SetTrigger("skill3");
+                    Invoke("ActiveSkill3", skills[2].coolDown);
+                }
+            }
             if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit click;
@@ -260,6 +278,22 @@ public class CharacterController : MonoBehaviour
         else
             this.EXP += EXP;
         sceneManager.Refresh();
+    }
+
+    // 스킬 쿨타임 초기화 하는 함수
+    void ActiveSkill1()
+    {
+        skills[0].active = true;
+    }
+
+    void ActiveSkill2()
+    {
+        skills[1].active = true;
+    }
+
+    void ActiveSkill3()
+    {
+        skills[2].active = true;
     }
 
     //public virtual void Skill1(int damage)

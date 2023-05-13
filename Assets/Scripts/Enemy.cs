@@ -88,7 +88,8 @@ public class Enemy : MonoBehaviour
 
     void Attack()
     {// 적에게 대미지를 주는 함수
-        enemy.GetDamage(damage);
+        if(!enemy.invincible)
+            enemy.GetDamage(damage);
     }
 
     public void GetDamage(int damage)
@@ -118,14 +119,17 @@ public class Enemy : MonoBehaviour
             animator.SetTrigger("hit");
     }
 
-    void StartStun()
+    public void StartStun(float time)
     {
         state = MonsterState.stun;
+        animator.SetBool("stun", true);
+        Invoke("EndStun", time);
     }
 
     void EndStun()
     {
         state = MonsterState.Idle;
+        animator.SetBool("stun", false);
     }
 
     void UpdateTarget()

@@ -227,7 +227,7 @@ public class GameUI : MonoBehaviour
             if(invenActive)
                 inventory.RefreshSlot();
         }
-        if (Input.GetKeyDown(KeyCode.E) && !dialogue.activeSelf && !storeObj.activeSelf)
+        if (Input.GetKeyDown(KeyCode.U) && !dialogue.activeSelf && !storeObj.activeSelf)
         {
             equipActive = !equipActive;
             equipment.SetActive(equipActive);

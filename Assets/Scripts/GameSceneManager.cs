@@ -13,6 +13,13 @@ public class GameSceneManager : MonoBehaviour
     private CameraMove cameraMove; // 메인 카메라
     private GameUI ui; // 게임 UI
     public GameObject NPCList; // NPC들
+    public Skill[] skills;
+    [SerializeField]
+    private Image skill1;
+    [SerializeField]
+    private Image skill2;
+    [SerializeField]
+    private Image skill3;
     private void Awake()
     {
         switch (GameManager.Instance.number)
@@ -39,6 +46,7 @@ public class GameSceneManager : MonoBehaviour
         player.gold = GameManager.Instance.gold;
         player.Init();
         Refresh();
+        this.skills = player.skills;
         cam = Camera.main;
         playerName.transform.GetComponent<TextMeshProUGUI>().text = player.name;
         ui = gameUI.GetComponent<GameUI>();
@@ -48,6 +56,10 @@ public class GameSceneManager : MonoBehaviour
         // 페이드 불러오기
         GameManager.Instance.fade.FadeIn();
         AudioManager.Instance.PlayBGM(BGM);
+
+        skill1.sprite = skills[0].iconImg;
+        skill2.sprite = skills[1].iconImg;
+        skill3.sprite = skills[2].iconImg;
     }
     private Camera cam = null;
 

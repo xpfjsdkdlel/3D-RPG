@@ -1801,6 +1801,12 @@ MonoBehaviour:
   speed: 3
   isDead: 0
   projectile: {fileID: 0}
+  skills:
+  - {fileID: 11400000, guid: 556480e84b5b2754996c103d9b711ec0, type: 2}
+  - {fileID: 11400000, guid: a58663837e7d67549a03d86263ad7fda, type: 2}
+  - {fileID: 11400000, guid: 8936abbd0ba5d654889b22cd1af1349c, type: 2}
+  isControll: 1
+  invincible: 0
   enemy: {fileID: 0}
   moveDir: {fileID: 5707137854429996033}
   state: 0
