@@ -33,6 +33,8 @@ public class CharacterController : MonoBehaviour
     [SerializeField]
     private GameObject projectile; // 투사체
     public Skill[] skills = new Skill[3]; // 스킬
+    [SerializeField]
+    private GameObject maxRange;
 
     public bool isControll = true; // 제어가 가능한 상태
     private bool battle = false; // 전투 상태
@@ -78,8 +80,11 @@ public class CharacterController : MonoBehaviour
                 ChangeMode();
             if (battle)
             {// 전투 상태일 때 Q, W, E를 눌러 스킬을 사용
+                RaycastHit click;
                 if (Input.GetKeyDown(KeyCode.Q) && skills[0].cost <= MP && skills[0].active)
                 {
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
+                        transform.LookAt(click.point);
                     skills[0].active = false;
                     MP -= skills[0].cost;
                     sceneManager.Refresh();
@@ -88,6 +93,8 @@ public class CharacterController : MonoBehaviour
                 }
                 else if (Input.GetKeyDown(KeyCode.W) && skills[1].cost <= MP && skills[1].active)
                 {
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
+                        transform.LookAt(click.point);
                     skills[1].active = false;
                     MP -= skills[1].cost;
                     sceneManager.Refresh();
@@ -96,6 +103,8 @@ public class CharacterController : MonoBehaviour
                 }
                 else if (Input.GetKeyDown(KeyCode.E) && skills[2].cost <= MP && skills[2].active)
                 {
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
+                        transform.LookAt(click.point);
                     skills[2].active = false;
                     MP -= skills[2].cost;
                     sceneManager.Refresh();
@@ -296,15 +305,32 @@ public class CharacterController : MonoBehaviour
         skills[2].active = true;
     }
 
-    //public virtual void Skill1(int damage)
-    //{
-    //    animator.SetBool("skill1", true);
-    //}
+    private GameObject archerSkill1;
+    void ArcherSkill1()
+    {
+        if (archerSkill1 == null)
+            archerSkill1 = Instantiate(skills[0].effect, transform.position, Quaternion.identity);
+        archerSkill1.SetActive(true);
+        if (enemy != null)
+            archerSkill1.GetComponent<Projectile>().SetTarget(enemy.transform.position, 2);
+        else
+            archerSkill1.GetComponent<Projectile>().SetTarget(maxRange.transform.position, 2);
+    }
 
-    //public virtual void Skill2(int damage)
-    //{
-    //    animator.SetBool("skill2", true);
-    //}
+    private GameObject archerSkill2;
+    void ArcherSkill2()
+    {
+        RaycastHit click;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
+        if (archerSkill2 == null)
+            archerSkill2 = Instantiate(skills[1].effect, click.point, Quaternion.identity);
+        archerSkill2.SetActive(true);
+    }
+
+    void ArcherSkill3()
+    {
+
+    }
 
     void Update()
     {

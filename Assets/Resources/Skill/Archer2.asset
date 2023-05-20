@@ -18,5 +18,5 @@ MonoBehaviour:
   iconImg: {fileID: 21300000, guid: 8162113a784eb0442aa630c7a7601227, type: 3}
   coolDown: 12
   cost: 20
-  effect: {fileID: 703295214636978783, guid: d283e9e8fb258b34d96ef052deeebd7b, type: 3}
+  effect: {fileID: 157740, guid: ee80fcac528f70f4cab1bed0eb142174, type: 3}
   active: 1
