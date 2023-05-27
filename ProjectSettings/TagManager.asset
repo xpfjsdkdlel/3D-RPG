@@ -5,7 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - NPC
   - Destroy
   layers:
   - Default
@@ -15,7 +14,7 @@ TagManager:
   - Water
   - UI
   - Spawner
-  - 
+  - Skill
   - 
   - 
   - 

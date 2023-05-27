@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 1296558719550187139}
   - component: {fileID: 149037485334701428}
   - component: {fileID: -8293109949407487246}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArcherSkill1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

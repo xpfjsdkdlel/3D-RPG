@@ -68,7 +68,7 @@ public class CharacterController : MonoBehaviour
         navMesh = GetComponent<NavMeshAgent>();
         navMesh.speed = speed;
         sceneManager = GameObject.FindObjectOfType<GameSceneManager>();
-        layerMask = (-1) - (1 << LayerMask.NameToLayer("Spawner"));
+        layerMask = (-1) - (1 << LayerMask.NameToLayer("Spawner")) - (1 << LayerMask.NameToLayer("Skill"));
     }
     
     void GetInput()
@@ -307,7 +307,7 @@ public class CharacterController : MonoBehaviour
 
     private GameObject archerSkill1;
     void ArcherSkill1()
-    {
+    {// 더블 샷
         if (archerSkill1 == null)
             archerSkill1 = Instantiate(skills[0].effect, transform.position, Quaternion.identity);
         archerSkill1.SetActive(true);
@@ -319,16 +319,30 @@ public class CharacterController : MonoBehaviour
 
     private GameObject archerSkill2;
     void ArcherSkill2()
-    {
+    {// 애로우 레인
         RaycastHit click;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
-        if (archerSkill2 == null)
-            archerSkill2 = Instantiate(skills[1].effect, click.point, Quaternion.identity);
+            if (archerSkill2 == null)
+                archerSkill2 = Instantiate(skills[1].effect, click.point + new Vector3(0, 0.5f, 0), Quaternion.Euler(-90, 0, 0));
         archerSkill2.SetActive(true);
+        Invoke("Skill2Activefalse", 2f);
     }
 
-    void ArcherSkill3()
+    void Skill2Activefalse()
     {
+        archerSkill2.SetActive(false);
+    }
+
+    private GameObject archerSkill3;
+    void ArcherSkill3()
+    {// 스나이핑
+        if (archerSkill3 == null)
+            archerSkill3 = Instantiate(skills[2].effect, transform.position, Quaternion.identity);
+        archerSkill3.SetActive(true);
+        if (enemy != null)
+            archerSkill3.GetComponent<Projectile>().SetTarget(enemy.transform.position, 7, true);
+        else
+            archerSkill3.GetComponent<Projectile>().SetTarget(maxRange.transform.position, 7, true);
 
     }
 

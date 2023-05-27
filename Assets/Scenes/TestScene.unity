@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   zoom: 0
+  isControll: 1
 --- !u!4 &282167051
 Transform:
   m_ObjectHideFlags: 0
@@ -209,7 +210,11 @@ MonoBehaviour:
   maxMP: 20
   EXP: 0
   gold: 0
-  inventory: {fileID: 0}
+  row: 5
+  items: []
+  equip: []
+  quest: []
+  questNum: 0
   fade: {fileID: 0}
 --- !u!4 &464848778
 Transform:
@@ -782,6 +787,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPos: {fileID: 1187333823}
   player: {fileID: 0}
+  NPCList: {fileID: 0}
+  skills: []
+  skill1: {fileID: 0}
+  skill2: {fileID: 0}
+  skill3: {fileID: 0}
   playerName: {fileID: 2089150265313822828}
   gameUI: {fileID: 8837068183715695982}
   enemyHPBar: {fileID: 8837068183347655607}
@@ -796,7 +806,6 @@ MonoBehaviour:
   levelUpUI: {fileID: 8232812994352062403}
   confrim: {fileID: 8849010169603246063}
   BGM: {fileID: 8300000, guid: 94c48975b08a2fb46886046664a70bd5, type: 3}
-  inventory: {fileID: 2089150263343193812}
 --- !u!4 &1920315039
 Transform:
   m_ObjectHideFlags: 0
@@ -1161,6 +1170,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotPrefab: {fileID: 2192661515244668164, guid: 52241f420d60de148a0c67a4620b182c, type: 3}
   slotParent: {fileID: 2089150264078080778}
+  goldText: {fileID: 0}
+  slots: []
+  player: {fileID: 0}
+  equipment: {fileID: 0}
 --- !u!224 &2089150263446191888
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1699,9 +1712,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8193e00e79bb6954b8c7b0f97eba55ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameSceneManager: {fileID: 0}
+  inventoryObj: {fileID: 0}
   inventory: {fileID: 2089150263343193811}
-  slotHolder: {fileID: 2089150264078080778}
+  equipment: {fileID: 0}
   menu: {fileID: 2089150263805023703}
+  dialogue: {fileID: 0}
+  quest: {fileID: 0}
+  storeObj: {fileID: 0}
+  questUI: {fileID: 0}
   sliderBGM: {fileID: 2089150264318804857}
   sliderSFX: {fileID: 2089150263488066993}
 --- !u!111 &2089150263751738849
@@ -5747,7 +5766,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8141974376008800166, guid: 197e6232745251443868ca8f095e3d16, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 197e6232745251443868ca8f095e3d16, type: 3}

@@ -19001,7 +19001,7 @@ GameObject:
   - component: {fileID: 19800612}
   - component: {fileID: 19965456}
   - component: {fileID: 3591123981925643099}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArcherSkill2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23872,7 +23872,7 @@ CapsuleCollider:
   m_Radius: 5
   m_Height: 20
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: 4.5}
 --- !u!1 &160550
 GameObject:
   m_ObjectHideFlags: 0

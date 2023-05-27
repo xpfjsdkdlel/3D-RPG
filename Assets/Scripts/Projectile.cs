@@ -5,21 +5,23 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField]
-    private GameObject firePos;
+    private GameObject firePos; // 생성될 좌표
     [SerializeField]
-    private Vector3 targetPos;
-    private int damage;
-    Enemy enemy;
+    private Vector3 targetPos; // 이동할 좌표
+    private int damage; // 공격력
+    private bool penetrate = false; // 관통 여부
+    private Enemy enemy;
     private void OnEnable()
     {
         damage = GameObject.FindObjectOfType<CharacterController>().damage + GameObject.FindObjectOfType<CharacterController>().weapon;
         transform.position = GameObject.Find("FirePos").transform.position;
     }
 
-    public void SetTarget(Vector3 pos, float scale = 1.0f)
+    public void SetTarget(Vector3 pos, float scale = 1.0f, bool penet = false)
     {// 이동할 경로 설정
         targetPos = pos + new Vector3(0, 0.5f, 0);
         damage = (int)((GameObject.FindObjectOfType<CharacterController>().damage + GameObject.FindObjectOfType<CharacterController>().weapon) * scale);
+        penetrate = penet;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,7 +30,8 @@ public class Projectile : MonoBehaviour
         {
             enemy = other.GetComponent<Enemy>();
             enemy.GetDamage(damage);
-            gameObject.SetActive(false);
+            if(!penetrate)
+                gameObject.SetActive(false);
         }
         else if (other.CompareTag("Destroy"))
             gameObject.SetActive(false);
