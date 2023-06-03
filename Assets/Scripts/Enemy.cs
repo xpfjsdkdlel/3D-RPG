@@ -92,7 +92,7 @@ public class Enemy : MonoBehaviour
             enemy.GetDamage(damage);
     }
 
-    public void GetDamage(int damage)
+    public void GetDamage(int damage, float stunTime = 0)
     {// 적에게 대미지를 받는 함수
         if (damage <= armor)
             HP -= 1;
@@ -116,10 +116,15 @@ public class Enemy : MonoBehaviour
             Invoke("Delete", 5f);
         }
         else
-            animator.SetTrigger("hit");
+        {
+            if (stunTime > 0)
+                StartStun(stunTime);
+            else
+                animator.SetTrigger("hit");
+        }
     }
 
-    public void StartStun(float time)
+    void StartStun(float time)
     {
         state = MonsterState.stun;
         animator.SetBool("stun", true);

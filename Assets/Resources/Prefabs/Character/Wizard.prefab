@@ -1407,8 +1407,10 @@ MonoBehaviour:
   gold: 0
   damage: 10
   weapon: 0
+  buffDamage: 0
   defense: 1
   armor: 0
+  buffDefense: 0
   range: 5
   addRange: 0
   attackDelay: 2
@@ -1420,6 +1422,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5bd2498a64f1ced468cefdbbd39cb414, type: 2}
   - {fileID: 11400000, guid: 994c327267a014645866d6532e558891, type: 2}
   maxRange: {fileID: 2571890091405791502}
+  firePos: {fileID: 658536260}
   isControll: 1
   invincible: 0
   enemy: {fileID: 0}

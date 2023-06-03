@@ -10,17 +10,20 @@ public class Projectile : MonoBehaviour
     private Vector3 targetPos; // 이동할 좌표
     private int damage; // 공격력
     private bool penetrate = false; // 관통 여부
+    private CharacterController player;
     private Enemy enemy;
+
     private void OnEnable()
     {
-        damage = GameObject.FindObjectOfType<CharacterController>().damage + GameObject.FindObjectOfType<CharacterController>().weapon;
-        transform.position = GameObject.Find("FirePos").transform.position;
+        player = GameObject.FindObjectOfType<CharacterController>();
+        damage = player.damage + player.weapon + player.buffDamage;
+        transform.position = player.firePos.transform.position;
     }
 
     public void SetTarget(Vector3 pos, float scale = 1.0f, bool penet = false)
     {// 이동할 경로 설정
         targetPos = pos + new Vector3(0, 0.5f, 0);
-        damage = (int)((GameObject.FindObjectOfType<CharacterController>().damage + GameObject.FindObjectOfType<CharacterController>().weapon) * scale);
+        damage = (int)(player.damage + player.weapon + player.buffDamage * scale);
         penetrate = penet;
     }
 

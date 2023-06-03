@@ -23,8 +23,10 @@ public class CharacterController : MonoBehaviour
     public int gold; // 돈
     public int damage; // 공격력
     public int weapon; // 무기 공격력
+    public int buffDamage = 0; // 공격력 버프
     public int defense; // 방어력
     public int armor; // 방어구 방어력
+    public int buffDefense = 0; // 방어력 버프
     public float range; // 사정거리
     public float addRange; // 추가 사정거리
     public float attackDelay; // 공격 딜레이
@@ -35,6 +37,7 @@ public class CharacterController : MonoBehaviour
     public Skill[] skills = new Skill[3]; // 스킬
     [SerializeField]
     private GameObject maxRange;
+    public GameObject firePos;
 
     public bool isControll = true; // 제어가 가능한 상태
     private bool battle = false; // 전투 상태
@@ -83,6 +86,7 @@ public class CharacterController : MonoBehaviour
                 RaycastHit click;
                 if (Input.GetKeyDown(KeyCode.Q) && skills[0].cost <= MP && skills[0].active)
                 {
+                    state = CharacterState.Idle;
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
                         transform.LookAt(click.point);
                     skills[0].active = false;
@@ -93,6 +97,7 @@ public class CharacterController : MonoBehaviour
                 }
                 else if (Input.GetKeyDown(KeyCode.W) && skills[1].cost <= MP && skills[1].active)
                 {
+                    state = CharacterState.Idle;
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
                         transform.LookAt(click.point);
                     skills[1].active = false;
@@ -103,6 +108,8 @@ public class CharacterController : MonoBehaviour
                 }
                 else if (Input.GetKeyDown(KeyCode.E) && skills[2].cost <= MP && skills[2].active)
                 {
+                    state = CharacterState.Idle;
+                    invincible = true;
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
                         transform.LookAt(click.point);
                     skills[2].active = false;
@@ -217,7 +224,7 @@ public class CharacterController : MonoBehaviour
         if (!enemy.isDead)
         {
             if(projectile == null)
-                enemy.GetDamage(damage + weapon);
+                enemy.GetDamage(damage + weapon + buffDamage);
         }
     }
 
@@ -230,10 +237,10 @@ public class CharacterController : MonoBehaviour
 
     public void GetDamage(int damage)
     {// 적에게 대미지를 받는 함수
-        if (damage <= defense + armor)
+        if (damage <= defense + armor + buffDefense)
             HP -= 1;
         else
-            HP -= damage - (defense + armor);
+            HP -= damage - (defense + armor + buffDefense);
         if (HP <= 0)
         {
             HP = 0;
@@ -243,8 +250,8 @@ public class CharacterController : MonoBehaviour
             moveDir.SetActive(false);
             MoveStop();
         }
-        else
-            animator.SetTrigger("hit");
+        //else
+        //    animator.SetTrigger("hit");
         sceneManager.Refresh();
     }
 
@@ -323,12 +330,15 @@ public class CharacterController : MonoBehaviour
         RaycastHit click;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
             if (archerSkill2 == null)
-                archerSkill2 = Instantiate(skills[1].effect, click.point + new Vector3(0, 0.5f, 0), Quaternion.Euler(-90, 0, 0));
+                archerSkill2 = Instantiate(skills[1].effect, click.point + new Vector3(0, 0.2f, 0), Quaternion.Euler(-90, 0, 0));
+            else
+                archerSkill2.transform.position = click.point + new Vector3(0, 0.5f, 0);
         archerSkill2.SetActive(true);
-        Invoke("Skill2Activefalse", 2f);
+        archerSkill2.GetComponent<Installation>().SetTarget(3f);
+        Invoke("ArcherSkill2End", 2f);
     }
 
-    void Skill2Activefalse()
+    void ArcherSkill2End()
     {
         archerSkill2.SetActive(false);
     }
@@ -343,7 +353,61 @@ public class CharacterController : MonoBehaviour
             archerSkill3.GetComponent<Projectile>().SetTarget(enemy.transform.position, 7, true);
         else
             archerSkill3.GetComponent<Projectile>().SetTarget(maxRange.transform.position, 7, true);
+        invincible = false;
 
+    }
+
+    private GameObject warriorSkill1;
+    void WarriorSkill1()
+    {// 스마이트
+        if (warriorSkill1 == null)
+            warriorSkill1 = Instantiate(skills[0].effect, firePos.transform.position, Quaternion.identity, firePos.transform);
+        warriorSkill1.SetActive(true);
+        warriorSkill1.transform.rotation = firePos.transform.rotation;
+        warriorSkill1.GetComponent<Installation>().SetTarget(2);
+    }
+
+    void WarriorSkill1End()
+    {
+        warriorSkill1.SetActive(false);
+    }
+
+    private GameObject warriorSkill2;
+    void WarriorSkill2()
+    {// 아머 크래시
+        if (warriorSkill2 == null)
+            warriorSkill2 = Instantiate(skills[1].effect, firePos.transform.position, Quaternion.identity);
+        else
+            warriorSkill2.transform.position = firePos.transform.position;
+        warriorSkill2.transform.rotation = Quaternion.Euler(90, 0, 0);
+        warriorSkill2.SetActive(true);
+        warriorSkill2.GetComponent<Installation>().SetTarget(2, 3);
+        Invoke("WarriorSkill2End", 1f);
+    }
+
+    void WarriorSkill2End()
+    {
+        warriorSkill2.SetActive(false);
+    }
+
+    private GameObject warriorSkill3;
+    void WarriorSkill3()
+    {// 투지
+        if (warriorSkill3 == null)
+            warriorSkill3 = Instantiate(skills[2].effect, transform.position, Quaternion.identity, transform);
+        warriorSkill3.transform.rotation = Quaternion.Euler(90, 0, 0);
+        warriorSkill3.SetActive(true);
+        buffDamage = 10;
+        buffDefense = 10;
+        Invoke("WarriorSkill3End", 30f);
+        invincible = false;
+    }
+
+    void WarriorSkill3End()
+    {
+        warriorSkill3.SetActive(false);
+        buffDamage = 0;
+        buffDefense = 0;
     }
 
     void Update()

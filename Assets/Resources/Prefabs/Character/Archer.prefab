@@ -953,7 +953,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2970708531887586887}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 10}
+  m_LocalPosition: {x: 0, y: 1, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2754,8 +2754,10 @@ MonoBehaviour:
   gold: 0
   damage: 10
   weapon: 0
+  buffDamage: 0
   defense: 1
   armor: 0
+  buffDefense: 0
   range: 8
   addRange: 0
   attackDelay: 2.5
@@ -2767,6 +2769,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ddc3357d111672441add079e2a9b0f99, type: 2}
   - {fileID: 11400000, guid: ec0e755586989a845b9f2cfa1fa0da2a, type: 2}
   maxRange: {fileID: 2970708531887586887}
+  firePos: {fileID: 1319610146}
   isControll: 1
   invincible: 0
   enemy: {fileID: 0}
