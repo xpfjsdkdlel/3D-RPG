@@ -35,6 +35,18 @@ public class GameUI : MonoBehaviour
     private bool equipActive = false;
     private bool menuActive = false;
 
+    private Skill[] skills;
+
+    [SerializeField] private Image skill1; // 스킬 이미지 UI
+    [SerializeField] private Image skill2;
+    [SerializeField] private Image skill3;
+    [SerializeField] private Image skill1Img; // 스킬 쿨타임 이미지 UI
+    [SerializeField] private Image skill2Img;
+    [SerializeField] private Image skill3Img;
+    private float skill1C = 0; // 스킬 사용후 경과한 시간
+    private float skill2C = 0;
+    private float skill3C = 0;
+
     public void Init()
     {
         sliderBGM.value = AudioManager.Instance.BGMVolume;
@@ -50,6 +62,13 @@ public class GameUI : MonoBehaviour
         inventoryObj.SetActive(invenActive);
         equipment.SetActive(equipActive);
         menu.SetActive(menuActive);
+        skills = gameSceneManager.player.skills;
+        skill1.sprite = skills[0].iconImg;
+        skill2.sprite = skills[1].iconImg;
+        skill3.sprite = skills[2].iconImg;
+        skill1Img.sprite = skills[0].iconImg;
+        skill2Img.sprite = skills[1].iconImg;
+        skill3Img.sprite = skills[2].iconImg;
     }
 
     public void SetBGMVolume()
@@ -122,7 +141,7 @@ public class GameUI : MonoBehaviour
     }
 
     public void NextDialogue()
-    {
+    {// 대화문 넘기기
         switch (npcRole)
         {
             case NPCrole.normal:
@@ -218,6 +237,40 @@ public class GameUI : MonoBehaviour
         questProg.text = quest.progress + " / " + quest.complete;
     }
 
+    private void SkillCoolDownCheck()
+    {
+        if (!skills[0].active && skill1C < skills[0].coolDown)
+        {
+            skill1C += Time.deltaTime;
+            skill1Img.fillAmount = (skills[0].coolDown - skill1C) / skills[0].coolDown;
+        }
+        else
+        {
+            skill1Img.fillAmount = 0;
+            skill1C = 0;
+        }
+        if (!skills[1].active && skill2C < skills[1].coolDown)
+        {
+            skill2C += Time.deltaTime;
+            skill2Img.fillAmount = (skills[1].coolDown - skill2C) / skills[1].coolDown;
+        }
+        else
+        {
+            skill2Img.fillAmount = 0;
+            skill2C = 0;
+        }
+        if (!skills[2].active && skill3C < skills[2].coolDown)
+        {
+            skill3C += Time.deltaTime;
+            skill3Img.fillAmount = (skills[2].coolDown - skill3C) / skills[2].coolDown;
+        }
+        else
+        {
+            skill3Img.fillAmount = 0;
+            skill3C = 0;
+        }
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.I) && !dialogue.activeSelf && !storeObj.activeSelf)
@@ -248,5 +301,6 @@ public class GameUI : MonoBehaviour
                     gameSceneManager.ControllEnable();
             }
         }
+        SkillCoolDownCheck();
     }
 }

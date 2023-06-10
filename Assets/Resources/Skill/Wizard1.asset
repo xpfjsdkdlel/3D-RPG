@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: "\uC36C\uB354\uBCFC\uD2B8"
   explan: "\uAC15\uB825\uD55C \uC804\uB958\uB85C \uC801\uC744 \uAC10\uC804\uC2DC\uCF1C
-    300%\uC758 \uD53C\uD574\uB97C \uC785\uD78C\uB2E4."
+    300%\uC758 \uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4."
   iconImg: {fileID: 21300000, guid: dcb765c9ebeacb041b344112be51711b, type: 3}
   coolDown: 5
   cost: 20
-  effect: {fileID: 703295214636978783, guid: d283e9e8fb258b34d96ef052deeebd7b, type: 3}
+  effect: {fileID: 3664255640070812419, guid: b7ab14845505b2e40a51e3af262a6964, type: 3}
   active: 1

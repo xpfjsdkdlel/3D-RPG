@@ -23,7 +23,7 @@ public class Projectile : MonoBehaviour
     public void SetTarget(Vector3 pos, float scale = 1.0f, bool penet = false)
     {// 이동할 경로 설정
         targetPos = pos + new Vector3(0, 0.5f, 0);
-        damage = (int)(player.damage + player.weapon + player.buffDamage * scale);
+        damage = (int)((player.damage + player.weapon + player.buffDamage) * scale);
         penetrate = penet;
     }
 

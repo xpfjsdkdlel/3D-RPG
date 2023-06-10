@@ -332,9 +332,9 @@ public class CharacterController : MonoBehaviour
             if (archerSkill2 == null)
                 archerSkill2 = Instantiate(skills[1].effect, click.point + new Vector3(0, 0.2f, 0), Quaternion.Euler(-90, 0, 0));
             else
-                archerSkill2.transform.position = click.point + new Vector3(0, 0.5f, 0);
+                archerSkill2.transform.position = click.point + new Vector3(0, 0.2f, 0);
         archerSkill2.SetActive(true);
-        archerSkill2.GetComponent<Installation>().SetTarget(3f);
+        archerSkill2.GetComponent<Installation>().SetTarget(3);
         Invoke("ArcherSkill2End", 2f);
     }
 
@@ -381,7 +381,7 @@ public class CharacterController : MonoBehaviour
             warriorSkill2.transform.position = firePos.transform.position;
         warriorSkill2.transform.rotation = Quaternion.Euler(90, 0, 0);
         warriorSkill2.SetActive(true);
-        warriorSkill2.GetComponent<Installation>().SetTarget(2, 3);
+        warriorSkill2.GetComponent<Installation>().SetTarget(1, 3);
         Invoke("WarriorSkill2End", 1f);
     }
 
@@ -408,6 +408,59 @@ public class CharacterController : MonoBehaviour
         warriorSkill3.SetActive(false);
         buffDamage = 0;
         buffDefense = 0;
+    }
+
+    private GameObject wizardSkill1;
+    void WizardSkill1()
+    {// 썬더볼트
+        if (wizardSkill1 == null)
+            wizardSkill1 = Instantiate(skills[0].effect, firePos.transform.position, Quaternion.identity, firePos.transform);
+        wizardSkill1.SetActive(true);
+        wizardSkill1.transform.rotation = firePos.transform.rotation;
+        wizardSkill1.GetComponent<Installation>().SetTarget(3);
+        Invoke("WizardSkill1End", 0.7f);
+    }
+
+    void WizardSkill1End()
+    {
+        wizardSkill1.SetActive(false);
+    }
+
+    private GameObject wizardSkill2;
+    void WizardSkill2()
+    {// 워터쉴드
+        if (wizardSkill2 == null)
+            wizardSkill2 = Instantiate(skills[1].effect, transform.position, Quaternion.identity, transform);
+        wizardSkill2.transform.rotation = Quaternion.Euler(90, 0, 0);
+        wizardSkill2.SetActive(true);
+        invincible = true;
+        Invoke("WizardSkill2End", 5f);
+    }
+
+    void WizardSkill2End()
+    {
+        wizardSkill2.SetActive(false);
+        invincible = false;
+    }
+
+    private GameObject wizardSkill3;
+    void WizardSkill3()
+    {// 익스플로전
+        RaycastHit click;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
+            if (wizardSkill3 == null)
+                wizardSkill3 = Instantiate(skills[2].effect, click.point + new Vector3(0, 0.2f, 0), Quaternion.Euler(-90, 0, 0));
+            else
+                wizardSkill3.transform.position = click.point + new Vector3(0, 0.2f, 0);
+        wizardSkill3.SetActive(true);
+        wizardSkill3.GetComponent<Installation>().SetTarget(5);
+        invincible = false;
+        Invoke("WizardSkill3End", 1f);
+    }
+
+    void WizardSkill3End()
+    {
+        wizardSkill3.SetActive(false);
     }
 
     void Update()

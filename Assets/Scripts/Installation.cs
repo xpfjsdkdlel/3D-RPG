@@ -15,7 +15,6 @@ public class Installation : MonoBehaviour
     private void OnEnable()
     {
         player = GameObject.FindObjectOfType<CharacterController>();
-        transform.position = player.firePos.transform.position;
         capsuleCollider = GetComponent<CapsuleCollider>();
         if(delay > 0)
         {
@@ -31,7 +30,7 @@ public class Installation : MonoBehaviour
 
     public void SetTarget(float scale = 1.0f, float stun = 0)
     {
-        damage = (int)(player.damage + player.weapon + player.buffDamage * scale);
+        damage = (int)((player.damage + player.weapon + player.buffDamage) * scale);
         stunTime = stun;
     }
 
