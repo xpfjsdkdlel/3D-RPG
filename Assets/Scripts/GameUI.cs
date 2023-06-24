@@ -17,7 +17,7 @@ public class GameUI : MonoBehaviour
     private TextMeshProUGUI npcName; // 대화문 내 NPC이름
     private TextMeshProUGUI npcText; // 대화문 텍스트
     public QuestData quest = null; // 진행중인 퀘스트
-    private int questIndex; // 퀘스트 인덱스
+    public int questIndex; // 퀘스트 인덱스
     private int n = 0; // 대화문 인덱스
     private NPCrole npcRole;
     [SerializeField]

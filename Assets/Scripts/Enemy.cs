@@ -112,11 +112,13 @@ public class Enemy : MonoBehaviour
             }
             // 경험치 주는 코드
             sceneManager.player.GetEXP(EXP);
+            sceneManager.CloseHP();
             itemSpawner.DropItem(transform.position);
             Invoke("Delete", 5f);
         }
         else
         {
+            sceneManager.ViewHP(this);
             if (stunTime > 0)
                 StartStun(stunTime);
             else

@@ -473,18 +473,15 @@ public class CharacterController : MonoBehaviour
                 enemy = null;
                 moveDir.SetActive(false);
                 MoveStop();
-                sceneManager.CloseHP();
                 break;
             case CharacterState.move:
                 moveDir.SetActive(true);
                 moveDir.transform.position = hit.point + new Vector3(0, 0.1f, 0);
                 MoveState(hit.point);
-                sceneManager.CloseHP();
                 break;
             case CharacterState.attack:
                 moveDir.SetActive(false);
                 AttackState();
-                sceneManager.ViewHP(enemy);
                 break;
             case CharacterState.death:
                 break;

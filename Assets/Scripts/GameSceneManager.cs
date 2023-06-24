@@ -155,11 +155,31 @@ public class GameSceneManager : MonoBehaviour
         GameManager.Instance.maxMP = player.maxMP;
         GameManager.Instance.EXP = player.EXP;
         GameManager.Instance.gold = player.gold;
+        GameManager.Instance.questNum = ui.questIndex;
         GameManager.Instance.SaveData();
     }
 
     public void LevelUp()
     {
+        switch (GameManager.Instance.number)
+        {
+            case 0:
+                player.maxHP += 3;
+                player.maxMP += 4;
+                break;
+            case 1:
+                player.maxHP += 5;
+                player.maxMP += 2;
+                break;
+            case 2:
+                player.maxHP += 2;
+                player.maxMP += 10;
+                break;
+        }
+        if (player.level % 5 == 0)
+            player.damage++;
+        player.HP = player.maxHP;
+        player.MP = player.maxMP;
         levelUpUI.SetActive(true);
         levelUpUI.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = player.level.ToString();
         levelUpUI.GetComponent<Animation>().Play();
