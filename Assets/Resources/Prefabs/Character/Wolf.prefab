@@ -231,7 +231,7 @@ MonoBehaviour:
   uid: 101
   name: "\uB291\uB300"
   HP: 0
-  maxHP: 20
+  maxHP: 30
   MP: 0
   maxMP: 10
   EXP: 3

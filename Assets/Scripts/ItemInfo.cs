@@ -5,6 +5,7 @@ using UnityEngine;
 public class ItemInfo : MonoBehaviour
 {
     public Item item;
+    public AudioClip sound;
     private GameUI gameUI;
     private Inventory inventory;
 
@@ -19,9 +20,11 @@ public class ItemInfo : MonoBehaviour
         {
             if (inventory.GetItem(item))
             {
-                inventory.RefreshSlot();
+                AudioManager.Instance.PlaySFX(sound);
+                if (inventory.gameObject.activeSelf)
+                    inventory.RefreshSlot();
                 Debug.Log("æ∆¿Ã≈€ »πµÊ " + item.name);
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
             else
             {

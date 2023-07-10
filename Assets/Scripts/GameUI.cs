@@ -47,6 +47,9 @@ public class GameUI : MonoBehaviour
     private float skill2C = 0;
     private float skill3C = 0;
 
+    [SerializeField]
+    private AudioClip click;
+
     public void Init()
     {
         sliderBGM.value = AudioManager.Instance.BGMVolume;
@@ -101,6 +104,7 @@ public class GameUI : MonoBehaviour
 
     public void ActiveDialogue(NPC npcData)
     {// 대화문 활성화
+        AudioManager.Instance.PlaySFX(click);
         n = 0;
         dialogue.SetActive(true);
         npcName.text = npcData.name;
@@ -142,6 +146,7 @@ public class GameUI : MonoBehaviour
 
     public void NextDialogue()
     {// 대화문 넘기기
+        AudioManager.Instance.PlaySFX(click);
         switch (npcRole)
         {
             case NPCrole.normal:
@@ -163,6 +168,7 @@ public class GameUI : MonoBehaviour
 
     public void QuestDialogue(QuestData quest)
     {
+        AudioManager.Instance.PlaySFX(click);
         if (quest.isProgress)
         {// 퀘스트가 진행중일 경우
             if (quest.progress == quest.complete)
@@ -180,6 +186,7 @@ public class GameUI : MonoBehaviour
                     GameManager.Instance.questNum++;
                     this.quest = null;
                     questUI.SetActive(false);
+                    GameManager.Instance.gold += quest.result;
                     CloseDialogue();
                 }
             }
@@ -214,6 +221,7 @@ public class GameUI : MonoBehaviour
 
     public void CloseDialogue()
     {// 대화문 닫기
+        AudioManager.Instance.PlaySFX(click);
         dialogue.SetActive(false);
         if (!storeObj.activeSelf)
             gameSceneManager.ControllEnable();
@@ -221,6 +229,7 @@ public class GameUI : MonoBehaviour
 
     private void CloseTab()
     {// 모든 창 닫기
+        AudioManager.Instance.PlaySFX(click);
         invenActive = false;
         inventoryObj.SetActive(false);
         equipActive = false;

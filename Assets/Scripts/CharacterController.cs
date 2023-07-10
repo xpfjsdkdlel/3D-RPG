@@ -52,6 +52,7 @@ public class CharacterController : MonoBehaviour
     private NavMeshAgent navMesh;
 
     private RaycastHit hit; // 우클릭 시 이동 할 장소
+    private RaycastHit click; // 스킬의 시전위치
     private int layerMask;
     [SerializeField]
     private GameObject moveDir; // 이동 할 위치 표시
@@ -71,7 +72,7 @@ public class CharacterController : MonoBehaviour
         navMesh = GetComponent<NavMeshAgent>();
         navMesh.speed = speed;
         sceneManager = GameObject.FindObjectOfType<GameSceneManager>();
-        layerMask = (-1) - (1 << LayerMask.NameToLayer("Spawner")) - (1 << LayerMask.NameToLayer("Skill"));
+        layerMask = (-1) - (1 << LayerMask.NameToLayer("Spawner")) - (1 << LayerMask.NameToLayer("Skill")) - (1 << LayerMask.NameToLayer("Water"));
     }
     
     void GetInput()
@@ -83,7 +84,6 @@ public class CharacterController : MonoBehaviour
                 ChangeMode();
             if (battle)
             {// 전투 상태일 때 Q, W, E를 눌러 스킬을 사용
-                RaycastHit click;
                 if (Input.GetKeyDown(KeyCode.Q) && skills[0].cost <= MP && skills[0].active)
                 {
                     state = CharacterState.Idle;
@@ -221,18 +221,20 @@ public class CharacterController : MonoBehaviour
 
     void Attack()
     {// 적에게 대미지를 입히는 함수
+        AudioManager.Instance.PlaySFX(Resources.Load<AudioClip>("AudioSource/SFX/Attack"));
         if (!enemy.isDead)
         {
-            if(projectile == null)
+            if (projectile == null)
                 enemy.GetDamage(damage + weapon + buffDamage);
         }
     }
 
     void ProjectileAttack()
-    {
+    {// 원거리 투사체 공격
         projectile.transform.parent = null;
         projectile.SetActive(true);
         projectile.GetComponent<Projectile>().SetTarget(enemy.transform.position);
+        AudioManager.Instance.PlaySFX(Resources.Load<AudioClip>("AudioSource/SFX/Attack"));
     }
 
     public void GetDamage(int damage)
@@ -241,6 +243,7 @@ public class CharacterController : MonoBehaviour
             HP -= 1;
         else
             HP -= damage - (defense + armor + buffDefense);
+        AudioManager.Instance.PlaySFX(Resources.Load<AudioClip>("AudioSource/SFX/Hit"));
         if (HP <= 0)
         {
             HP = 0;
@@ -290,6 +293,12 @@ public class CharacterController : MonoBehaviour
             this.EXP = (this.EXP + EXP) - (level * 10); 
             ++level;
             sceneManager.LevelUp();
+            if(this.EXP + EXP >= level * 10)
+            {
+                this.EXP = (this.EXP + EXP) - (level * 10);
+                ++level;
+                sceneManager.LevelUp();
+            }
         }
         else
             this.EXP += EXP;
@@ -322,20 +331,26 @@ public class CharacterController : MonoBehaviour
             archerSkill1.GetComponent<Projectile>().SetTarget(enemy.transform.position, 2);
         else
             archerSkill1.GetComponent<Projectile>().SetTarget(maxRange.transform.position, 2);
+        AudioManager.Instance.PlaySFX(skills[0].sound);
     }
 
     private GameObject archerSkill2;
     void ArcherSkill2()
     {// 애로우 레인
-        RaycastHit click;
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
-            if (archerSkill2 == null)
-                archerSkill2 = Instantiate(skills[1].effect, click.point + new Vector3(0, 0.2f, 0), Quaternion.Euler(-90, 0, 0));
-            else
-                archerSkill2.transform.position = click.point + new Vector3(0, 0.2f, 0);
+        if (archerSkill2 == null)
+            archerSkill2 = Instantiate(skills[1].effect, click.point + new Vector3(0, 0.2f, 0), Quaternion.Euler(-90, 0, 0));
+        else
+            archerSkill2.transform.position = click.point + new Vector3(0, 0.2f, 0);
         archerSkill2.SetActive(true);
         archerSkill2.GetComponent<Installation>().SetTarget(3);
+        AudioManager.Instance.PlaySFX(skills[1].sound);
+        Invoke("ArcherSkill2Sound", 0.5f);
         Invoke("ArcherSkill2End", 2f);
+    }
+
+    void ArcherSkill2Sound()
+    {
+        AudioManager.Instance.PlaySFX(Resources.Load<AudioClip>("AudioSource/SFX/ArrowRain2"));
     }
 
     void ArcherSkill2End()
@@ -354,6 +369,7 @@ public class CharacterController : MonoBehaviour
         else
             archerSkill3.GetComponent<Projectile>().SetTarget(maxRange.transform.position, 7, true);
         invincible = false;
+        AudioManager.Instance.PlaySFX(skills[2].sound);
 
     }
 
@@ -365,6 +381,7 @@ public class CharacterController : MonoBehaviour
         warriorSkill1.SetActive(true);
         warriorSkill1.transform.rotation = firePos.transform.rotation;
         warriorSkill1.GetComponent<Installation>().SetTarget(2);
+        AudioManager.Instance.PlaySFX(skills[0].sound);
     }
 
     void WarriorSkill1End()
@@ -382,6 +399,7 @@ public class CharacterController : MonoBehaviour
         warriorSkill2.transform.rotation = Quaternion.Euler(90, 0, 0);
         warriorSkill2.SetActive(true);
         warriorSkill2.GetComponent<Installation>().SetTarget(1, 3);
+        AudioManager.Instance.PlaySFX(skills[1].sound);
         Invoke("WarriorSkill2End", 1f);
     }
 
@@ -399,6 +417,7 @@ public class CharacterController : MonoBehaviour
         warriorSkill3.SetActive(true);
         buffDamage = 10;
         buffDefense = 10;
+        AudioManager.Instance.PlaySFX(skills[2].sound);
         Invoke("WarriorSkill3End", 30f);
         invincible = false;
     }
@@ -418,6 +437,7 @@ public class CharacterController : MonoBehaviour
         wizardSkill1.SetActive(true);
         wizardSkill1.transform.rotation = firePos.transform.rotation;
         wizardSkill1.GetComponent<Installation>().SetTarget(3);
+        AudioManager.Instance.PlaySFX(skills[0].sound);
         Invoke("WizardSkill1End", 0.7f);
     }
 
@@ -434,6 +454,7 @@ public class CharacterController : MonoBehaviour
         wizardSkill2.transform.rotation = Quaternion.Euler(90, 0, 0);
         wizardSkill2.SetActive(true);
         invincible = true;
+        AudioManager.Instance.PlaySFX(skills[1].sound);
         Invoke("WizardSkill2End", 5f);
     }
 
@@ -446,15 +467,14 @@ public class CharacterController : MonoBehaviour
     private GameObject wizardSkill3;
     void WizardSkill3()
     {// 익스플로전
-        RaycastHit click;
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out click, Mathf.Infinity, layerMask))
-            if (wizardSkill3 == null)
-                wizardSkill3 = Instantiate(skills[2].effect, click.point + new Vector3(0, 0.2f, 0), Quaternion.Euler(-90, 0, 0));
-            else
-                wizardSkill3.transform.position = click.point + new Vector3(0, 0.2f, 0);
+        if (wizardSkill3 == null)
+            wizardSkill3 = Instantiate(skills[2].effect, click.point + new Vector3(0, 0.2f, 0), Quaternion.Euler(-90, 0, 0));
+        else
+            wizardSkill3.transform.position = click.point + new Vector3(0, 0.2f, 0);
         wizardSkill3.SetActive(true);
         wizardSkill3.GetComponent<Installation>().SetTarget(5);
         invincible = false;
+        AudioManager.Instance.PlaySFX(skills[2].sound);
         Invoke("WizardSkill3End", 1f);
     }
 

@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
     public float attackDelay; // 공격 딜레이
     public float speed = 2.0f; // 이동속도
     public bool isDead = false; // 생존 여부
+    private bool getAttack = false; // 공격을 받았는지 여부
 
     [SerializeField]
     private float dis; // 플레이어와의 거리
@@ -48,10 +49,12 @@ public class Enemy : MonoBehaviour
     private GameSceneManager sceneManager;
     [SerializeField]
     private ItemSpawner itemSpawner;
+    private AudioClip hitSound;
 
     private void Awake()
     {
         gameUI = GameUI.FindObjectOfType<GameUI>();
+        hitSound = Resources.Load<AudioClip>("AudioSource/SFX/EnemyHit");
     }
 
     void OnEnable()
@@ -73,6 +76,7 @@ public class Enemy : MonoBehaviour
         navMesh = GetComponent<NavMeshAgent>();
         navMesh.enabled = true;
         isDead = false;
+        getAttack = false;
     }
 
     void AttackAnim()
@@ -98,6 +102,7 @@ public class Enemy : MonoBehaviour
             HP -= 1;
         else
             HP -= damage - armor;
+        AudioManager.Instance.PlaySFX(hitSound);
         if (HP <= 0)
         {
             HP = 0;
@@ -122,7 +127,10 @@ public class Enemy : MonoBehaviour
             if (stunTime > 0)
                 StartStun(stunTime);
             else
+            {
                 animator.SetTrigger("hit");
+                getAttack = true;
+            }
         }
     }
 
@@ -175,15 +183,13 @@ public class Enemy : MonoBehaviour
                     navMesh.ResetPath();
                     navMesh.velocity = Vector3.zero;
                     animator.SetBool("isWalk", false);
-                    if (dis < 10)
+                    if (dis < 10 || getAttack)
                         state = MonsterState.chase;
                     break;
                 case MonsterState.chase:
                     if (!attackState)
                     {
-                        if (dis > 15)
-                            state = MonsterState.Idle;
-                        else if (dis <= range)
+                        if (dis <= range)
                         {
                             navMesh.ResetPath();
                             navMesh.velocity = Vector3.zero;

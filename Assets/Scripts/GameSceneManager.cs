@@ -161,6 +161,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void LevelUp()
     {
+        AudioManager.Instance.PlaySFX(Resources.Load<AudioClip>("AudioSource/SFX/LevelUp"));
         switch (GameManager.Instance.number)
         {
             case 0:

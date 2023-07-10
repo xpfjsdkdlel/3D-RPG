@@ -7,17 +7,19 @@ public class Spawner : MonoBehaviour
     [SerializeField]
     private GameObject monster;
     [SerializeField]
-    private int count;
+    private int maxCount; // 최대로 소환될 수 있는 몬스터의 수
     [SerializeField]
-    private float timer;
+    private int spawnCount = 1; // 한번에 스폰되는 몬스터의 수
     [SerializeField]
-    private float prevTimer;
+    private float timer; // 리스폰에 걸리는 시간
     [SerializeField]
-    private bool action = false;
+    private float prevTimer; // 경과된 시간
+    [SerializeField]
+    private bool action = false; // 활성화 여부
 
     private void Awake()
     {
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < maxCount; i++)
         {
             GameObject mon = Instantiate(monster, transform.position, Quaternion.identity, transform);
             mon.SetActive(false);
@@ -34,7 +36,7 @@ public class Spawner : MonoBehaviour
             {
                 select = transform.GetChild(i).gameObject;
                 select.SetActive(true);
-                select.transform.position = transform.position + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2));
+                select.transform.position = transform.position + new Vector3(Random.Range(-4, 4), 0, Random.Range(-2, 2));
                 select.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
                 break;
             }
@@ -55,7 +57,8 @@ public class Spawner : MonoBehaviour
             if(prevTimer >= timer && action)
             {
                 prevTimer = 0;
-                SpawnMonster();
+                for (int i = 0; i < spawnCount; i++)
+                    SpawnMonster();
             }
         }
     }

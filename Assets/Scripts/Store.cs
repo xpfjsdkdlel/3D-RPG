@@ -15,8 +15,6 @@ public class Store : MonoBehaviour
     private TextMeshProUGUI goldText;
     private ItemList list;
 
-    private int j;
-
     private void Awake()
     {
         for (int i = 0; i < GameManager.Instance.row * 3; i++)
@@ -47,27 +45,23 @@ public class Store : MonoBehaviour
                 list.itemPrice.color = Color.white;
         }
         goldText.text = GameManager.Instance.gold.ToString();
-        j = 0;
         for (int i = 0; i < GameManager.Instance.row * 3; i++)
         {
+            list = sellList.GetChild(i).GetComponent<ItemList>();
             if (GameManager.Instance.items[i] != null)
             {
-                list = sellList.GetChild(j).GetComponent<ItemList>();
                 list.gameObject.SetActive(true);
                 list.item = GameManager.Instance.items[i];
                 list.number = i;
                 list.itemImg.sprite = list.item.iconImg;
                 list.itemName.text = list.item.name;
                 list.itemPrice.text = (list.item.price / 10).ToString();
-                j++;
             }
-        }
-        for (; j < GameManager.Instance.row * 3; j++)
-        {
-            list = sellList.GetChild(j).GetComponent<ItemList>();
-            list.item = null;
-            list.gameObject.SetActive(false);
-            j++;
+            else
+            {
+                list.item = null;
+                list.gameObject.SetActive(false);
+            }
         }
     }
 }

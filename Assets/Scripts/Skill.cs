@@ -12,4 +12,5 @@ public class Skill : ScriptableObject
     public int cost; // 마나 비용
     public GameObject effect; // 스킬 이펙트
     public bool active = true; // 사용 가능 여부
+    public AudioClip sound; // 스킬 사운드
 }

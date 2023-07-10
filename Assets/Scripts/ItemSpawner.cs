@@ -8,6 +8,7 @@ public class ItemSpawner : MonoBehaviour
     private Item[] items;
     [SerializeField]
     private GameObject prefabs;
+    private AudioClip sound;
 
     int num = 0;
 
@@ -18,6 +19,7 @@ public class ItemSpawner : MonoBehaviour
             GameObject pre = Instantiate(prefabs, transform.position, Quaternion.identity, transform);
             pre.SetActive(false);
         }
+        sound = Resources.Load<AudioClip>("AudioSource/SFX/Item");
     }
 
     public void DropItem(Vector3 pos)
@@ -25,10 +27,10 @@ public class ItemSpawner : MonoBehaviour
         num = Random.Range(0, 14);
         Debug.Log(num);
         if(num < 11)
-            SpawnItem(num, pos);
+            SpawnItem(num, 1, pos);
     }
 
-    private void SpawnItem(int number, Vector3 pos)
+    private void SpawnItem(int number, int count, Vector3 pos)
     {
         GameObject select = null;
         ItemInfo itemInfo;
@@ -42,10 +44,12 @@ public class ItemSpawner : MonoBehaviour
                 select.transform.position = pos + new Vector3(0, 1, 0);
                 select.transform.rotation = Quaternion.identity;
                 itemInfo.item = items[number];
+                itemInfo.item.count = count;
+                itemInfo.sound = sound;
                 break;
             }
         }
-        if(select == null)
+        if (select == null)
         {
             GameObject pre = Instantiate(prefabs, transform.position, Quaternion.identity, transform);
             pre.SetActive(false);

@@ -17,11 +17,15 @@ public class ItemList : MonoBehaviour
     public int number;
     private Inventory inventory;
     private Store store;
+    private AudioClip trade;
+    private AudioClip error;
 
     private void Awake()
     {
         inventory = GameObject.FindObjectOfType<Inventory>();
         store = GameObject.FindObjectOfType<Store>();
+        trade = Resources.Load<AudioClip>("AudioSource/SFX/Trade");
+        error = Resources.Load<AudioClip>("AudioSource/SFX/Error");
         if (buy)
         {
             btnImg.sprite = btnColor[0];
@@ -42,14 +46,17 @@ public class ItemList : MonoBehaviour
             {
                 inventory.GetItem(item);
                 GameManager.Instance.gold -= item.price;
+                AudioManager.Instance.PlaySFX(trade);
             }
             else
             {
+                AudioManager.Instance.PlaySFX(error);
                 Debug.Log("골드가 부족합니다.");
             }
         }
         else
         {
+            AudioManager.Instance.PlaySFX(trade);
             if (item.equip)
             {
                 GameManager.Instance.items[number] = null;
@@ -58,16 +65,16 @@ public class ItemList : MonoBehaviour
             }
             else
             {
-                GameManager.Instance.items[number].count--;
-                item.count--;
+                --GameManager.Instance.items[number].count;
                 GameManager.Instance.gold += item.price / 10;
                 if (item.count <= 0)
+                {
+                    GameManager.Instance.items[number] = null;
                     gameObject.SetActive(false);
+                }
             }
         }
-        inventory.slots[number].item = null;
-        if (inventory.gameObject.activeSelf)
-            inventory.RefreshSlot();
+        inventory.RefreshSlot();
         store.RefreshList();
     }
 }

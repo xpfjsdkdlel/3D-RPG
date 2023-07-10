@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 4059062785976670204}
   - component: {fileID: 8677298761811795818}
   m_Layer: 0
-  m_Name: Reindeer
+  m_Name: Stag
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -231,7 +231,7 @@ MonoBehaviour:
   uid: 102
   name: "\uC21C\uB85D"
   HP: 0
-  maxHP: 40
+  maxHP: 100
   MP: 0
   maxMP: 10
   EXP: 5

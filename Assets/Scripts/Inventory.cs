@@ -17,6 +17,13 @@ public class Inventory : MonoBehaviour
     private CharacterController player;
     [SerializeField]
     private Equipment equipment;
+    [SerializeField]
+    private AudioClip equip;
+    [SerializeField]
+    private AudioClip potion;
+    [SerializeField]
+    private AudioClip error;
+    public Store store;
 
     public void Init()
     {
@@ -29,37 +36,36 @@ public class Inventory : MonoBehaviour
             slots[i].slotNumber = i;
         }
         gameScene = GameObject.FindObjectOfType<GameSceneManager>();
+        store = GameObject.FindObjectOfType<Store>();
     }
 
     public void RefreshSlot()
     {// 각 슬롯 새로고침
         for (int i = 0; i < GameManager.Instance.items.Length; i++)
-        {
-            if(GameManager.Instance.items[i] != null)
-                slots[i].item = GameManager.Instance.items[i];
             slots[i].Refresh();
-        }
         goldText.text = GameManager.Instance.gold.ToString();
     }
 
     public bool GetItem(Item _item)
     {
+        if (!_item.equip)
+        {
+            for (int i = 0; i < GameManager.Instance.items.Length; i++)
+            {
+                if (GameManager.Instance.items[i] != null && GameManager.Instance.items[i].uid == _item.uid)
+                {
+                    GameManager.Instance.items[i].count += _item.count;
+                    return true;
+                }
+            }
+        }
         for (int i = 0; i < GameManager.Instance.items.Length; i++)
         {
             if (GameManager.Instance.items[i] == null)
             {
                 GameManager.Instance.items[i] = _item;
-                slots[i].Refresh();
+                GameManager.Instance.items[i].count = 1;
                 return true;
-            }
-            else if (GameManager.Instance.items[i].uid == _item.uid)
-            {
-                if (!GameManager.Instance.items[i].equip && GameManager.Instance.items[i].count < 99)
-                {
-                    ++GameManager.Instance.items[i].count;
-                    slots[i].Refresh();
-                    return true;
-                }
             }
         }
         return false;
@@ -68,11 +74,12 @@ public class Inventory : MonoBehaviour
     public void UseItem(int num)
     {// 아이템 사용
         player = gameScene.player;
-        Item _item = slots[num].item;
+        Item _item = GameManager.Instance.items[num];
         if (_item.equip)
         {// 장비일 경우
             if (_item.classNum == 3)
             {// 방어구 착용
+                AudioManager.Instance.PlaySFX(equip);
                 switch (_item.uid)
                 {
                     case 201:
@@ -81,14 +88,12 @@ public class Inventory : MonoBehaviour
                             Item prevItem = GameManager.Instance.equip[0];
                             GameManager.Instance.equip[0] = _item;
                             GameManager.Instance.items[num] = prevItem;
-                            slots[num].item = prevItem;
                             Debug.Log(prevItem.name + "와(과) " + _item.name + "을(를) 교체");
                         }
                         else
                         {
                             GameManager.Instance.equip[0] = _item;
                             GameManager.Instance.items[num] = null;
-                            slots[num].item = null;
                             Debug.Log(_item.name + " 착용");
                         }
                         break;
@@ -98,14 +103,12 @@ public class Inventory : MonoBehaviour
                             Item prevItem = GameManager.Instance.equip[1];
                             GameManager.Instance.equip[1] = _item;
                             GameManager.Instance.items[num] = prevItem;
-                            slots[num].item = prevItem;
                             Debug.Log(prevItem.name + "와(과) " + _item.name + "을(를) 교체");
                         }
                         else
                         {
                             GameManager.Instance.equip[1] = _item;
                             GameManager.Instance.items[num] = null;
-                            slots[num].item = null;
                             Debug.Log(_item.name + " 착용");
                         }
                         break;
@@ -115,14 +118,12 @@ public class Inventory : MonoBehaviour
                             Item prevItem = GameManager.Instance.equip[2];
                             GameManager.Instance.equip[2] = _item;
                             GameManager.Instance.items[num] = prevItem;
-                            slots[num].item = prevItem;
                             Debug.Log(prevItem.name + "와(과) " + _item.name + "을(를) 교체");
                         }
                         else
                         {
                             GameManager.Instance.equip[2] = _item;
                             GameManager.Instance.items[num] = null;
-                            slots[num].item = null;
                             Debug.Log(_item.name + " 착용");
                         }
                         break;
@@ -134,43 +135,42 @@ public class Inventory : MonoBehaviour
             {
                 if(_item.uid < 200)
                 {// 무기 착용
+                    AudioManager.Instance.PlaySFX(equip);
                     if (GameManager.Instance.equip[3] != null)
                     {
                         Item prevItem = GameManager.Instance.equip[3];
                         GameManager.Instance.equip[3] = _item;
                         GameManager.Instance.items[num] = prevItem;
-                        slots[num].item = prevItem;
                         Debug.Log(prevItem.name + "와(과) " + _item.name + "을(를) 교체");
                     }
                     else
                     {
                         GameManager.Instance.equip[3] = _item;
                         GameManager.Instance.items[num] = null;
-                        slots[num].item = null;
                         Debug.Log(_item.name + " 착용");
                     }
                 }
                 else
                 {// 보조무기 착용
+                    AudioManager.Instance.PlaySFX(equip);
                     if (GameManager.Instance.equip[4] != null)
                     {
                         Item prevItem = GameManager.Instance.equip[4];
                         GameManager.Instance.equip[4] = _item;
                         GameManager.Instance.items[num] = prevItem;
-                        slots[num].item = prevItem;
                         Debug.Log(prevItem.name + "와(과) " + _item.name + "을(를) 교체");
                     }
                     else
                     {
                         GameManager.Instance.equip[4] = _item;
                         GameManager.Instance.items[num] = null;
-                        slots[num].item = null;
                         Debug.Log(_item.name + " 착용");
                     }
                 }
             }
             else
             {
+                AudioManager.Instance.PlaySFX(error);
                 Debug.Log("착용할 수 없는 장비입니다.");
             }
             if(equipment.gameObject.activeSelf)
@@ -182,20 +182,14 @@ public class Inventory : MonoBehaviour
             {
                 case 401:
                     if (player.maxHP <= player.HP + _item.stat)
-                    {
                         player.HP = player.maxHP;
-                        --_item.count;
-                    }
                     else
                         player.HP += _item.stat;
                     Debug.Log("체력포션 사용");
                     break;
                 case 402:
                     if (player.maxMP <= player.MP + _item.stat)
-                    {
                         player.MP = player.maxMP;
-                        --_item.count;
-                    }
                     else
                         player.MP += _item.stat;
                     Debug.Log("마나포션 사용");
@@ -203,8 +197,10 @@ public class Inventory : MonoBehaviour
                 default:
                     break;
             }
-            if (_item.count <= 0)
-                slots[num].item = null;
+            --GameManager.Instance.items[num].count;
+            AudioManager.Instance.PlaySFX(potion);
+            if (GameManager.Instance.items[num].count <= 0)
+                GameManager.Instance.items[num] = null;
             player.Refresh();
         }
         gameScene.RefreshStat();

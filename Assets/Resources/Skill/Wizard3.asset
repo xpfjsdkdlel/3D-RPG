@@ -20,3 +20,4 @@ MonoBehaviour:
   cost: 60
   effect: {fileID: 129134, guid: cef3e60e22706d64393959f98c56d611, type: 3}
   active: 1
+  sound: {fileID: 8300000, guid: 21c4a490b24ba2045bc815f7626a40ef, type: 3}
