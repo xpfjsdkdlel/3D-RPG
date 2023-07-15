@@ -32,8 +32,8 @@ public class GameManager : MonoBehaviour
 
     public string nextScene;
 
-    private PlayerData pData; // 저장된 플레이어 데이터
-    private string dataPath; // 데이터의 저장 경로
+    private PlayerData pData = new PlayerData(); // 저장된 플레이어 데이터
+    public string dataPath; // 데이터의 저장 경로
 
     public int number = 0; // 클래스
     public string name; // 캐릭터 이름
@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
     public QuestData[] quest; // 퀘스트
     public int questNum; // 퀘스트 진행도
 
+    public AudioClip click;
+
     public Fade fade;
 
     void Awake()
@@ -61,7 +63,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             return;
         }
         fade = GameObject.FindObjectOfType<Fade>();
@@ -74,7 +76,6 @@ public class GameManager : MonoBehaviour
         equip = new Item[5];
         fade.FadeIn();
         dataPath = Application.persistentDataPath + "/save";
-        LoadData();
     }
 
     public void ResetData()
@@ -118,12 +119,13 @@ public class GameManager : MonoBehaviour
 
         string data = JsonUtility.ToJson(pData);
         File.WriteAllText(dataPath, data);
+        Debug.Log("데이터가 저장되었습니다.");
     }
 
     public void LoadData()
     {
         if (File.Exists(dataPath))
-        {
+        { 
             string data = File.ReadAllText(dataPath);
             pData = JsonUtility.FromJson<PlayerData>(data);
             number = pData.number;

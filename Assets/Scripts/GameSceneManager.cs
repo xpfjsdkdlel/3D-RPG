@@ -36,14 +36,11 @@ public class GameSceneManager : MonoBehaviour
         player.MP = GameManager.Instance.MP;
         player.maxMP = GameManager.Instance.maxMP;
         player.EXP = GameManager.Instance.EXP;
-        player.gold = GameManager.Instance.gold;
         player.Init();
         player.skills[0].active = true;
         player.skills[1].active = true;
         player.skills[2].active = true;
         Refresh();
-        cam = Camera.main;
-        playerName.transform.GetComponent<TextMeshProUGUI>().text = player.name;
         ui = gameUI.GetComponent<GameUI>();
         ui.Init();
         cameraMove = GameObject.FindObjectOfType<CameraMove>();
@@ -52,9 +49,7 @@ public class GameSceneManager : MonoBehaviour
         GameManager.Instance.fade.FadeIn();
         AudioManager.Instance.PlayBGM(BGM);
     }
-    private Camera cam = null;
 
-    [SerializeField] private GameObject playerName;
     [SerializeField] private GameObject gameUI;
     [SerializeField] private GameObject enemyHPBar;
     [SerializeField] private Image enemyHP;
@@ -67,6 +62,7 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private GameObject levelUpUI; // 레벨업 시 출력할 UI
     [SerializeField] private GameObject confrim; // 종료 버튼 클릭 시 출력할 UI
+    [SerializeField] private GameObject gameOver; // 캐릭터 사망 시 출력할 UI
     [SerializeField] private AudioClip BGM; // 배경 음악
 
     public void ViewHP(Enemy target)
@@ -126,16 +122,19 @@ public class GameSceneManager : MonoBehaviour
 
     public void ShowConfrim()
     {
+        AudioManager.Instance.PlaySFX(GameManager.Instance.click);
         confrim.SetActive(true);
     }
 
     public void CloseConfrim()
     {
+        AudioManager.Instance.PlaySFX(GameManager.Instance.click);
         confrim.SetActive(false);
     }
 
     public void ExitGame()
     {
+        AudioManager.Instance.PlaySFX(GameManager.Instance.click);
         GameManager.Instance.fade.FadeOut();
         Invoke("EndGame", 2f);
     }
@@ -147,6 +146,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void SavePlayerData()
     {
+        AudioManager.Instance.PlaySFX(GameManager.Instance.click);
         GameManager.Instance.name = player.name;
         GameManager.Instance.level = player.level;
         GameManager.Instance.HP = player.HP;
@@ -154,7 +154,6 @@ public class GameSceneManager : MonoBehaviour
         GameManager.Instance.MP = player.MP;
         GameManager.Instance.maxMP = player.maxMP;
         GameManager.Instance.EXP = player.EXP;
-        GameManager.Instance.gold = player.gold;
         GameManager.Instance.questNum = ui.questIndex;
         GameManager.Instance.SaveData();
     }
@@ -187,6 +186,28 @@ public class GameSceneManager : MonoBehaviour
         Invoke("DisableLevel", 6f);
     }
 
+    public void GameOver()
+    {
+        gameOver.SetActive(true);
+    }
+
+    public void ReStart()
+    {// 부활
+        GameManager.Instance.fade.FadeOut();
+        Invoke("Resurrection", 2f);
+    }
+
+    void Resurrection()
+    {
+        player.gameObject.SetActive(false);
+        player.gameObject.SetActive(true);
+        gameOver.SetActive(false);
+        player.Resurrection();
+        player.transform.position = startPos.position;
+        Refresh();
+        GameManager.Instance.fade.FadeIn();
+    }
+
     void DisableLevel()
     {
         levelUpUI.SetActive(false);
@@ -202,10 +223,5 @@ public class GameSceneManager : MonoBehaviour
     {
         player.isControll = false;
         cameraMove.isControll = false;
-    }
-
-    void Update()
-    {
-        playerName.transform.position = cam.WorldToScreenPoint(player.transform.position + new Vector3(0, 2f, 0));
     }
 }

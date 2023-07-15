@@ -37,6 +37,9 @@ public class GameUI : MonoBehaviour
 
     private Skill[] skills;
 
+    [SerializeField] private GameObject playerName; // 플레이어 이름
+    private Camera cam = null;
+
     [SerializeField] private Image skill1; // 스킬 이미지 UI
     [SerializeField] private Image skill2;
     [SerializeField] private Image skill3;
@@ -72,6 +75,8 @@ public class GameUI : MonoBehaviour
         skill1Img.sprite = skills[0].iconImg;
         skill2Img.sprite = skills[1].iconImg;
         skill3Img.sprite = skills[2].iconImg;
+        playerName.transform.GetComponent<TextMeshProUGUI>().text = GameManager.Instance.name;
+        cam = Camera.main;
     }
 
     public void SetBGMVolume()
@@ -311,5 +316,6 @@ public class GameUI : MonoBehaviour
             }
         }
         SkillCoolDownCheck();
+        playerName.transform.position = cam.WorldToScreenPoint(gameSceneManager.player.transform.position + new Vector3(0, 2f, 0));
     }
 }

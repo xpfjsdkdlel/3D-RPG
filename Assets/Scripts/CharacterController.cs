@@ -20,7 +20,6 @@ public class CharacterController : MonoBehaviour
     public int MP; // 현재 마나
     public int maxMP; // 최대 마나
     public int EXP; // 경험치
-    public int gold; // 돈
     public int damage; // 공격력
     public int weapon; // 무기 공격력
     public int buffDamage = 0; // 공격력 버프
@@ -252,10 +251,23 @@ public class CharacterController : MonoBehaviour
             state = CharacterState.death;
             moveDir.SetActive(false);
             MoveStop();
+            sceneManager.GameOver();
         }
         //else
         //    animator.SetTrigger("hit");
         sceneManager.Refresh();
+    }
+
+    public void Resurrection()
+    {
+        state = CharacterState.Idle;
+        isDead = false;
+        HP = 10;
+        EXP = EXP / 3;
+        isControll = true;
+        battle = false;
+        animator.SetBool("battle", false);
+        animator.SetTrigger("resurrection");
     }
 
     public void Refresh()
@@ -497,10 +509,18 @@ public class CharacterController : MonoBehaviour
             case CharacterState.move:
                 moveDir.SetActive(true);
                 moveDir.transform.position = hit.point + new Vector3(0, 0.1f, 0);
+                moveDir.transform.localScale = new Vector3(0.4f, 0.4f);
                 MoveState(hit.point);
                 break;
             case CharacterState.attack:
-                moveDir.SetActive(false);
+                if (enemy != null)
+                {
+                    moveDir.SetActive(true);
+                    moveDir.transform.position = enemy.transform.position;
+                    moveDir.transform.localScale = new Vector3(1f, 1f);
+                }
+                else
+                    moveDir.SetActive(false);
                 AttackState();
                 break;
             case CharacterState.death:

@@ -8,6 +8,7 @@ public enum MonsterState
     Idle,
     chase,
     stun,
+    retreat,
 }
 
 public class Enemy : MonoBehaviour
@@ -33,7 +34,9 @@ public class Enemy : MonoBehaviour
     private float attackTime = 0f; // 공격 후 흐른 시간
     private bool attackState = false; // false면 공격이 가능한 상태
     [SerializeField]
-    private MonsterState state = new MonsterState();
+    private MonsterState state = new MonsterState(); // 몬스터의 상태
+    private Vector3 spawnPos;
+
     private Animator animator;
     [SerializeField]
     private GameObject target;
@@ -77,6 +80,7 @@ public class Enemy : MonoBehaviour
         navMesh.enabled = true;
         isDead = false;
         getAttack = false;
+        spawnPos = transform.position;
     }
 
     void AttackAnim()
@@ -147,6 +151,11 @@ public class Enemy : MonoBehaviour
         animator.SetBool("stun", false);
     }
 
+    public void Retreat()
+    {
+        state = MonsterState.retreat;
+    }
+
     void UpdateTarget()
     {
         target = GameObject.FindGameObjectWithTag("Player");
@@ -208,6 +217,16 @@ public class Enemy : MonoBehaviour
                 case MonsterState.stun:
                     navMesh.ResetPath();
                     navMesh.velocity = Vector3.zero;
+                    break;
+                case MonsterState.retreat:
+                    navMesh.SetDestination(spawnPos);
+                    animator.SetBool("isWalk", true);
+                    getAttack = false;
+                    if (Vector3.Distance(transform.position, spawnPos) < 2)
+                    {// 후퇴 시 체력 회복
+                        state = MonsterState.Idle;
+                        HP = maxHP;
+                    }
                     break;
             }
         }

@@ -37,6 +37,7 @@ public class CharacterSelectSceneManager : MonoBehaviour
 
     public void LoadScene(string SceneName)
     {
+        AudioManager.Instance.PlaySFX(GameManager.Instance.click);
         GameManager.Instance.fade.FadeOut();
         Invoke("Load" + SceneName, 2f);
     }
@@ -51,6 +52,7 @@ public class CharacterSelectSceneManager : MonoBehaviour
             {
                 if (hit.transform.gameObject.CompareTag("Player"))
                 {
+                    AudioManager.Instance.PlaySFX(GameManager.Instance.click);
                     inputField.SetActive(true);
                     for (int i = 0; i < 3; i++)
                         classImg.transform.GetChild(i).gameObject.SetActive(false);
