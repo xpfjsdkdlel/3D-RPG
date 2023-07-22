@@ -11,6 +11,12 @@ public enum MonsterState
     retreat,
 }
 
+public enum MonsterType
+{
+    nomal,
+    boss,
+}
+
 public class Enemy : MonoBehaviour
 {
     public int uid; // 몬스터의 id
@@ -27,6 +33,7 @@ public class Enemy : MonoBehaviour
     public float speed = 2.0f; // 이동속도
     public bool isDead = false; // 생존 여부
     private bool getAttack = false; // 공격을 받았는지 여부
+    private bool bodyAttack = false; // 플레이어와 접촉시 타격 여부(몸박뎀)
 
     [SerializeField]
     private float dis; // 플레이어와의 거리
@@ -35,6 +42,9 @@ public class Enemy : MonoBehaviour
     private bool attackState = false; // false면 공격이 가능한 상태
     [SerializeField]
     private MonsterState state = new MonsterState(); // 몬스터의 상태
+    [SerializeField]
+    private MonsterType type = new MonsterType(); // 몬스터 타입
+    private int skill = 0; // 보스가 시전할 스킬 번호
     private Vector3 spawnPos;
 
     private Animator animator;
@@ -92,6 +102,21 @@ public class Enemy : MonoBehaviour
             attackPrevTime = Time.time; // 공격한 시간 갱신
             attackState = true;
         }
+    }
+
+    void BossSkill1()
+    {// 돌진공격
+
+    }
+
+    void BossSkill2()
+    {// 몬스터 소환
+
+    }
+
+    void BossSkill3()
+    {// 회복
+
     }
 
     void Attack()
@@ -180,6 +205,15 @@ public class Enemy : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Player") && bodyAttack)
+        {
+            if (!other.GetComponent<CharacterController>().invincible)
+                enemy.GetDamage(damage * 2);
+        }
+    }
+
     void Update()
     {
         if (!isDead)
@@ -211,6 +245,22 @@ public class Enemy : MonoBehaviour
                         {
                             navMesh.SetDestination(enemy.transform.position);
                             animator.SetBool("isWalk", true);
+                        }
+                    }
+                    else
+                    {
+                        if (type == MonsterType.boss)
+                        {
+                            // 보스 패턴
+                            switch (skill)
+                            {
+                                case 0:
+                                    break;
+                                case 1:
+                                    break;
+                                case 2:
+                                    break;
+                            }
                         }
                     }
                     break;

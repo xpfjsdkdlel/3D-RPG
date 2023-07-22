@@ -46,6 +46,9 @@ public class GameUI : MonoBehaviour
     [SerializeField] private Image skill1Img; // 스킬 쿨타임 이미지 UI
     [SerializeField] private Image skill2Img;
     [SerializeField] private Image skill3Img;
+    [SerializeField] private TextMeshProUGUI skill1Text;
+    [SerializeField] private TextMeshProUGUI skill2Text;
+    [SerializeField] private TextMeshProUGUI skill3Text;
     private float skill1C = 0; // 스킬 사용후 경과한 시간
     private float skill2C = 0;
     private float skill3C = 0;
@@ -77,6 +80,9 @@ public class GameUI : MonoBehaviour
         skill3Img.sprite = skills[2].iconImg;
         playerName.transform.GetComponent<TextMeshProUGUI>().text = GameManager.Instance.name;
         cam = Camera.main;
+        skill1Text.text = skills[0].cost.ToString();
+        skill2Text.text = skills[1].cost.ToString();
+        skill3Text.text = skills[2].cost.ToString();
     }
 
     public void SetBGMVolume()
