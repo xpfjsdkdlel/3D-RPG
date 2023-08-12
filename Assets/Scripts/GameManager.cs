@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     public Item[] items = null; // 인벤토리
     public Item[] equip = null; // 장착한 장비
     public QuestData[] quest; // 퀘스트
-    public int questNum; // 퀘스트 진행도
+    public int questNum = 1; // 퀘스트 진행도
 
     public AudioClip click;
 
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
             quest[i].isProgress = false;
             quest[i].isClear = false;
         }
-        questNum = 1;
+        questNum = 0;
     }
 
     public void SaveData()

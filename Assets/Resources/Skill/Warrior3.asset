@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: "\uD22C\uC9C0"
   explan: "\uD22C\uC9C0\uB97C \uBD88\uD0DC\uC6CC 30\uCD08 \uB3D9\uC548 \uACF5\uACA9\uB825\uACFC
-    \uBC29\uC5B4\uB825\uC774 10\uC99D\uAC00 \uD569\uB2C8\uB2E4."
+    \uBC29\uC5B4\uB825\uC774 10 \uC99D\uAC00 \uD569\uB2C8\uB2E4."
   iconImg: {fileID: 21300000, guid: 3515d42de52903e4997d1c0e84e14871, type: 3}
   coolDown: 70
   cost: 50

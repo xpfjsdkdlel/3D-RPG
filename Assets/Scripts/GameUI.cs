@@ -8,13 +8,15 @@ public class GameUI : MonoBehaviour
 {
     [SerializeField]
     private GameSceneManager gameSceneManager;
-    public GameObject inventoryObj; // 인벤토리
-    public Inventory inventory;
+    public GameObject inventoryObj; // 인벤토리 오브젝트
+    public Inventory inventory; // 인벤토리
     public GameObject equipment; // 장비창
     public GameObject menu; // 메뉴
     [SerializeField]
     private GameObject dialogue; // 대화문
+    [SerializeField]
     private TextMeshProUGUI npcName; // 대화문 내 NPC이름
+    [SerializeField]
     private TextMeshProUGUI npcText; // 대화문 텍스트
     public QuestData quest = null; // 진행중인 퀘스트
     public int questIndex; // 퀘스트 인덱스
@@ -24,8 +26,11 @@ public class GameUI : MonoBehaviour
     private GameObject storeObj; // 상점
     [SerializeField]
     private GameObject questUI; // 퀘스트 UI
+    [SerializeField]
     private TextMeshProUGUI questName;
+    [SerializeField]
     private TextMeshProUGUI questInfo;
+    [SerializeField]
     private TextMeshProUGUI questProg;
     [SerializeField]
     private Slider sliderBGM; // 배경음악 슬라이더
@@ -58,15 +63,15 @@ public class GameUI : MonoBehaviour
 
     public void Init()
     {
+        //if (GameManager.Instance.quest[GameManager.Instance.questNum - 1].isClear == false && GameManager.Instance.quest[GameManager.Instance.questNum - 1].isProgress == true)
+        //{
+        //    quest = GameManager.Instance.quest[GameManager.Instance.questNum - 1];
+        //    questUI.SetActive(true);
+        //    RefreshQuestUI(quest);
+        //}
         sliderBGM.value = AudioManager.Instance.BGMVolume;
         sliderSFX.value = AudioManager.Instance.SFXVolume;
-        npcName = dialogue.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        npcText = dialogue.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         questIndex = GameManager.Instance.questNum;
-        questName = questUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        questInfo = questUI.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-        questProg = questUI.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
-        inventory = inventoryObj.GetComponent<Inventory>();
         inventory.Init();
         inventoryObj.SetActive(invenActive);
         equipment.SetActive(equipActive);

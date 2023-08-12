@@ -90,7 +90,6 @@ public class GameSceneManager : MonoBehaviour
         MPText.text = player.MP.ToString() + " / " + player.maxMP;
         EXPText.text = player.EXP.ToString() + " / " + player.level * 10;
         levelText.text = player.level.ToString();
-        //ui.RefreshSkillText();
     }
     public void RefreshStat()
     {

@@ -6,4 +6,5 @@ public class SelectedCharacter : MonoBehaviour
 {
     public int number;
     public string name;
+    public Skill[] skill;
 }

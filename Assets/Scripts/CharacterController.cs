@@ -63,8 +63,6 @@ public class CharacterController : MonoBehaviour
 
     public void Init()
     {
-        HP = maxHP;
-        MP = maxMP;
         animator = GetComponent<Animator>();
         isControll = true;
         state = CharacterState.Idle;

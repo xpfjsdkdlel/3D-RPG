@@ -15,6 +15,8 @@ public class CharacterSelectSceneManager : MonoBehaviour
     private TextMeshProUGUI nameText;
     [SerializeField]
     private GameObject classImg; // 직업 이미지
+    [SerializeField]
+    private GameObject charInfo; // 캐릭터 정보
     private SelectedCharacter sc;
 
     private void Start()
@@ -61,6 +63,12 @@ public class CharacterSelectSceneManager : MonoBehaviour
                     selectCharacter = hit.transform.gameObject; // 클릭한 캐릭터가 선택됨
                     sc = selectCharacter.GetComponent<SelectedCharacter>();
                     classImg.transform.GetChild(sc.number).gameObject.SetActive(true); // 선택한 캐릭터의 직업이미지를 켬
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Transform t = charInfo.transform.GetChild(i);
+                        t.GetComponent<Image>().sprite = sc.skill[i].iconImg;
+                        t.GetChild(0).GetComponent<TextMeshProUGUI>().text = "<size=120%>" + sc.skill[i].name + "</size>\n마나 : <color=blue>" + sc.skill[i].cost + "</color> 쿨타임 : <color=green>" + sc.skill[i].coolDown + "</color>\n" + sc.skill[i].explan;
+                    }
                     if(selectCharacter.TryGetComponent<Animator>(out animator))
                         animator.SetBool("isSelected", true); // 선택된 캐릭터를 준비 자세로 변경
                 }
