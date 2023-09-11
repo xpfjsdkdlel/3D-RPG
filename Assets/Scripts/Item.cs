@@ -12,5 +12,6 @@ public class Item : ScriptableObject
     public int classNum; // 0 - 궁수, 1 - 전사, 2 - 마법사, 3 - 공용
     public int price; // 가격
     public int count = 1; // 개수
+    public int maxCount = 1; // 최대 개수
     public int stat; // 성능
 }

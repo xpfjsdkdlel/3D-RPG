@@ -63,12 +63,12 @@ public class GameUI : MonoBehaviour
 
     public void Init()
     {
-        //if (GameManager.Instance.quest[GameManager.Instance.questNum - 1].isClear == false && GameManager.Instance.quest[GameManager.Instance.questNum - 1].isProgress == true)
-        //{
-        //    quest = GameManager.Instance.quest[GameManager.Instance.questNum - 1];
-        //    questUI.SetActive(true);
-        //    RefreshQuestUI(quest);
-        //}
+        if (GameManager.Instance.quest[GameManager.Instance.questNum - 1].isClear == false && GameManager.Instance.quest[GameManager.Instance.questNum - 1].isProgress == true)
+        {
+            quest = GameManager.Instance.quest[GameManager.Instance.questNum - 1];
+            questUI.SetActive(true);
+            RefreshQuestUI(quest);
+        }
         sliderBGM.value = AudioManager.Instance.BGMVolume;
         sliderSFX.value = AudioManager.Instance.SFXVolume;
         questIndex = GameManager.Instance.questNum;

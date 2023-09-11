@@ -220,64 +220,55 @@ public class Enemy : MonoBehaviour
         {
             UpdateTarget(); // 플레이어와의 거리 체크
             UpdateAttackInfo(); // 공격 쿨타임 체크
-            switch (state)
+            if (type == MonsterType.nomal)
             {
-                case MonsterState.Idle:
-                    navMesh.ResetPath();
-                    navMesh.velocity = Vector3.zero;
-                    animator.SetBool("isWalk", false);
-                    if (dis < 10 || getAttack)
-                        state = MonsterState.chase;
-                    break;
-                case MonsterState.chase:
-                    if (!attackState)
-                    {
-                        if (dis <= range)
+                switch (state)
+                {
+                    case MonsterState.Idle:
+                        navMesh.ResetPath();
+                        navMesh.velocity = Vector3.zero;
+                        animator.SetBool("isWalk", false);
+                        if (dis < 10 || getAttack)
+                            state = MonsterState.chase;
+                        break;
+                    case MonsterState.chase:
+                        if (!attackState)
                         {
-                            navMesh.ResetPath();
-                            navMesh.velocity = Vector3.zero;
-                            animator.SetBool("isWalk", false);
-                            AttackAnim();
-                        }
-                        else if (enemy.isDead)
-                            state = MonsterState.Idle;
-                        else
-                        {
-                            navMesh.SetDestination(enemy.transform.position);
-                            animator.SetBool("isWalk", true);
-                        }
-                    }
-                    else
-                    {
-                        if (type == MonsterType.boss)
-                        {
-                            // 보스 패턴
-                            switch (skill)
+                            if (dis <= range)
                             {
-                                case 0:
-                                    break;
-                                case 1:
-                                    break;
-                                case 2:
-                                    break;
+                                navMesh.ResetPath();
+                                navMesh.velocity = Vector3.zero;
+                                animator.SetBool("isWalk", false);
+                                AttackAnim();
                             }
+                            else if (enemy.isDead)
+                                state = MonsterState.Idle;
+                            else
+                            {
+                                navMesh.SetDestination(enemy.transform.position);
+                                animator.SetBool("isWalk", true);
+                            }
+                        } 
+                        break;
+                    case MonsterState.stun:
+                        navMesh.ResetPath();
+                        navMesh.velocity = Vector3.zero;
+                        break;
+                    case MonsterState.retreat:
+                        navMesh.SetDestination(spawnPos);
+                        animator.SetBool("isWalk", true);
+                        getAttack = false;
+                        if (Vector3.Distance(transform.position, spawnPos) < 2)
+                        {// 후퇴 시 체력 회복
+                            state = MonsterState.Idle;
+                            HP = maxHP;
                         }
-                    }
-                    break;
-                case MonsterState.stun:
-                    navMesh.ResetPath();
-                    navMesh.velocity = Vector3.zero;
-                    break;
-                case MonsterState.retreat:
-                    navMesh.SetDestination(spawnPos);
-                    animator.SetBool("isWalk", true);
-                    getAttack = false;
-                    if (Vector3.Distance(transform.position, spawnPos) < 2)
-                    {// 후퇴 시 체력 회복
-                        state = MonsterState.Idle;
-                        HP = maxHP;
-                    }
-                    break;
+                        break;
+                }
+            }
+            else if(type == MonsterType.boss)
+            {
+
             }
         }
     }

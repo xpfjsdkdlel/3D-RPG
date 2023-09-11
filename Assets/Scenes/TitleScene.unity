@@ -3848,7 +3848,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f062eeea110e61f4ab75aca13c58cdc3, type: 2}
   - {fileID: 11400000, guid: d8adbd8450a461d4890d44d1c955176f, type: 2}
   - {fileID: 11400000, guid: 9deff6cfda380344cacbc5f3235a6089, type: 2}
-  questNum: 0
+  questNum: 1
   click: {fileID: 8300000, guid: 0d8795f3e23f84f49950a2909644106c, type: 3}
   fade: {fileID: 0}
 --- !u!4 &1590521345

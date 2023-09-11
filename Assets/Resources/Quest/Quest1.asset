@@ -30,7 +30,7 @@ MonoBehaviour:
   - "\uC870\uC2EC\uD558\uC138\uC694. \uB291\uB300\uB294 \uC57D\uD558\uC9C0\uB9CC
     \uBB34\uB9AC\uC9C0\uC5B4 \uB2E4\uB2C8\uAE30 \uB54C\uBB38\uC5D0 \uBC29\uC2EC\uD558\uBA74
     \uC548\uB429\uB2C8\uB2E4."
-  progress: 2
+  progress: 0
   complete: 10
   result: 100
   progText:

@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
             quest[i].isProgress = false;
             quest[i].isClear = false;
         }
-        questNum = 0;
+        questNum = 1;
     }
 
     public void SaveData()

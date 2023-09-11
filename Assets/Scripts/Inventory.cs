@@ -24,6 +24,7 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private AudioClip error;
     public Store store;
+    private Item tempItem;
 
     public void Init()
     {
@@ -47,14 +48,40 @@ public class Inventory : MonoBehaviour
     }
 
     public bool GetItem(Item _item)
-    {
-        if (!_item.equip)
+    {// 아이템 획득
+        int n = GameManager.Instance.items.Length;
+        tempItem = null;
+        tempItem = new Item();
+        tempItem.uid = _item.uid;
+        tempItem.equip = _item.equip;
+        tempItem.name = _item.name;
+        tempItem.iconImg = _item.iconImg;
+        tempItem.classNum = _item.classNum;
+        tempItem.price = _item.price;
+        tempItem.count = _item.count;
+        tempItem.maxCount = _item.maxCount;
+        tempItem.stat = _item.stat;
+        if (!tempItem.equip)
         {
             for (int i = 0; i < GameManager.Instance.items.Length; i++)
             {
-                if (GameManager.Instance.items[i] != null && GameManager.Instance.items[i].uid == _item.uid)
+                if (GameManager.Instance.items[i] == null)
                 {
-                    GameManager.Instance.items[i].count += _item.count;
+                    if (i < n)
+                        n = i;
+                }
+                else if (GameManager.Instance.items[i].uid == tempItem.uid && GameManager.Instance.items[i].count < GameManager.Instance.items[i].maxCount)
+                {// 같은 아이템이면 count 증가
+                    if(GameManager.Instance.items[i].maxCount < GameManager.Instance.items[i].count + tempItem.count)
+                    {// 획득한 아이템의 수와 기존 수의 합이 번들 최대 개수보다 많다면
+                        tempItem.count = GameManager.Instance.items[i].count - GameManager.Instance.items[i].maxCount;
+                        GameManager.Instance.items[i].count = GameManager.Instance.items[i].maxCount;
+                        n = GameManager.Instance.items.Length;
+                    }
+                }
+                else
+                {
+                    GameManager.Instance.items[i].count += tempItem.count;
                     return true;
                 }
             }
@@ -63,7 +90,7 @@ public class Inventory : MonoBehaviour
         {
             if (GameManager.Instance.items[i] == null)
             {
-                GameManager.Instance.items[i] = _item;
+                GameManager.Instance.items[i] = tempItem;
                 GameManager.Instance.items[i].count = 1;
                 return true;
             }
