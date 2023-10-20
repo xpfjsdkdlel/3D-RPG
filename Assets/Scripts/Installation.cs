@@ -30,7 +30,7 @@ public class Installation : MonoBehaviour
 
     public void SetTarget(float scale = 1.0f, float stun = 0)
     {
-        damage = (int)((player.damage + player.weapon + player.buffDamage) * scale);
+        damage = (int)((player.damage + player.equipStat.damage + player.buffStat.buffDamage) * scale);
         stunTime = stun;
     }
 

@@ -11,6 +11,22 @@ public enum CharacterState
     death,
 }
 
+public class EquipStat
+{
+    public int damage = 0;
+    public int armor = 0;
+    public int speed = 0;
+    public int range = 0;
+}
+
+public class BuffStat
+{
+    public int buffDamage = 0; // 공격력 버프
+    public int buffDefense = 0; // 방어력 버프
+    public int buffSpeed = 0; // 이동속도 버프
+    public int buffRange = 0; // 사거리 버프
+}
+
 public class CharacterController : MonoBehaviour
 {
     public string name; // 이름
@@ -21,15 +37,12 @@ public class CharacterController : MonoBehaviour
     public int maxMP; // 최대 마나
     public int EXP; // 경험치
     public int damage; // 공격력
-    public int weapon; // 무기 공격력
-    public int buffDamage = 0; // 공격력 버프
     public int defense; // 방어력
-    public int armor; // 방어구 방어력
-    public int buffDefense = 0; // 방어력 버프
     public float range; // 사정거리
-    public float addRange; // 추가 사정거리
     public float attackDelay; // 공격 딜레이
     public float speed = 1.0f; // 이동속도
+    public EquipStat equipStat = new EquipStat(); // 장비 스탯
+    public BuffStat buffStat = new BuffStat(); // 버프 스탯
     public bool isDead = false; // 생존 여부
     [SerializeField]
     private GameObject projectile; // 투사체
@@ -185,7 +198,7 @@ public class CharacterController : MonoBehaviour
     {// 공격 상태
         if (enemy != null)
         {
-            if (Vector3.Distance(transform.position, enemy.transform.position) <= range)
+            if (Vector3.Distance(transform.position, enemy.transform.position) <= range + equipStat.range)
             {
                 MoveStop();
                 if (battle && !attackState)
@@ -222,7 +235,7 @@ public class CharacterController : MonoBehaviour
         if (!enemy.isDead)
         {
             if (projectile == null)
-                enemy.GetDamage(damage + weapon + buffDamage);
+                enemy.GetDamage(damage + equipStat.damage + buffStat.buffDamage);
         }
     }
 
@@ -236,10 +249,10 @@ public class CharacterController : MonoBehaviour
 
     public void GetDamage(int damage)
     {// 적에게 대미지를 받는 함수
-        if (damage <= defense + armor + buffDefense)
+        if (damage <= defense + equipStat.armor + buffStat.buffDefense)
             HP -= 1;
         else
-            HP -= damage - (defense + armor + buffDefense);
+            HP -= damage - (defense + equipStat.armor + buffStat.buffDefense);
         AudioManager.Instance.PlaySFX(Resources.Load<AudioClip>("AudioSource/SFX/Hit"));
         if (HP <= 0)
         {
@@ -266,6 +279,11 @@ public class CharacterController : MonoBehaviour
         battle = false;
         animator.SetBool("battle", false);
         animator.SetTrigger("resurrection");
+    }
+
+    public void SetSpeed()
+    {
+        navMesh.speed = speed + equipStat.speed;
     }
 
     public void Refresh()
@@ -425,8 +443,8 @@ public class CharacterController : MonoBehaviour
             warriorSkill3 = Instantiate(skills[2].effect, transform.position, Quaternion.identity, transform);
         warriorSkill3.transform.rotation = Quaternion.Euler(90, 0, 0);
         warriorSkill3.SetActive(true);
-        buffDamage = 10;
-        buffDefense = 10;
+        buffStat.buffDamage = 10;
+        buffStat.buffDefense = 10;
         AudioManager.Instance.PlaySFX(skills[2].sound);
         Invoke("WarriorSkill3End", 30f);
         invincible = false;
@@ -435,8 +453,8 @@ public class CharacterController : MonoBehaviour
     void WarriorSkill3End()
     {
         warriorSkill3.SetActive(false);
-        buffDamage = 0;
-        buffDefense = 0;
+        buffStat.buffDamage = 0;
+        buffStat.buffDefense = 0;
     }
 
     private GameObject wizardSkill1;

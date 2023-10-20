@@ -93,29 +93,18 @@ public class GameSceneManager : MonoBehaviour
     }
     public void RefreshStat()
     {
-        player.armor = 0;
-        player.weapon = 0;
-        player.addRange = 0;
-        for (int i = 0; i < 3; i++)
+        player.equipStat.damage = 0;
+        player.equipStat.armor = 0;
+        player.equipStat.speed = 0;
+        player.equipStat.range = 0;
+        for (int i = 0; i < 5; i++)
         {
             if (GameManager.Instance.equip[i] != null)
-                player.armor += GameManager.Instance.equip[i].stat;
-        }
-        if (GameManager.Instance.equip[3] != null)
-            player.weapon = GameManager.Instance.equip[3].stat;
-        if (GameManager.Instance.equip[4] != null)
-        {// 보조장비
-            switch (GameManager.Instance.equip[4].classNum)
             {
-                case 0: // 궁수
-                    player.addRange = GameManager.Instance.equip[4].stat;
-                    break;
-                case 1: // 전사
-                    player.armor += GameManager.Instance.equip[4].stat;
-                    break;
-                case 2: // 마법사
-                    player.weapon += GameManager.Instance.equip[4].stat;
-                    break;
+                player.equipStat.damage += GameManager.Instance.equip[i].damage;
+                player.equipStat.armor += GameManager.Instance.equip[i].armor;
+                player.equipStat.speed += GameManager.Instance.equip[i].speed;
+                player.equipStat.range += GameManager.Instance.equip[i].range;
             }
         }
     }

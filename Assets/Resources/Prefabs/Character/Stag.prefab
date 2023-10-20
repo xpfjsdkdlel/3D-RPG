@@ -243,6 +243,7 @@ MonoBehaviour:
   isDead: 0
   dis: 0
   state: 0
+  type: 0
   target: {fileID: 0}
   enemy: {fileID: 0}
   sceneManager: {fileID: 0}

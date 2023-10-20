@@ -49,35 +49,37 @@ public class Inventory : MonoBehaviour
 
     public bool GetItem(Item _item)
     {// 아이템 획득
-        int n = GameManager.Instance.items.Length;
+        int n = GameManager.Instance.items.Length + 1;
         tempItem = null;
         tempItem = new Item();
         tempItem.uid = _item.uid;
-        tempItem.equip = _item.equip;
+        tempItem.type = _item.type;
         tempItem.name = _item.name;
         tempItem.iconImg = _item.iconImg;
         tempItem.classNum = _item.classNum;
         tempItem.price = _item.price;
         tempItem.count = _item.count;
         tempItem.maxCount = _item.maxCount;
-        tempItem.stat = _item.stat;
-        if (!tempItem.equip)
+        tempItem.damage = _item.damage;
+        tempItem.armor = _item.armor;
+        tempItem.speed = _item.speed;
+        tempItem.range = _item.range;
+        tempItem.heal =  _item.heal;
+
+        for (int i = 0; i < GameManager.Instance.items.Length; i++)
         {
-            for (int i = 0; i < GameManager.Instance.items.Length; i++)
+            if (GameManager.Instance.items[i] == null)
             {
-                if (GameManager.Instance.items[i] == null)
-                {
-                    if (i < n)
-                        n = i;
-                }
-                else if (GameManager.Instance.items[i].uid == tempItem.uid && GameManager.Instance.items[i].count < GameManager.Instance.items[i].maxCount)
-                {// 같은 아이템이면 count 증가
-                    if(GameManager.Instance.items[i].maxCount < GameManager.Instance.items[i].count + tempItem.count)
-                    {// 획득한 아이템의 수와 기존 수의 합이 번들 최대 개수보다 많다면
-                        tempItem.count = GameManager.Instance.items[i].count - GameManager.Instance.items[i].maxCount;
-                        GameManager.Instance.items[i].count = GameManager.Instance.items[i].maxCount;
-                        n = GameManager.Instance.items.Length;
-                    }
+                if (i < n)
+                    n = i;
+            }
+            else if (GameManager.Instance.items[i].uid == tempItem.uid && GameManager.Instance.items[i].count < GameManager.Instance.items[i].maxCount)
+            {// 같은 아이템이면 count 증가
+                if (GameManager.Instance.items[i].maxCount < GameManager.Instance.items[i].count + tempItem.count)
+                {// 획득한 아이템의 수와 기존 수의 합이 번들 최대 개수보다 많다면 최대갯수까지 채우고 남은수량은 다른 칸에 저장
+                    tempItem.count = GameManager.Instance.items[i].count + tempItem.count - GameManager.Instance.items[i].maxCount;
+                    GameManager.Instance.items[i].count = GameManager.Instance.items[i].maxCount;
+                    n++;
                 }
                 else
                 {
@@ -86,14 +88,23 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-        for (int i = 0; i < GameManager.Instance.items.Length; i++)
+        if (n < GameManager.Instance.items.Length)
         {
-            if (GameManager.Instance.items[i] == null)
-            {
-                GameManager.Instance.items[i] = tempItem;
-                GameManager.Instance.items[i].count = 1;
-                return true;
-            }
+            GameManager.Instance.items[n] = tempItem;
+            GameManager.Instance.items[n].uid = tempItem.uid;
+            GameManager.Instance.items[n].type = tempItem.type;
+            GameManager.Instance.items[n].name = tempItem.name;
+            GameManager.Instance.items[n].iconImg = tempItem.iconImg;
+            GameManager.Instance.items[n].classNum = tempItem.classNum;
+            GameManager.Instance.items[n].price = tempItem.price;
+            GameManager.Instance.items[n].count = tempItem.count;
+            GameManager.Instance.items[n].maxCount = tempItem.maxCount;
+            GameManager.Instance.items[n].damage = tempItem.damage;
+            GameManager.Instance.items[n].armor = tempItem.armor;
+            GameManager.Instance.items[n].speed = tempItem.speed;
+            GameManager.Instance.items[n].range = tempItem.range;
+            GameManager.Instance.items[n].heal = tempItem.heal;
+            return true;
         }
         return false;
     }
@@ -102,7 +113,7 @@ public class Inventory : MonoBehaviour
     {// 아이템 사용
         player = gameScene.player;
         Item _item = GameManager.Instance.items[num];
-        if (_item.equip)
+        if (_item.type)
         {// 장비일 경우
             if (_item.classNum == 3)
             {// 방어구 착용
@@ -208,17 +219,17 @@ public class Inventory : MonoBehaviour
             switch (_item.uid)
             {
                 case 401:
-                    if (player.maxHP <= player.HP + _item.stat)
+                    if (player.maxHP <= player.HP + _item.heal)
                         player.HP = player.maxHP;
                     else
-                        player.HP += _item.stat;
+                        player.HP += _item.heal;
                     Debug.Log("체력포션 사용");
                     break;
                 case 402:
-                    if (player.maxMP <= player.MP + _item.stat)
+                    if (player.maxMP <= player.MP + _item.heal)
                         player.MP = player.maxMP;
                     else
-                        player.MP += _item.stat;
+                        player.MP += _item.heal;
                     Debug.Log("마나포션 사용");
                     break;
                 default:

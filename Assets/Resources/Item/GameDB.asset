@@ -1,0 +1,158 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85a5b2eab6fad3342a4346f15246c6db, type: 3}
+  m_Name: GameDB
+  m_EditorClassIdentifier: 
+  ItemData:
+  - uid: 101
+    type: 1
+    name: "\uD65C"
+    iconImg: common_item_bow
+    classNum: 0
+    price: 200
+    count: 1
+    maxCount: 1
+    damage: 10
+    armor: 0
+    speed: 0
+    range: 0
+    heal: 0
+  - uid: 102
+    type: 1
+    name: "\uC9C0\uD321\uC774"
+    iconImg: common_item_staff
+    classNum: 2
+    price: 200
+    count: 1
+    maxCount: 1
+    damage: 10
+    armor: 0
+    speed: 0
+    range: 0
+    heal: 0
+  - uid: 103
+    type: 1
+    name: "\uAC80"
+    iconImg: common_item_sword
+    classNum: 1
+    price: 200
+    count: 1
+    maxCount: 1
+    damage: 10
+    armor: 0
+    speed: 0
+    range: 0
+    heal: 0
+  - uid: 201
+    type: 1
+    name: "\uAC11\uC637"
+    iconImg: common_item_armor
+    classNum: 3
+    price: 300
+    count: 1
+    maxCount: 1
+    damage: 0
+    armor: 5
+    speed: 0
+    range: 0
+    heal: 0
+  - uid: 202
+    type: 1
+    name: "\uD22C\uAD6C"
+    iconImg: common_item_helmet
+    classNum: 3
+    price: 200
+    count: 1
+    maxCount: 1
+    damage: 0
+    armor: 3
+    speed: 0
+    range: 0
+    heal: 0
+  - uid: 203
+    type: 1
+    name: "\uC2E0\uBC1C"
+    iconImg: common_item_shoes
+    classNum: 3
+    price: 100
+    count: 1
+    maxCount: 1
+    damage: 0
+    armor: 1
+    speed: 2
+    range: 0
+    heal: 0
+  - uid: 301
+    type: 1
+    name: "\uD654\uC0B4"
+    iconImg: common_item_arrow
+    classNum: 0
+    price: 100
+    count: 1
+    maxCount: 1
+    damage: 5
+    armor: 0
+    speed: 0
+    range: 1
+    heal: 0
+  - uid: 302
+    type: 1
+    name: "\uBC29\uD328"
+    iconImg: common_item_shield
+    classNum: 1
+    price: 100
+    count: 1
+    maxCount: 1
+    damage: 0
+    armor: 5
+    speed: 0
+    range: 0
+    heal: 0
+  - uid: 303
+    type: 1
+    name: "\uB9C8\uBC95\uCC45"
+    iconImg: common_item_book_skill
+    classNum: 2
+    price: 100
+    count: 1
+    maxCount: 1
+    damage: 10
+    armor: 0
+    speed: 0
+    range: 0
+    heal: 0
+  - uid: 401
+    type: 0
+    name: "HP\uD3EC\uC158"
+    iconImg: common_item_potionHP
+    classNum: 3
+    price: 50
+    count: 1
+    maxCount: 10
+    damage: 0
+    armor: 0
+    speed: 0
+    range: 0
+    heal: 50
+  - uid: 402
+    type: 0
+    name: "MP\uD3EC\uC158"
+    iconImg: common_item_potionMP
+    classNum: 3
+    price: 30
+    count: 1
+    maxCount: 10
+    damage: 0
+    armor: 0
+    speed: 0
+    range: 0
+    heal: 30

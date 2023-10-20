@@ -51,11 +51,29 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(AudioClip clip)
     {
-        transform.GetChild(cursor).GetComponent<AudioSource>().clip = clip;
-        transform.GetChild(cursor).GetComponent<AudioSource>().Play();
-        cursor++;
-        if (cursor >= transform.childCount)
-            cursor = 0;
+        bool isPlay = true;
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            // 오디오 소스가 재생중이면 패스, 아니라면 해당 오디오 소스에서 효과음 재생
+            if (transform.GetChild(i).GetComponent<AudioSource>().isPlaying)
+                continue;
+            else
+            {
+                transform.GetChild(i).GetComponent<AudioSource>().clip = clip;
+                transform.GetChild(i).GetComponent<AudioSource>().Play();
+                isPlay = false;
+                break;
+            }
+        }
+        // 모든 오디오 소스가 재생중이면 새로운 오디오 소스 생성
+        if (isPlay)
+            Instantiate(sfx).transform.parent = transform;
+
+        //transform.GetChild(cursor).GetComponent<AudioSource>().clip = clip;
+        //transform.GetChild(cursor).GetComponent<AudioSource>().Play();
+        //cursor++;
+        //if (cursor >= transform.childCount)
+        //    cursor = 0;
     }
 
     public void SetBGMVolume(float BGMVolume)
