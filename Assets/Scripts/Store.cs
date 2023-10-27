@@ -19,7 +19,7 @@ public class Store : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < GameManager.Instance.row * 3; i++)
+        for (int i = 0; i < 15; i++)
         {
             Instantiate(ItemList, sellList).SetActive(false);
         }
@@ -66,7 +66,7 @@ public class Store : MonoBehaviour
                 list.itemPrice.color = Color.white;
         }
         goldText.text = GameManager.Instance.gold.ToString();
-        for (int i = 0; i < GameManager.Instance.row * 3; i++)
+        for (int i = 0; i < 15; i++)
         {
             list = sellList.GetChild(i).GetComponent<ItemList>();
             if (GameManager.Instance.items[i] != null)

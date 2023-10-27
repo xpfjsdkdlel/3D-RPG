@@ -61,7 +61,7 @@ public class CharacterController : MonoBehaviour
     private bool combo = false; // 두번째 공격 애니메이션 출력 여부
 
     private Animator animator;
-    private NavMeshAgent navMesh;
+    public NavMeshAgent navMesh;
 
     private RaycastHit hit; // 우클릭 시 이동 할 장소
     private RaycastHit click; // 스킬의 시전위치

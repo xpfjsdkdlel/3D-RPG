@@ -28,7 +28,7 @@ public class Inventory : MonoBehaviour
 
     public void Init()
     {
-        slots = new Slot[GameManager.Instance.row * 3];
+        slots = new Slot[15];
         for (int i = 0; i < slots.Length; i++)
         {
             GameObject obj = Instantiate(slotPrefab);

@@ -58,6 +58,8 @@ public class GameUI : MonoBehaviour
     private float skill2C = 0;
     private float skill3C = 0;
 
+    [SerializeField] private GameObject levelUpUI; // ·¹º§¾÷ ½Ã Ãâ·ÂÇÒ UI
+    [SerializeField] private GameObject getItemUI; // ¾ÆÀÌÅÛ È¹µæ½Ã Ãâ·ÂÇÒ UI
     [SerializeField]
     private AudioClip click;
 
@@ -294,6 +296,33 @@ public class GameUI : MonoBehaviour
             skill3Img.fillAmount = 0;
             skill3C = 0;
         }
+    }
+
+    public void LevelUpUI(int level)
+    {
+        levelUpUI.SetActive(true);
+        levelUpUI.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = level.ToString();
+        levelUpUI.GetComponent<Animation>().Play();
+        Invoke("DisableLevel", 6f);
+    }
+
+    void DisableLevel()
+    {
+        levelUpUI.SetActive(false);
+    }
+
+    public void GetItemUI(Item item)
+    {
+        getItemUI.SetActive(true);
+        getItemUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = item.name.ToString() + " È¹µæ";
+        getItemUI.transform.GetChild(1).GetComponent<Image>().sprite = item.iconImg;
+        getItemUI.GetComponent<Animation>().Play();
+        Invoke("DisableGetItem", 4f);
+    }
+
+    void DisableGetItem()
+    {
+        getItemUI.SetActive(false);
     }
 
     void Update()

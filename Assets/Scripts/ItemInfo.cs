@@ -23,7 +23,7 @@ public class ItemInfo : MonoBehaviour
                 AudioManager.Instance.PlaySFX(sound);
                 if (inventory.gameObject.activeSelf)
                     inventory.RefreshSlot();
-                Debug.Log("æ∆¿Ã≈€ »πµÊ " + item.name);
+                gameUI.GetItemUI(item);
                 gameObject.SetActive(false);
             }
             else

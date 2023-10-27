@@ -60,7 +60,6 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI MPText;
     [SerializeField] private TextMeshProUGUI EXPText;
     [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private GameObject levelUpUI; // 레벨업 시 출력할 UI
     [SerializeField] private GameObject confrim; // 종료 버튼 클릭 시 출력할 UI
     [SerializeField] private GameObject gameOver; // 캐릭터 사망 시 출력할 UI
     [SerializeField] private AudioClip BGM; // 배경 음악
@@ -169,10 +168,7 @@ public class GameSceneManager : MonoBehaviour
             player.damage++;
         player.HP = player.maxHP;
         player.MP = player.maxMP;
-        levelUpUI.SetActive(true);
-        levelUpUI.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = player.level.ToString();
-        levelUpUI.GetComponent<Animation>().Play();
-        Invoke("DisableLevel", 6f);
+        ui.LevelUpUI(player.level);
     }
 
     public void GameOver()
@@ -192,14 +188,11 @@ public class GameSceneManager : MonoBehaviour
         player.gameObject.SetActive(true);
         gameOver.SetActive(false);
         player.Resurrection();
+        player.navMesh.enabled = false;
         player.transform.position = startPos.position;
+        player.navMesh.enabled = true;
         Refresh();
         GameManager.Instance.fade.FadeIn();
-    }
-
-    void DisableLevel()
-    {
-        levelUpUI.SetActive(false);
     }
 
     public void ControllEnable()

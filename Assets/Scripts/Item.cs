@@ -18,5 +18,4 @@ public class Item : ScriptableObject
     public int speed; // 이동속도
     public int range; // 사정거리
     public int heal; // 회복량
-
 }

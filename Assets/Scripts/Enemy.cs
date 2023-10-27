@@ -248,7 +248,7 @@ public class Enemy : MonoBehaviour
                                 navMesh.SetDestination(enemy.transform.position);
                                 animator.SetBool("isWalk", true);
                             }
-                        } 
+                        }
                         break;
                     case MonsterState.stun:
                         navMesh.ResetPath();
@@ -266,9 +266,13 @@ public class Enemy : MonoBehaviour
                         break;
                 }
             }
-            else if(type == MonsterType.boss)
+            else if (type == MonsterType.boss)
             {
 
+                switch (state)
+                {
+                    
+                }
             }
         }
     }
