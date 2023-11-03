@@ -9,6 +9,9 @@ public enum MonsterState
     chase,
     stun,
     retreat,
+    skill1,
+    skill2,
+    skill3,
 }
 
 public enum MonsterType
@@ -33,33 +36,32 @@ public class Enemy : MonoBehaviour
     public float speed = 2.0f; // 이동속도
     public bool isDead = false; // 생존 여부
     private bool getAttack = false; // 공격을 받았는지 여부
-    private bool bodyAttack = false; // 플레이어와 접촉시 타격 여부(몸박뎀)
+    protected bool bodyAttack = false; // 플레이어와 접촉시 타격 여부(몸박뎀)
 
     [SerializeField]
-    private float dis; // 플레이어와의 거리
-    private float attackPrevTime = 0f; // 마지막으로 공격한 시간
-    private float attackTime = 0f; // 공격 후 흐른 시간
-    private bool attackState = false; // false면 공격이 가능한 상태
+    protected float dis; // 플레이어와의 거리
+    protected float attackPrevTime = 0f; // 마지막으로 공격한 시간
+    protected float attackTime = 0f; // 공격 후 흐른 시간
+    protected bool attackState = false; // false면 공격이 가능한 상태
     [SerializeField]
-    private MonsterState state = new MonsterState(); // 몬스터의 상태
+    protected MonsterState state = new MonsterState(); // 몬스터의 상태
     [SerializeField]
     private MonsterType type = new MonsterType(); // 몬스터 타입
-    private int skill = 0; // 보스가 시전할 스킬 번호
     private Vector3 spawnPos;
 
-    private Animator animator;
+    protected Animator animator;
     [SerializeField]
     private GameObject target;
     [SerializeField]
-    private CharacterController enemy;
+    protected CharacterController enemy;
     private GameUI gameUI;
 
     private Collider collider;
     private Rigidbody rigidbody;
-    private NavMeshAgent navMesh;
+    protected NavMeshAgent navMesh;
 
     [SerializeField]
-    private GameSceneManager sceneManager;
+    protected GameSceneManager sceneManager;
     [SerializeField]
     private ItemSpawner itemSpawner;
     private AudioClip hitSound;
@@ -93,7 +95,7 @@ public class Enemy : MonoBehaviour
         spawnPos = transform.position;
     }
 
-    void AttackAnim()
+    protected void AttackAnim()
     {// 공격 애니메이션
         if (!enemy.isDead)
         {
@@ -102,21 +104,6 @@ public class Enemy : MonoBehaviour
             attackPrevTime = Time.time; // 공격한 시간 갱신
             attackState = true;
         }
-    }
-
-    void BossSkill1()
-    {// 돌진공격
-
-    }
-
-    void BossSkill2()
-    {// 몬스터 소환
-
-    }
-
-    void BossSkill3()
-    {// 회복
-
     }
 
     void Attack()
@@ -262,16 +249,9 @@ public class Enemy : MonoBehaviour
                         {// 후퇴 시 체력 회복
                             state = MonsterState.Idle;
                             HP = maxHP;
+                            sceneManager.Refresh();
                         }
                         break;
-                }
-            }
-            else if (type == MonsterType.boss)
-            {
-
-                switch (state)
-                {
-                    
                 }
             }
         }
