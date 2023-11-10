@@ -206,6 +206,8 @@ public class GameUI : MonoBehaviour
                     questUI.SetActive(false);
                     GameManager.Instance.gold += quest.result;
                     CloseDialogue();
+                    if (GameManager.Instance.questNum > GameManager.Instance.quest.Length)
+                        gameSceneManager.SpawnBoss();
                 }
             }
             else if (quest.progress < quest.complete)
@@ -317,7 +319,7 @@ public class GameUI : MonoBehaviour
         getItemUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = item.name.ToString() + " È¹µæ";
         getItemUI.transform.GetChild(1).GetComponent<Image>().sprite = item.iconImg;
         getItemUI.GetComponent<Animation>().Play();
-        Invoke("DisableGetItem", 4f);
+        Invoke("DisableGetItem", 5f);
     }
 
     void DisableGetItem()

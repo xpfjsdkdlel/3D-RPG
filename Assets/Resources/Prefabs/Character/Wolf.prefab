@@ -241,8 +241,13 @@ MonoBehaviour:
   attackDelay: 2
   speed: 6
   isDead: 0
-  dis: 0
+  superArmor: 0
+  deathSound: {fileID: 8300000, guid: 584ce69a2866d9b47b63b8db251ab71b, type: 3}
   state: 0
+  type: 0
+  skill1: {fileID: 0}
+  skill2: {fileID: 0}
+  skill3: {fileID: 0}
   target: {fileID: 0}
   enemy: {fileID: 0}
   sceneManager: {fileID: 0}

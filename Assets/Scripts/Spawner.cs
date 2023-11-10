@@ -67,7 +67,5 @@ public class Spawner : MonoBehaviour
     {
         if (other.CompareTag("Player"))
             action = false;
-        if (other.CompareTag("Enemy"))
-            other.GetComponent<Enemy>().Retreat();
     }
 }

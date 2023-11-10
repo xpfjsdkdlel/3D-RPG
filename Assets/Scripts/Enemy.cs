@@ -16,7 +16,7 @@ public enum MonsterState
 
 public enum MonsterType
 {
-    nomal,
+    normal,
     boss,
 }
 
@@ -35,33 +35,44 @@ public class Enemy : MonoBehaviour
     public float attackDelay; // 공격 딜레이
     public float speed = 2.0f; // 이동속도
     public bool isDead = false; // 생존 여부
+    public bool superArmor = false; // 슈퍼아머
     private bool getAttack = false; // 공격을 받았는지 여부
-    protected bool bodyAttack = false; // 플레이어와 접촉시 타격 여부(몸박뎀)
+    private bool bodyAttack = false; // 플레이어와 접촉시 타격 여부(몸박뎀)
+    [SerializeField]
+    private AudioClip deathSound;
 
+    private float dis; // 플레이어와의 거리
+    private float attackPrevTime = 0f; // 마지막으로 공격한 시간
+    private float attackTime = 0f; // 공격 후 흐른 시간
+    private bool attackState = false; // false면 공격이 가능한 상태
     [SerializeField]
-    protected float dis; // 플레이어와의 거리
-    protected float attackPrevTime = 0f; // 마지막으로 공격한 시간
-    protected float attackTime = 0f; // 공격 후 흐른 시간
-    protected bool attackState = false; // false면 공격이 가능한 상태
-    [SerializeField]
-    protected MonsterState state = new MonsterState(); // 몬스터의 상태
+    private MonsterState state = new MonsterState(); // 몬스터의 상태
     [SerializeField]
     private MonsterType type = new MonsterType(); // 몬스터 타입
     private Vector3 spawnPos;
+    [SerializeField] private GameObject skill1;
+    [SerializeField] private GameObject skill2;
+    [SerializeField] private GameObject skill3;
 
-    protected Animator animator;
+    private Animator animator;
     [SerializeField]
     private GameObject target;
     [SerializeField]
-    protected CharacterController enemy;
+    private CharacterController enemy;
     private GameUI gameUI;
 
-    private Collider collider;
+    private CapsuleCollider collider;
     private Rigidbody rigidbody;
-    protected NavMeshAgent navMesh;
+    private NavMeshAgent navMesh;
+
+    private float coolDown = 0f; // 흐른 시간
+    private float prevTime = 0f; // 마지막 스킬을 사용한 시간
+    private bool isCoolDown = true; // false면 스킬 사용
+    private int skillNum = 0; // 보스가 시전할 스킬 번호
+    private Vector3 rushPosition = new Vector3(0, 0, 0);
 
     [SerializeField]
-    protected GameSceneManager sceneManager;
+    private GameSceneManager sceneManager;
     [SerializeField]
     private ItemSpawner itemSpawner;
     private AudioClip hitSound;
@@ -85,7 +96,7 @@ public class Enemy : MonoBehaviour
         MP = maxMP;
         state = MonsterState.Idle;
         animator = GetComponent<Animator>();
-        collider = GetComponent<Collider>();
+        collider = GetComponent<CapsuleCollider>();
         collider.enabled = true;
         rigidbody = GetComponent<Rigidbody>();
         navMesh = GetComponent<NavMeshAgent>();
@@ -93,6 +104,7 @@ public class Enemy : MonoBehaviour
         isDead = false;
         getAttack = false;
         spawnPos = transform.position;
+        target = GameObject.FindGameObjectWithTag("Player");
     }
 
     protected void AttackAnim()
@@ -135,12 +147,15 @@ public class Enemy : MonoBehaviour
             sceneManager.player.GetEXP(EXP);
             sceneManager.CloseHP();
             itemSpawner.DropItem(transform.position);
+            AudioManager.Instance.PlaySFX(deathSound);
             Invoke("Delete", 5f);
         }
         else
         {
             sceneManager.ViewHP(this);
-            if (stunTime > 0)
+            if (superArmor)
+                getAttack = true;
+            else if (stunTime > 0)
                 StartStun(stunTime);
             else
             {
@@ -163,17 +178,13 @@ public class Enemy : MonoBehaviour
         animator.SetBool("stun", false);
     }
 
-    public void Retreat()
-    {
-        state = MonsterState.retreat;
-    }
-
     void UpdateTarget()
     {
-        target = GameObject.FindGameObjectWithTag("Player");
         if (target != null)
+        {
             enemy = target.GetComponent<CharacterController>();
-        dis = Vector3.Distance(transform.position, enemy.transform.position);
+            dis = Vector3.Distance(transform.position, enemy.transform.position);
+        }
     }
 
     void UpdateAttackInfo()
@@ -185,11 +196,73 @@ public class Enemy : MonoBehaviour
             if (attackTime > attackDelay)
                 attackState = false;
         }
+        if(type == MonsterType.boss && isCoolDown)
+        {
+            coolDown = Time.time - prevTime;
+            if (coolDown > 15)
+                isCoolDown = false;
+        }
     }
 
     public void Delete()
     {
         gameObject.SetActive(false);
+    }
+
+    void bossSkill1()
+    {// 돌진 공격
+        rushPosition = enemy.transform.position;
+        transform.LookAt(rushPosition);
+        navMesh.ResetPath();
+        navMesh.velocity = Vector3.zero;
+        navMesh.speed = 40f;
+        AudioManager.Instance.PlaySFX(Resources.Load<AudioClip>("AudioSource/SFX/BossSkill1"));
+    }
+
+    void Charge()
+    {
+        navMesh.SetDestination(rushPosition);
+        animator.SetBool("isWalk", true);
+        state = MonsterState.skill1;
+        bodyAttack = true;
+        skill1.SetActive(true);
+        collider = transform.GetComponent<CapsuleCollider>();
+        collider.center = new Vector3(0, 0.75f, 1f);
+    }
+
+    void bossSkill2()
+    {// 장판 소환
+        skill2.SetActive(true);
+        skill2.transform.parent = null;
+        skill2.transform.position = enemy.transform.position + new Vector3(0, 0.2f, 0);
+        AudioManager.Instance.PlaySFX(Resources.Load<AudioClip>("AudioSource/SFX/BossSkill2(1)"));
+    }
+
+    void bossSkill2End()
+    {
+        attackPrevTime = Time.time;
+        attackState = true;
+        prevTime = Time.time;
+        isCoolDown = true;
+        state = MonsterState.chase;
+    }
+
+    void bossSkill3()
+    {// 회복 패턴
+        attackPrevTime = Time.time;
+        attackState = true;
+        prevTime = Time.time;
+        isCoolDown = true;
+        HP += 20;
+        skill3.SetActive(false);
+        skill3.SetActive(true);
+        AudioManager.Instance.PlaySFX(Resources.Load<AudioClip>("AudioSource/SFX/BossSkill3"));
+        sceneManager.Refresh();
+    }
+
+    void endSkill3()
+    {
+        state = MonsterState.chase;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -207,52 +280,112 @@ public class Enemy : MonoBehaviour
         {
             UpdateTarget(); // 플레이어와의 거리 체크
             UpdateAttackInfo(); // 공격 쿨타임 체크
-            if (type == MonsterType.nomal)
+            switch (state)
             {
-                switch (state)
-                {
-                    case MonsterState.Idle:
-                        navMesh.ResetPath();
-                        navMesh.velocity = Vector3.zero;
-                        animator.SetBool("isWalk", false);
-                        if (dis < 10 || getAttack)
-                            state = MonsterState.chase;
-                        break;
-                    case MonsterState.chase:
-                        if (!attackState)
+                case MonsterState.Idle:
+                    navMesh.ResetPath();
+                    navMesh.velocity = Vector3.zero;
+                    animator.SetBool("isWalk", false);
+                    if (!enemy.isDead && (dis < 10 || getAttack))
+                        state = MonsterState.chase;
+                    break;
+                case MonsterState.chase:
+                    if (Vector3.Distance(transform.position, spawnPos) > 40)
+                        state = MonsterState.retreat;
+                    else if (type == MonsterType.boss && !isCoolDown)
+                    {
+                        switch (skillNum)
                         {
-                            if (dis <= range)
-                            {
-                                navMesh.ResetPath();
-                                navMesh.velocity = Vector3.zero;
-                                animator.SetBool("isWalk", false);
-                                AttackAnim();
-                            }
-                            else if (enemy.isDead)
-                                state = MonsterState.Idle;
-                            else
-                            {
-                                navMesh.SetDestination(enemy.transform.position);
-                                animator.SetBool("isWalk", true);
-                            }
+                            case 0:
+                                animator.SetTrigger("Skill1");
+                                state = MonsterState.skill1;
+                                skillNum++;
+                                prevTime = Time.time;
+                                isCoolDown = true;
+                                break;
+                            case 1:
+                                animator.SetTrigger("Skill2");
+                                state = MonsterState.skill2;
+                                skillNum++;
+                                prevTime = Time.time;
+                                isCoolDown = true;
+                                break;
+                            case 2:
+                                animator.SetTrigger("Skill3");
+                                state = MonsterState.skill3;
+                                skillNum = 0;
+                                prevTime = Time.time;
+                                isCoolDown = true;
+                                break;
                         }
+                    }
+                    else if (!attackState)
+                    {
+                        if (enemy.isDead)
+                            state = MonsterState.Idle;
+                        else if (dis <= range)
+                        {
+                            navMesh.ResetPath();
+                            navMesh.velocity = Vector3.zero;
+                            animator.SetBool("isWalk", false);
+                            AttackAnim();
+                        }
+                        else
+                        {
+                            navMesh.SetDestination(enemy.transform.position);
+                            animator.SetBool("isWalk", true);
+                        }
+                    }
                         break;
-                    case MonsterState.stun:
+                case MonsterState.stun:
+                    navMesh.ResetPath();
+                    navMesh.velocity = Vector3.zero;
+                    break;
+                case MonsterState.retreat:
+                    navMesh.SetDestination(spawnPos);
+                    animator.SetBool("isWalk", true);
+                    getAttack = false;
+                    if (Vector3.Distance(transform.position, spawnPos) < 2)
+                    {// 후퇴 시 체력 회복
+                        state = MonsterState.Idle;
+                        HP = maxHP;
+                        sceneManager.Refresh();
+                    }
+                    break;
+                case MonsterState.skill1:
+                    if(Vector3.Distance(transform.position, rushPosition) < 1)
+                    {
+                        attackPrevTime = Time.time;
+                        attackState = true;
+                        prevTime = Time.time;
+                        isCoolDown = true;
+                        animator.SetBool("isWalk", false);
+                        transform.GetChild(2).gameObject.SetActive(false);
+                        bodyAttack = false;
+                        navMesh.speed = speed;
+                        collider.center = new Vector3(0, 0.75f, 0.1f);
+                        state = MonsterState.chase;
+                    }
+                    break;
+                case MonsterState.skill2:
+                    if (!attackState)
+                        state = MonsterState.chase;
+                    else
+                    {
+                        transform.LookAt(enemy.transform);
                         navMesh.ResetPath();
                         navMesh.velocity = Vector3.zero;
-                        break;
-                    case MonsterState.retreat:
-                        navMesh.SetDestination(spawnPos);
-                        animator.SetBool("isWalk", true);
-                        getAttack = false;
-                        if (Vector3.Distance(transform.position, spawnPos) < 2)
-                        {// 후퇴 시 체력 회복
-                            state = MonsterState.Idle;
-                            HP = maxHP;
-                            sceneManager.Refresh();
-                        }
-                        break;
-                }
+                    }
+                    break;
+                case MonsterState.skill3:
+                    if (!attackState)
+                        state = MonsterState.chase;
+                    else
+                    {
+                        navMesh.ResetPath();
+                        navMesh.velocity = Vector3.zero;
+                    }
+                    break;
             }
         }
     }

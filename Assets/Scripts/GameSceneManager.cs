@@ -63,6 +63,7 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField] private GameObject confrim; // 종료 버튼 클릭 시 출력할 UI
     [SerializeField] private GameObject gameOver; // 캐릭터 사망 시 출력할 UI
     [SerializeField] private AudioClip BGM; // 배경 음악
+    [SerializeField] private GameObject boss; // 보스 몬스터
 
     public void ViewHP(Enemy target)
     {
@@ -205,5 +206,10 @@ public class GameSceneManager : MonoBehaviour
     {
         player.isControll = false;
         cameraMove.isControll = false;
+    }
+
+    public void SpawnBoss()
+    {
+        boss.SetActive(true);
     }
 }

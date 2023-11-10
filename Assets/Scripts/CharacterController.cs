@@ -8,6 +8,7 @@ public enum CharacterState
     Idle,
     move,
     attack,
+    down,
     death,
 }
 
@@ -83,6 +84,7 @@ public class CharacterController : MonoBehaviour
         navMesh.speed = speed;
         sceneManager = GameObject.FindObjectOfType<GameSceneManager>();
         layerMask = (-1) - (1 << LayerMask.NameToLayer("Spawner")) - (1 << LayerMask.NameToLayer("Skill")) - (1 << LayerMask.NameToLayer("Water"));
+        moveDir.transform.parent = null;
     }
     
     void GetInput()
@@ -160,15 +162,6 @@ public class CharacterController : MonoBehaviour
                     }
                 }
             }
-        }
-        else if(!isControll && !isDead)
-        {
-            // 임시 코드(추후 수정)
-            state = CharacterState.Idle;
-        }
-        else
-        {
-            
         }
     }
 
@@ -264,13 +257,18 @@ public class CharacterController : MonoBehaviour
             MoveStop();
             sceneManager.GameOver();
         }
-        //else
+        else
+        {
+            if (damage - (defense + equipStat.armor + buffStat.buffDefense) > 30)
+                animator.SetTrigger("down");
         //    animator.SetTrigger("hit");
+        }
         sceneManager.Refresh();
     }
 
     public void Resurrection()
     {
+        sceneManager.CloseHP();
         state = CharacterState.Idle;
         isDead = false;
         HP = 10;
@@ -289,6 +287,18 @@ public class CharacterController : MonoBehaviour
     public void Refresh()
     {
         sceneManager.Refresh();
+    }
+
+    void StartDown()
+    {
+        isControll = false;
+        state = CharacterState.down;
+    }
+
+    void EndDown()
+    {
+        isControll = true;
+        state = CharacterState.Idle;
     }
 
     void UpdateAttackInfo()
@@ -538,6 +548,9 @@ public class CharacterController : MonoBehaviour
                 else
                     moveDir.SetActive(false);
                 AttackState();
+                break;
+            case CharacterState.down:
+                MoveStop();
                 break;
             case CharacterState.death:
                 break;
