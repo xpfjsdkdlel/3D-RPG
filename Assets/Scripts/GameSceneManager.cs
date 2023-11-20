@@ -204,6 +204,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void ControllDisable()
     {
+        player.state = CharacterState.Idle;
         player.isControll = false;
         cameraMove.isControll = false;
     }

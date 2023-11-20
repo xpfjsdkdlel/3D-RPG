@@ -70,8 +70,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField]
     private GameObject moveDir; // 이동 할 위치 표시
 
-    [SerializeField]
-    private CharacterState state = new CharacterState();
+    public CharacterState state = new CharacterState();
 
     private GameSceneManager sceneManager;
 
