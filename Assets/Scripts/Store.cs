@@ -17,18 +17,35 @@ public class Store : MonoBehaviour
     private TextMeshProUGUI goldText;
     private ItemList list;
 
-    private void Awake()
+    public void Init()
     {
         for (int i = 0; i < 15; i++)
         {
-            Instantiate(ItemList, sellList).SetActive(false);
+            GameObject obj = Instantiate(ItemList, sellList);
+            list = obj.GetComponent<ItemList>();
+            list.buy = false;
+            list.Init();
+            if (GameManager.Instance.items[i] != null)
+            {
+                list.gameObject.SetActive(true);
+                list.item = GameManager.Instance.items[i];
+                list.number = i;
+                list.itemImg.sprite = list.item.iconImg;
+                list.itemName.text = list.item.name;
+                list.itemPrice.text = (list.item.price / 10).ToString();
+            }
+            else
+            {
+                list.item = null;
+                list.gameObject.SetActive(false);
+            }
         }
         for (int i = 0; i < gameDB.ItemData.Count; i++)
         {
             GameObject obj = Instantiate(ItemList, buyList);
             list = obj.GetComponent<ItemList>();
-            list.buy = true;
             list.item = new Item();
+            list.buy = true;
             list.item.uid = gameDB.ItemData[i].uid;
             list.item.type = gameDB.ItemData[i].type;
             list.item.name = gameDB.ItemData[i].name;
@@ -45,7 +62,7 @@ public class Store : MonoBehaviour
             list.itemImg.sprite = list.item.iconImg;
             list.itemName.text = list.item.name;
             list.itemPrice.text = list.item.price.ToString();
-            list.ButtonSetting();
+            list.Init();
         }
         gameObject.SetActive(false);
     }

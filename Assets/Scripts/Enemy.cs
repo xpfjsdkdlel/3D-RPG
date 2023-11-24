@@ -349,7 +349,7 @@ public class Enemy : MonoBehaviour
                     {// 후퇴 시 체력 회복
                         state = MonsterState.Idle;
                         HP = maxHP;
-                        sceneManager.Refresh();
+                        sceneManager.CloseHP();
                     }
                     break;
                 case MonsterState.skill1:

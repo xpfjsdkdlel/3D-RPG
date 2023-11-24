@@ -11299,6 +11299,7 @@ MonoBehaviour:
   inventory: {fileID: 7403542617363652327}
   equipment: {fileID: 7496871781848477032}
   menu: {fileID: 901198512}
+  store: {fileID: 0}
   dialogue: {fileID: 2001300157}
   npcName: {fileID: 437414663}
   npcText: {fileID: 1400707058}

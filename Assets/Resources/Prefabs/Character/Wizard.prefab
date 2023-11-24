@@ -1400,19 +1400,13 @@ MonoBehaviour:
   name: Wizard
   level: 1
   HP: 0
-  maxHP: 30
+  maxHP: 100
   MP: 0
-  maxMP: 30
+  maxMP: 50
   EXP: 0
-  gold: 0
   damage: 10
-  weapon: 0
-  buffDamage: 0
-  defense: 1
-  armor: 0
-  buffDefense: 0
+  defense: 0
   range: 5
-  addRange: 0
   attackDelay: 2
   speed: 3
   isDead: 0
@@ -1426,6 +1420,7 @@ MonoBehaviour:
   isControll: 1
   invincible: 0
   enemy: {fileID: 0}
+  navMesh: {fileID: 0}
   moveDir: {fileID: 5669815460725765027}
   state: 0
 --- !u!195 &1234317241000667794

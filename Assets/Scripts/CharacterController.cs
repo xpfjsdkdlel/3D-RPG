@@ -258,9 +258,10 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
-            if (damage - (defense + equipStat.armor + buffStat.buffDefense) > 30)
+            if (damage - (defense + equipStat.armor + buffStat.buffDefense) > 40)
                 animator.SetTrigger("down");
-        //    animator.SetTrigger("hit");
+            else if (damage - (defense + equipStat.armor + buffStat.buffDefense) > 20)
+                animator.SetTrigger("hit");
         }
         sceneManager.Refresh();
     }

@@ -234,8 +234,8 @@ MonoBehaviour:
   maxHP: 100
   MP: 0
   maxMP: 10
-  EXP: 5
-  damage: 10
+  EXP: 10
+  damage: 20
   armor: 2
   range: 2.5
   attackDelay: 3

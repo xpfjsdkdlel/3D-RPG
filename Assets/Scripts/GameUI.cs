@@ -12,6 +12,7 @@ public class GameUI : MonoBehaviour
     public Inventory inventory; // 인벤토리
     public GameObject equipment; // 장비창
     public GameObject menu; // 메뉴
+    public Store store; // 상점
     [SerializeField]
     private GameObject dialogue; // 대화문
     [SerializeField]
@@ -75,6 +76,8 @@ public class GameUI : MonoBehaviour
         sliderSFX.value = AudioManager.Instance.SFXVolume;
         questIndex = GameManager.Instance.questNum;
         inventory.Init();
+        store = storeObj.GetComponent<Store>();
+        store.Init();
         inventoryObj.SetActive(invenActive);
         equipment.SetActive(equipActive);
         menu.SetActive(menuActive);

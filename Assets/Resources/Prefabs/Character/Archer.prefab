@@ -2747,19 +2747,13 @@ MonoBehaviour:
   name: Archer
   level: 1
   HP: 0
-  maxHP: 40
+  maxHP: 100
   MP: 0
-  maxMP: 20
+  maxMP: 50
   EXP: 0
-  gold: 0
   damage: 10
-  weapon: 0
-  buffDamage: 0
-  defense: 1
-  armor: 0
-  buffDefense: 0
+  defense: 0
   range: 8
-  addRange: 0
   attackDelay: 2.5
   speed: 3
   isDead: 0
@@ -2773,6 +2767,7 @@ MonoBehaviour:
   isControll: 1
   invincible: 0
   enemy: {fileID: 0}
+  navMesh: {fileID: 0}
   moveDir: {fileID: 7242116590033964589}
   state: 0
 --- !u!195 &2895604106294200523

@@ -231,11 +231,11 @@ MonoBehaviour:
   uid: 101
   name: "\uB291\uB300"
   HP: 0
-  maxHP: 30
+  maxHP: 40
   MP: 0
   maxMP: 10
   EXP: 3
-  damage: 4
+  damage: 10
   armor: 0
   range: 1.5
   attackDelay: 2

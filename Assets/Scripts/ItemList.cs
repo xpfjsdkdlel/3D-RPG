@@ -20,22 +20,25 @@ public class ItemList : MonoBehaviour
     private AudioClip trade;
     private AudioClip error;
 
-    private void Awake()
+    public void Init()
     {
         inventory = GameObject.FindObjectOfType<Inventory>();
         store = GameObject.FindObjectOfType<Store>();
         trade = Resources.Load<AudioClip>("AudioSource/SFX/Trade");
         error = Resources.Load<AudioClip>("AudioSource/SFX/Error");
-        btnImg.sprite = btnColor[1];
-        btnText.text = "판매";
     }
 
-    public void ButtonSetting()
+    private void OnEnable()
     {
         if (buy)
         {
             btnImg.sprite = btnColor[0];
             btnText.text = "구입";
+        }
+        else
+        {
+            btnImg.sprite = btnColor[1];
+            btnText.text = "판매";
         }
     }
 
@@ -43,10 +46,11 @@ public class ItemList : MonoBehaviour
     {
         if (buy)
         {
-            if(item.price <= GameManager.Instance.gold)
+            if (item.price <= GameManager.Instance.gold)
             {
                 if (inventory.GetItem(item))
                 {
+                    Debug.Log("아이템 구입");
                     GameManager.Instance.gold -= item.price;
                     AudioManager.Instance.PlaySFX(trade);
                 }
@@ -82,6 +86,10 @@ public class ItemList : MonoBehaviour
                 }
             }
         }
+        if (inventory == null)
+            inventory = GameObject.FindObjectOfType<Inventory>();
+        if(store == null)
+            store = GameObject.FindObjectOfType<Store>();
         inventory.RefreshSlot();
         store.RefreshList();
     }

@@ -235,7 +235,7 @@ MonoBehaviour:
   MP: 0
   maxMP: 10
   EXP: 30
-  damage: 25
+  damage: 40
   armor: 3
   range: 2.5
   attackDelay: 4
