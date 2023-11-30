@@ -153,16 +153,16 @@ public class GameSceneManager : MonoBehaviour
         switch (GameManager.Instance.number)
         {
             case 0:
-                player.maxHP += 3;
-                player.maxMP += 4;
+                player.maxHP += 15;
+                player.maxMP += 15;
                 break;
             case 1:
-                player.maxHP += 5;
-                player.maxMP += 2;
+                player.maxHP += 20;
+                player.maxMP += 10;
                 break;
             case 2:
-                player.maxHP += 2;
-                player.maxMP += 10;
+                player.maxHP += 10;
+                player.maxMP += 20;
                 break;
         }
         if (player.level % 5 == 0)

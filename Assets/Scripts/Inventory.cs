@@ -241,7 +241,7 @@ public class Inventory : MonoBehaviour
                 GameManager.Instance.items[num] = null;
             player.Refresh();
         }
-        gameScene.RefreshStat();
-        slots[num].Refresh();
+        gameScene.RefreshStat(); // 장비 스탯 새로고침
+        slots[num].Refresh(); // UI 새로고침
     }
 }

@@ -181,6 +181,7 @@ public class GameUI : MonoBehaviour
                 break;
             case NPCrole.store:
                 storeObj.SetActive(true);
+                store.RefreshList();
                 CloseDialogue();
                 gameSceneManager.ControllDisable();
                 break;

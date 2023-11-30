@@ -7,7 +7,7 @@ public class CameraMove : MonoBehaviour
     public Transform target;
     private Vector3 offset;
     private Transform cam;
-    private float curYAngle;
+    private float curYAngle = 90;
     [SerializeField]
     private int zoom = 0;
     public bool isControll = true;

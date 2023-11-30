@@ -64,16 +64,12 @@ public class Store : MonoBehaviour
             list.itemPrice.text = list.item.price.ToString();
             list.Init();
         }
+        RefreshList();
         gameObject.SetActive(false);
     }
 
-    private void OnEnable()
-    {
-        RefreshList();
-    }
-
     public void RefreshList()
-    {
+    {// 새로고침
         for (int i = 0; i < buyList.childCount; i++)
         {
             list = buyList.GetChild(i).GetComponent<ItemList>();

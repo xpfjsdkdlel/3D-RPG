@@ -41,10 +41,10 @@ public class GameManager : MonoBehaviour
     public int number = 0; // 클래스
     public string name; // 캐릭터 이름
     public int level = 1; // 레벨
-    public int HP = 50; // 현재 체력
-    public int maxHP = 50; // 최대 체력
-    public int MP = 20; // 현재 마나
-    public int maxMP = 20; // 최대 마나
+    public int HP = 100; // 현재 체력
+    public int maxHP = 100; // 최대 체력
+    public int MP = 50; // 현재 마나
+    public int maxMP = 50; // 최대 마나
     public int EXP = 0; // 경험치
     public int gold = 0; // 돈
     public Item[] items = null; // 인벤토리
@@ -86,10 +86,10 @@ public class GameManager : MonoBehaviour
         number = 0;
         name = "player";
         level = 1;
-        HP = 50;
-        maxHP = 50;
-        MP = 20;
-        maxMP = 20;
+        HP = 100;
+        maxHP = 100;
+        MP = 50;
+        maxMP = 50;
         EXP = 0;
         gold = 0;
         items = new Item[15];

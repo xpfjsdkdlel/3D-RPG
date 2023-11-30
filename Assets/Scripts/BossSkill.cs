@@ -36,7 +36,7 @@ public class BossSkill : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<CharacterController>().GetDamage(damage);
+            other.GetComponent<CharacterController>().GetDamage(damage * 3);
         }
     }
 }

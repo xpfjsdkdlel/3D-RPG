@@ -58,6 +58,7 @@ public class CharacterController : MonoBehaviour
     private float attackPrevTime = 0f; // 마지막으로 공격한 시간
     private float attackTime = 0f; // 공격 후 흐른 시간
     private bool attackState = false; // false면 공격이 가능한 상태
+    private float restTime = 0; // 휴식을 취한 시간
     public Enemy enemy; // 타겟의 정보
     private bool combo = false; // 두번째 공격 애니메이션 출력 여부
 
@@ -150,12 +151,12 @@ public class CharacterController : MonoBehaviour
                 {
                     if (hit.transform.gameObject.CompareTag("Enemy"))
                     {
-                        // 몬스터라면 공격 처리
+                        // 몬스터라면 공격
                         enemy = hit.transform.gameObject.GetComponent<Enemy>();
                         state = CharacterState.attack;
                     }
                     else
-                    {
+                    {// 몬스터가 아니면 이동
                         enemy = null;
                         state = CharacterState.move;
                     }
@@ -205,6 +206,7 @@ public class CharacterController : MonoBehaviour
         else
         {
             state = CharacterState.Idle;
+            restTime = 0;
         }
     }
     void AttackAnim()
@@ -219,6 +221,7 @@ public class CharacterController : MonoBehaviour
         }
         else
             enemy = null;
+        restTime = 0;
     }
 
     void Attack()
@@ -260,14 +263,27 @@ public class CharacterController : MonoBehaviour
         {
             if (damage - (defense + equipStat.armor + buffStat.buffDefense) > 40)
                 animator.SetTrigger("down");
-            else if (damage - (defense + equipStat.armor + buffStat.buffDefense) > 20)
-                animator.SetTrigger("hit");
+            else if (damage - (defense + equipStat.armor + buffStat.buffDefense) > 10)
+            {
+                if (isControll)// 애니메이션 꼬임 방지
+                    animator.SetTrigger("hit");
+            }
         }
+        restTime = 0;
+        sceneManager.Refresh();
+    }
+
+    public void Heal(int point)
+    {// 휴식 시 체력 회복
+        restTime = 0;
+        HP += point;
+        if (HP > maxHP)
+            HP = maxHP;
         sceneManager.Refresh();
     }
 
     public void Resurrection()
-    {
+    {// 캐릭터 사망 후 부활하는 함수
         sceneManager.CloseHP();
         state = CharacterState.Idle;
         isDead = false;
@@ -275,6 +291,7 @@ public class CharacterController : MonoBehaviour
         EXP = EXP / 3;
         isControll = true;
         battle = false;
+        restTime = 0;
         animator.SetBool("battle", false);
         animator.SetTrigger("resurrection");
     }
@@ -319,13 +336,20 @@ public class CharacterController : MonoBehaviour
         animator.SetBool("isWalk", true);
         // 목적지에 도착했다면 대기상태로 변경
         if (navMesh.velocity.sqrMagnitude >= 0.2f * 0.2f && navMesh.remainingDistance <= 0.1f)
+        {
             state = CharacterState.Idle;
+            restTime = 0;
+        }
         else if (moveDir.x == transform.position.x && moveDir.z == transform.position.z)
+        {
             state = CharacterState.Idle;
+            restTime = 0;
+        }
+        navMesh.speed = speed + buffStat.buffSpeed;
     }
 
     public void GetEXP(int EXP)
-    {
+    {// 경험치 획득
         if(this.EXP + EXP >= level * 10)
         {// 레벨업
             this.EXP = (this.EXP + EXP) - (level * 10); 
@@ -531,6 +555,9 @@ public class CharacterController : MonoBehaviour
                 enemy = null;
                 moveDir.SetActive(false);
                 MoveStop();
+                restTime += Time.deltaTime;
+                if (restTime > 15)
+                    Heal(10);
                 break;
             case CharacterState.move:
                 moveDir.SetActive(true);

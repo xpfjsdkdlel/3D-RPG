@@ -45,7 +45,7 @@ public class ItemList : MonoBehaviour
     public void Deal()
     {
         if (buy)
-        {
+        {// 구매 시
             if (item.price <= GameManager.Instance.gold)
             {
                 if (inventory.GetItem(item))
@@ -67,7 +67,7 @@ public class ItemList : MonoBehaviour
             }
         }
         else
-        {
+        {// 판매 시
             AudioManager.Instance.PlaySFX(trade);
             if (item.type)
             {

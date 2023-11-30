@@ -22,6 +22,8 @@ public class TitleSceneManager : MonoBehaviour
 
     private void Start()
     {
+        sliderBGM.value = AudioManager.Instance.BGMVolume;
+        sliderSFX.value = AudioManager.Instance.SFXVolume;
         SetBGMVolume();
         SetSFXVolume();
         AudioManager.Instance.PlayBGM(BGM);
@@ -46,10 +48,8 @@ public class TitleSceneManager : MonoBehaviour
             buttonGroup.SetActive(false);
         }
         else
-        {// 없다면 새 게임 시작
-            GameManager.Instance.fade.FadeOut();
-            Invoke("LoadCharacterSelectScene", 2f);
-        }
+            // 없다면 새 게임 시작
+            NewGame();
     }
 
     public void NewGame()

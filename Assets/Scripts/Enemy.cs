@@ -107,7 +107,7 @@ public class Enemy : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player");
     }
 
-    protected void AttackAnim()
+    private void AttackAnim()
     {// 공격 애니메이션
         if (!enemy.isDead)
         {
@@ -132,7 +132,7 @@ public class Enemy : MonoBehaviour
             HP -= damage - armor;
         AudioManager.Instance.PlaySFX(hitSound);
         if (HP <= 0)
-        {
+        {// 몬스터 사망 시
             HP = 0;
             collider.enabled = false;
             navMesh.enabled = false;
@@ -151,14 +151,14 @@ public class Enemy : MonoBehaviour
             Invoke("Delete", 5f);
         }
         else
-        {
-            sceneManager.ViewHP(this);
+        {// 몬스터 생존 시
+            sceneManager.ViewHP(this); // 체력 UI출력
             if (superArmor)
-                getAttack = true;
+                getAttack = true; // 어그로 상태 변경
             else if (stunTime > 0)
                 StartStun(stunTime);
             else
-            {
+            {// 피격 애니메이션
                 animator.SetTrigger("hit");
                 getAttack = true;
             }
@@ -278,6 +278,11 @@ public class Enemy : MonoBehaviour
     {
         if (!isDead)
         {
+            if(enemy == null)
+            {// 목표한 적이 없다면 탐색
+                enemy = FindObjectOfType<CharacterController>();
+                target = GameObject.FindGameObjectWithTag("Player");
+            }
             UpdateTarget(); // 플레이어와의 거리 체크
             UpdateAttackInfo(); // 공격 쿨타임 체크
             switch (state)
@@ -290,7 +295,7 @@ public class Enemy : MonoBehaviour
                         state = MonsterState.chase;
                     break;
                 case MonsterState.chase:
-                    if (Vector3.Distance(transform.position, spawnPos) > 40)
+                    if (Vector3.Distance(transform.position, spawnPos) > 35)
                         state = MonsterState.retreat;
                     else if (type == MonsterType.boss && !isCoolDown)
                     {

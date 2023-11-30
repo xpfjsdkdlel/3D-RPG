@@ -15,9 +15,9 @@ public class AudioManager : MonoBehaviour
     private GameObject sfx;
     [SerializeField]
     private int count = 10;
-    private int cursor = 0;
-    public float BGMVolume = 1;
-    public float SFXVolume = 1;
+    //private int cursor = 0;
+    public float BGMVolume;
+    public float SFXVolume;
 
     void Awake()
     {
